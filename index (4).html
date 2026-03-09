@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDX — Faculté de Médecine d'Oran</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e1a;--surface:#111827;--surface2:#1a2235;--surface3:#212d44;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8edf5;--text2:#a8b4cc;--muted:#6b7a99;--blue:#3b82f6;--blue-dim:rgba(59,130,246,0.12);--cyan:#06b6d4;--accent:#00e5ff;--accent-dim:rgba(0,229,255,0.08);--red:#ff4d6d;--red-dim:rgba(255,77,109,0.10);--green:#10b981;--green-dim:rgba(16,185,129,0.10);--gold:#f59e0b;--gold-dim:rgba(245,158,11,0.12);--r:12px;--rl:16px;--rs:8px;--shadow:0 4px 24px rgba(0,0,0,0.35);--shadow-lg:0 12px 48px rgba(0,0,0,0.5);--t:0.22s ease;--ff:'Syne',sans-serif;--fb:'DM Sans',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer;border:none;background:none}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--surface)}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-glow::before{content:'';position:absolute;top:-300px;left:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(59,130,246,.10) 0%,transparent 65%)}
+.bg-glow::after{content:'';position:absolute;bottom:-250px;right:-150px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,229,255,.07) 0%,transparent 65%)}
+.page-wrapper{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
+.container{max-width:1140px;margin:0 auto;padding:0 1.5rem;width:100%}
+.hidden{display:none!important}
+/* AUTH */
+#authOverlay{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:1rem}
+.auth-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:420px;box-shadow:var(--shadow-lg)}
+.auth-logo{font-family:var(--ff);font-size:2.2rem;font-weight:800;color:#fff;text-align:center;margin-bottom:.3rem}
+.auth-logo .x{color:var(--accent);text-shadow:0 0 22px rgba(0,229,255,.65)}
+.auth-sub{text-align:center;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2rem}
+.auth-tabs{display:flex;gap:4px;background:var(--surface2);border-radius:var(--r);padding:4px;margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:8px;border-radius:var(--rs);font-size:.82rem;font-weight:500;color:var(--muted);transition:all var(--t);text-align:center;cursor:pointer}
+.auth-tab.active{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(59,130,246,.3)}
+.auth-tab:hover:not(.active){color:var(--text)}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.75rem;font-weight:500;color:var(--text2);margin-bottom:.4rem}
+.form-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:10px 14px;color:var(--text);font-family:var(--fb);font-size:.9rem;transition:border-color var(--t);outline:none}
+.form-input:focus{border-color:var(--blue)}.form-input::placeholder{color:var(--muted)}
+.form-select{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:10px 14px;color:var(--text);font-family:var(--fb);font-size:.9rem;outline:none;cursor:pointer}
+.form-select option{background:var(--surface2)}
+.btn-auth{width:100%;padding:11px;background:var(--blue);color:#fff;border-radius:var(--rs);font-size:.9rem;font-weight:600;margin-top:.5rem;transition:all var(--t);box-shadow:0 4px 16px rgba(59,130,246,.3)}
+.btn-auth:hover{background:#4f8ef7;transform:translateY(-1px)}
+.auth-err{color:var(--red);font-size:.75rem;margin-top:.8rem;text-align:center;min-height:18px}
+/* NAVBAR */
+.navbar{position:sticky;top:0;z-index:100;height:64px;background:rgba(10,14,26,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center}
+.navbar .container{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--ff);font-size:1.65rem;font-weight:800;letter-spacing:-1px;color:#fff;line-height:1}
+.nav-logo .x{color:var(--accent);text-shadow:0 0 22px rgba(0,229,255,.65)}
+.nav-sub{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:1px}
+.nav-right{display:flex;align-items:center;gap:.6rem}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+.xp-badge{display:flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid rgba(245,158,11,.25);border-radius:100px;padding:4px 12px;cursor:pointer;transition:all var(--t)}
+.xp-badge:hover{background:rgba(245,158,11,.2)}
+.xp-val{font-family:var(--ff);font-size:.8rem;font-weight:700;color:var(--gold)}
+.user-btn{display:flex;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border2);border-radius:100px;padding:5px 12px 5px 5px;cursor:pointer}
+.user-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff}
+.user-name{font-size:.78rem;font-weight:500;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logout-btn{font-size:.72rem;color:var(--muted);padding:4px 8px;border-radius:var(--rs);transition:all var(--t)}
+.logout-btn:hover{color:var(--red)}
+/* HERO */
+.hero{padding:3rem 0 2rem;text-align:center}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:var(--accent-dim);border:1px solid rgba(0,229,255,.2);color:var(--accent);font-size:.72rem;font-weight:500;padding:5px 14px;border-radius:100px;margin-bottom:1.2rem;letter-spacing:.04em;text-transform:uppercase}
+.hero-pill .dot{font-size:.45rem;animation:pulse 2s infinite}
+.hero h1{font-family:var(--ff);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:800;line-height:1.1;color:#fff;margin-bottom:.8rem}
+.gradient-text{background:linear-gradient(135deg,var(--blue) 0%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--text2);font-size:.95rem;max-width:460px;margin:0 auto 2rem;line-height:1.75}
+/* PROFILE */
+.profile-bar{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem}
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.4rem}
+.profile-card h3{font-family:var(--ff);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.profile-top{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.profile-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;flex-shrink:0}
+.profile-name{font-family:var(--ff);font-size:1rem;font-weight:700}
+.profile-year-lbl{font-size:.72rem;color:var(--muted);margin-top:2px}
+.xp-total{font-family:var(--ff);font-size:2rem;font-weight:800;color:var(--gold);line-height:1}
+.xp-label{font-size:.68rem;color:var(--muted)}
+.level-bar-wrap{margin-top:.8rem}
+.level-info{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:.4rem}
+.level-bar{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.level-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:3px;transition:width .6s ease}
+.xp-actions{display:flex;flex-direction:column;gap:.5rem}
+.xp-action-item{display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;background:var(--surface2);border-radius:var(--rs);font-size:.78rem}
+.xp-action-item span:first-child{color:var(--text2)}
+.xp-pill{font-family:var(--ff);font-size:.72rem;font-weight:700;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(245,158,11,.2);padding:2px 8px;border-radius:100px}
+/* STATS */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:2rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;display:flex;align-items:center;gap:12px;transition:border-color var(--t)}
+.stat-card:hover{border-color:var(--border2)}
+.stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.stat-val{font-family:var(--ff);font-size:1.35rem;font-weight:800;line-height:1}
+.stat-lbl{font-size:.68rem;color:var(--muted);margin-top:3px}
+.section-label{font-family:var(--ff);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+/* YEARS */
+.years-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.75rem;margin-bottom:2rem}
+.year-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem .6rem;text-align:center;cursor:pointer;transition:all var(--t);position:relative;overflow:hidden}
+.year-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--accent));transform:scaleX(0);transition:transform .3s ease;transform-origin:left}
+.year-card:hover::before,.year-card.active::before{transform:scaleX(1)}
+.year-card:hover{border-color:rgba(59,130,246,.35);background:var(--surface2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
+.year-card.active{border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.08)}
+.year-num{font-family:var(--ff);font-size:2rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:.2rem}
+.year-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.year-badge{margin-top:.6rem;font-size:.65rem;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:2px 7px;display:inline-block;border:1px solid rgba(0,229,255,.15)}
+/* LEADERBOARD */
+.lb-tabs{display:flex;gap:4px;background:var(--surface2);border-radius:var(--r);padding:4px;width:fit-content;margin-bottom:1rem}
+.lb-tab{padding:6px 14px;border-radius:var(--rs);font-size:.78rem;font-weight:500;color:var(--muted);transition:all var(--t);cursor:pointer}
+.lb-tab.active{background:var(--gold);color:#000;box-shadow:0 4px 14px rgba(245,158,11,.3)}
+.lb-tab:hover:not(.active){color:var(--text)}
+.lb-list{display:flex;flex-direction:column;gap:.5rem}
+.lb-item{display:flex;align-items:center;gap:12px;padding:.8rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);transition:all var(--t)}
+.lb-item:hover{border-color:var(--border2)}
+.lb-item.me{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.05)}
+.lb-rank{font-family:var(--ff);font-size:1rem;font-weight:800;min-width:32px;text-align:center}
+.r1{color:#FFD700}.r2{color:#C0C0C0}.r3{color:#CD7F32}.rn{color:var(--muted)}
+.lb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#fff;flex-shrink:0}
+.lb-info{flex:1}.lb-name{font-size:.85rem;font-weight:600}.lb-year-s{font-size:.68rem;color:var(--muted)}
+.lb-xp{font-family:var(--ff);font-size:.9rem;font-weight:800;color:var(--gold)}
+.lb-loading{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:5px;width:fit-content;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab-btn{padding:8px 16px;border-radius:var(--rs);font-size:.8rem;font-weight:500;color:var(--muted);transition:all var(--t);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tab-btn:hover{color:var(--text);background:var(--surface2)}
+.tab-btn.active{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(59,130,246,.35)}
+/* MODULES */
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.75rem}
+.module-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;cursor:pointer;transition:all var(--t);display:flex;align-items:flex-start;gap:11px}
+.module-card:hover{border-color:rgba(0,229,255,.25);background:var(--surface2);transform:translateY(-2px);box-shadow:var(--shadow)}
+.module-emoji{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.module-emoji.blue{background:var(--blue-dim)}.module-emoji.cyan{background:var(--accent-dim)}.module-emoji.green{background:var(--green-dim)}.module-emoji.red{background:var(--red-dim)}
+.module-info h3{font-size:.83rem;font-weight:600;color:var(--text);margin-bottom:3px}.module-info span{font-size:.7rem;color:var(--muted)}
+/* PANEL */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-top:1rem}
+.panel-header{padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-family:var(--ff);font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.panel-body{padding:.6rem}
+.lesson-item{padding:.65rem .8rem;border-radius:var(--rs);cursor:pointer;display:flex;align-items:center;gap:10px;transition:all var(--t);border:1px solid transparent}
+.lesson-item:hover{background:var(--surface2);border-color:var(--border)}
+.lesson-num{width:26px;height:26px;border-radius:7px;background:var(--blue-dim);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--blue);flex-shrink:0}
+.lesson-name{font-size:.82rem;color:var(--text);flex:1}
+/* CHIPS */
+.chip{display:inline-flex;align-items:center;font-size:.68rem;font-weight:500;padding:3px 9px;border-radius:100px}
+.chip-blue{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(59,130,246,.25)}
+.chip-cyan{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,229,255,.2)}
+.chip-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.chip-red{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,77,109,.25)}
+/* QCM */
+.qcm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.75rem}
+.qcm-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;cursor:pointer;transition:all var(--t)}
+.qcm-card:hover{border-color:rgba(255,77,109,.3);transform:translateY(-2px);box-shadow:var(--shadow)}
+.qcm-card h4{font-size:.85rem;font-weight:600;margin-bottom:4px}.qcm-card p{font-size:.7rem;color:var(--muted);margin-top:3px}
+.qcm-meta{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+/* EXAMS */
+.exam-item{display:flex;align-items:center;padding:.85rem 1rem;border-radius:var(--r);border:1px solid var(--border);margin-bottom:.5rem;cursor:pointer;transition:all var(--t);gap:14px;background:var(--surface2)}
+.exam-item:hover{border-color:rgba(16,185,129,.3);transform:translateX(4px)}
+.exam-year{font-family:var(--ff);font-size:1.15rem;font-weight:800;color:var(--green);min-width:54px}
+.exam-session{font-size:.65rem;color:var(--muted)}.exam-info h4{font-size:.82rem;font-weight:600}.exam-info span{font-size:.7rem;color:var(--muted)}
+.exam-dl{margin-left:auto;background:var(--green-dim);border:1px solid rgba(16,185,129,.25);color:var(--green);padding:5px 12px;border-radius:var(--rs);font-size:.72rem;font-weight:500;transition:all var(--t);display:flex;align-items:center;gap:5px}
+.exam-dl:hover{background:rgba(16,185,129,.18)}
+/* DRIVE */
+.drive-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:2.5rem 2rem;text-align:center}
+.drive-box .drive-big-icon{font-size:3.5rem;margin-bottom:1rem}
+.drive-box h3{font-family:var(--ff);font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.drive-box p{font-size:.82rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.6}
+.drive-btn{display:inline-flex;align-items:center;gap:10px;background:var(--blue);color:#fff;font-size:.9rem;font-weight:600;padding:12px 28px;border-radius:var(--r);transition:all var(--t);box-shadow:0 4px 20px rgba(59,130,246,.35)}
+.drive-btn:hover{background:#4f8ef7;transform:translateY(-2px)}
+.drive-btn.disabled{background:var(--surface3);color:var(--muted);box-shadow:none;cursor:not-allowed;pointer-events:none;border:1px solid var(--border)}
+.drive-coming{margin-top:1rem;font-size:.72rem;color:var(--muted)}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:500;padding:7px 14px;border-radius:var(--rs);transition:all var(--t);border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border2);background:var(--surface2)}
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:1rem}.empty-state p{font-size:.9rem}
+.footer{margin-top:auto;padding:1.5rem 0;border-top:1px solid var(--border);text-align:center}
+.footer p{font-size:.72rem;color:var(--muted)}.footer .x{color:var(--accent)}
+#toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--surface2);border:1px solid rgba(0,229,255,.25);color:var(--text);padding:10px 18px;border-radius:var(--rs);font-size:.8rem;box-shadow:var(--shadow-lg);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:280px}
+#toast.show{transform:translateY(0);opacity:1}
+.xp-popup{position:fixed;top:80px;right:2rem;z-index:9998;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:var(--gold);padding:10px 18px;border-radius:var(--rs);font-family:var(--ff);font-size:.9rem;font-weight:700;box-shadow:var(--shadow-lg);transform:translateY(-20px);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.xp-popup.show{transform:translateY(0);opacity:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.afu{animation:fadeUp .35s ease both}
+.d1{animation-delay:.05s}.d2{animation-delay:.10s}.d3{animation-delay:.15s}.d4{animation-delay:.20s}.d5{animation-delay:.25s}.d6{animation-delay:.30s}
+@media(max-width:900px){.stats-bar{grid-template-columns:repeat(2,1fr)}.profile-bar{grid-template-columns:1fr}}
+@media(max-width:600px){.years-grid{grid-template-columns:repeat(3,1fr)}.container{padding:0 1rem}.tabs{flex-wrap:wrap}}
+@media(max-width:380px){.years-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<!-- AUTH -->
+<div id="authOverlay">
+  <div class="auth-box">
+    <div class="auth-logo">MED<span class="x">X</span></div>
+    <div class="auth-sub">Faculté de Médecine · Oran</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login')">Connexion</div>
+      <div class="auth-tab" onclick="switchAuthTab('register')">Inscription</div>
+    </div>
+    <div id="loginForm">
+      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="loginEmail" placeholder="ton@email.com"></div>
+      <div class="form-group"><label>Mot de passe</label><input class="form-input" type="password" id="loginPass" placeholder="••••••••"></div>
+      <button class="btn-auth" onclick="doLogin()">Se connecter</button>
+    </div>
+    <div id="registerForm" class="hidden">
+      <div class="form-group"><label>Prénom & Nom</label><input class="form-input" type="text" id="regName" placeholder="Ahmed Benali"></div>
+      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="regEmail" placeholder="ton@email.com"></div>
+      <div class="form-group"><label>Année d'études</label>
+        <select class="form-select" id="regYear">
+          <option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option>
+          <option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Mot de passe</label><input class="form-input" type="password" id="regPass" placeholder="Min. 6 caractères"></div>
+      <button class="btn-auth" onclick="doRegister()">Créer mon compte</button>
+    </div>
+    <div class="auth-err" id="authErr"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="page-wrapper" id="mainApp" style="display:none">
+  <nav class="navbar">
+    <div class="container">
+      <div><div class="nav-logo">MED<span class="x">X</span></div><div class="nav-sub">Faculté de Médecine · Oran</div></div>
+      <div class="nav-right">
+        <div class="xp-badge" onclick="scrollToLB()"><span>⚡</span><span class="xp-val" id="navXP">0 XP</span></div>
+        <div class="user-btn"><div class="user-avatar" id="navAvatar">?</div><span class="user-name" id="navName">...</span></div>
+        <button class="logout-btn" onclick="doLogout()">Déconnexion</button>
+        <div class="nav-dot"></div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-pill afu"><span class="dot">●</span> Bibliothèque Médicale Numérique</div>
+      <h1 class="afu d1">Bienvenue sur <span class="gradient-text">MEDX</span></h1>
+      <p class="afu d2">Cours, QCM, examens passés — organisés par année et par module.</p>
+    </div>
+  </section>
+
+  <main class="container" style="padding-bottom:4rem">
+    <!-- PROFILE -->
+    <div class="profile-bar afu d2">
+      <div class="profile-card">
+        <h3>Mon Profil</h3>
+        <div class="profile-top">
+          <div class="profile-avatar" id="profileAvatar">?</div>
+          <div><div class="profile-name" id="profileName">...</div><div class="profile-year-lbl" id="profileYear">...</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between">
+          <div><div class="xp-total" id="profileXP">0</div><div class="xp-label">XP Total</div></div>
+          <div style="text-align:right"><div style="font-family:var(--ff);font-size:1.1rem;font-weight:800;color:var(--blue)" id="profileLevel">Niveau 1</div><div class="xp-label">Niveau actuel</div></div>
+        </div>
+        <div class="level-bar-wrap">
+          <div class="level-info"><span id="levelMin">0 XP</span><span id="levelMax">100 XP</span></div>
+          <div class="level-bar"><div class="level-fill" id="levelFill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="profile-card">
+        <h3>Comment gagner des XP</h3>
+        <div class="xp-actions">
+          <div class="xp-action-item"><span>🧩 Compléter un QCM</span><span class="xp-pill">+30 XP</span></div>
+          <div class="xp-action-item"><span>📅 Connexion quotidienne</span><span class="xp-pill">+10 XP</span></div>
+          <div class="xp-action-item"><span>📄 Télécharger un examen</span><span class="xp-pill">+15 XP</span></div>
+          <div class="xp-action-item"><span>🎯 Streak 7 jours</span><span class="xp-pill">+50 XP</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar afu d3">
+      <div class="stat-card"><div class="stat-icon" style="background:var(--blue-dim)">📚</div><div><div class="stat-val" style="color:var(--blue)">6</div><div class="stat-lbl">Années d'études</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--accent-dim)">🧩</div><div><div class="stat-val" style="color:var(--accent)">30</div><div class="stat-lbl">Modules</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--red-dim)">📝</div><div><div class="stat-val" style="color:var(--red)">580+</div><div class="stat-lbl">QCM</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--green-dim)">🗂️</div><div><div class="stat-val" style="color:var(--green)">22</div><div class="stat-lbl">Examens passés</div></div></div>
+    </div>
+
+    <!-- YEARS -->
+    <div class="section-label afu d4">Choisir une année</div>
+    <div class="years-grid" id="yearsGrid"></div>
+    <div class="empty-state" id="emptyState"><div class="empty-icon">👆</div><p>Sélectionne une année pour commencer</p></div>
+
+    <!-- YEAR CONTENT -->
+    <div id="yearContent" class="hidden">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="cours">📖 Cours</button>
+        <button class="tab-btn" data-tab="qcm">🧩 QCM</button>
+        <button class="tab-btn" data-tab="examens">📄 Examens passés</button>
+        <button class="tab-btn" data-tab="drive">☁️ Drive Promo</button>
+      </div>
+      <div class="tab-pane" data-pane="cours">
+        <div class="section-label" id="modulesLabel">Modules</div>
+        <div class="modules-grid" id="modulesGrid"></div>
+        <div class="panel hidden" id="lessonsPanel">
+          <div class="panel-header"><div class="panel-title" id="lessonsPanelTitle">📖 Cours</div><button class="btn-ghost" onclick="closePanel()">← Retour</button></div>
+          <div class="panel-body" id="lessonsList"></div>
+        </div>
+      </div>
+      <div class="tab-pane hidden" data-pane="qcm"><div class="section-label">QCM par Module</div><div class="qcm-grid" id="qcmGrid"></div></div>
+      <div class="tab-pane hidden" data-pane="examens"><div class="section-label">Examens Passés par Module</div><div id="examList"></div></div>
+      <div class="tab-pane hidden" data-pane="drive"><div class="section-label">Drive de la Promo</div><div id="driveGrid"></div></div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div style="margin-top:3rem" id="lbSection">
+      <div class="section-label">🏆 Classement MEDX</div>
+      <div class="lb-tabs">
+        <div class="lb-tab active" onclick="switchLB('global',this)">🌍 Global</div>
+        <div class="lb-tab" onclick="switchLB('year',this)">📅 Ma Promotion</div>
+      </div>
+      <div class="lb-list" id="lbList"><div class="lb-loading">Chargement du classement...</div></div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><p>MED<span class="x">X</span> · Faculté de Médecine d'Oran · 2024–2025</p></div></footer>
+</div>
+
+<div id="toast"></div>
+<div class="xp-popup" id="xpPopup"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,doc,setDoc,getDoc,updateDoc,collection,query,orderBy,limit,getDocs,where,increment}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app=initializeApp({apiKey:"AIzaSyB7p3phF_ex1EY5bj3Wu3R9-CtOJnqHieA",authDomain:"medx-d67fb.firebaseapp.com",projectId:"medx-d67fb",storageBucket:"medx-d67fb.firebasestorage.app",messagingSenderId:"698164411256",appId:"1:698164411256:web:091edcae6c58749688a68d"});
+const auth=getAuth(app),db=getFirestore(app);
+const XP_QCM=30,XP_LOGIN=10,XP_EXAM=15;
+const LEVELS=[0,100,250,500,900,1500,2500,4000,6000,10000];
+
+function getLevel(xp){let l=1;LEVELS.forEach((v,i)=>{if(xp>=v)l=i+1});return Math.min(l,10)}
+function getLevelProg(xp){const l=getLevel(xp)-1,cur=LEVELS[l]||0,next=LEVELS[l+1]||(LEVELS[l]+1000);return{cur,next,pct:Math.min(100,Math.round((xp-cur)/(next-cur)*100))}}
+
+let CU=null,UD=null;
+
+onAuthStateChanged(auth,async user=>{
+  if(user){
+    CU=user;
+    const snap=await getDoc(doc(db,'users',user.uid));
+    if(snap.exists()){
+      UD=snap.data();
+      const today=new Date().toDateString();
+      if(UD.lastLogin!==today){
+        await updateDoc(doc(db,'users',user.uid),{xp:increment(XP_LOGIN),lastLogin:today});
+        UD.xp=(UD.xp||0)+XP_LOGIN;
+        showXPPopup('+10 XP — Connexion du jour ! 🎉');
+      }
+    }
+    document.getElementById('authOverlay').style.display='none';
+    document.getElementById('mainApp').style.display='flex';
+    updateUI();buildYears();setupTabs();loadLB('global');
+  } else {
+    document.getElementById('authOverlay').style.display='flex';
+    document.getElementById('mainApp').style.display='none';
+    CU=null;UD=null;
+  }
+});
+
+function updateUI(){
+  if(!UD)return;
+  const xp=UD.xp||0,name=UD.name||'Étudiant',init=name.charAt(0).toUpperCase(),y=UD.year||1,lvl=getLevel(xp),prog=getLevelProg(xp);
+  document.getElementById('navAvatar').textContent=init;
+  document.getElementById('navName').textContent=name.split(' ')[0];
+  document.getElementById('navXP').textContent=xp+' XP';
+  document.getElementById('profileAvatar').textContent=init;
+  document.getElementById('profileName').textContent=name;
+  document.getElementById('profileYear').textContent=D[y]?.label||'';
+  document.getElementById('profileXP').textContent=xp;
+  document.getElementById('profileLevel').textContent='Niveau '+lvl;
+  document.getElementById('levelMin').textContent=prog.cur+' XP';
+  document.getElementById('levelMax').textContent=prog.next+' XP';
+  document.getElementById('levelFill').style.width=prog.pct+'%';
+}
+
+async function addXP(amount,reason){
+  if(!CU||!UD)return;
+  await updateDoc(doc(db,'users',CU.uid),{xp:increment(amount)});
+  UD.xp=(UD.xp||0)+amount;
+  updateUI();showXPPopup('+'+amount+' XP — '+reason);
+}
+
+async function loadLB(mode){
+  const list=document.getElementById('lbList');
+  list.innerHTML='<div class="lb-loading">Chargement...</div>';
+  try{
+    let q;
+    if(mode==='year'&&UD){q=query(collection(db,'users'),where('year','==',UD.year),orderBy('xp','desc'),limit(20));}
+    else{q=query(collection(db,'users'),orderBy('xp','desc'),limit(20));}
+    const snap=await getDocs(q);
+    list.innerHTML='';
+    if(snap.empty){list.innerHTML='<div class="lb-loading">Aucun étudiant encore 🎓</div>';return;}
+    let i=0;
+    snap.forEach(d=>{
+      const u=d.data(),isMe=CU&&d.id===CU.uid;
+      const rCls=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
+      const rIcon=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+      const el=document.createElement('div');
+      el.className='lb-item'+(isMe?' me':'');
+      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div><div class="lb-avatar">${(u.name||'?').charAt(0).toUpperCase()}</div><div class="lb-info"><div class="lb-name">${u.name||'Anonyme'}${isMe?' (moi)':''}</div><div class="lb-year-s">${D[u.year]?.label||''} · Niveau ${getLevel(u.xp||0)}</div></div><div class="lb-xp">${u.xp||0} XP</div>`;
+      list.appendChild(el);i++;
+    });
+  }catch(e){list.innerHTML='<div class="lb-loading">Erreur de chargement</div>';}
+}
+
+window.switchLB=(mode,btn)=>{document.querySelectorAll('.lb-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');loadLB(mode)};
+window.scrollToLB=()=>document.getElementById('lbSection').scrollIntoView({behavior:'smooth'});
+
+window.doLogin=async()=>{
+  const email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPass').value;
+  setErr('');
+  try{await signInWithEmailAndPassword(auth,email,pass);}
+  catch(e){setErr(frErr(e.code));}
+};
+
+window.doRegister=async()=>{
+  const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim();
+  const year=parseInt(document.getElementById('regYear').value),pass=document.getElementById('regPass').value;
+  setErr('');
+  if(!name||!email||!pass){setErr('Remplis tous les champs');return;}
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    await setDoc(doc(db,'users',cred.user.uid),{name,email,year,xp:0,lastLogin:'',createdAt:new Date().toISOString()});
+  }catch(e){setErr(frErr(e.code));}
+};
+
+window.doLogout=()=>signOut(auth);
+window.switchAuthTab=(tab)=>{
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',['login','register'][i]===tab));
+  document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');
+  document.getElementById('registerForm').classList.toggle('hidden',tab!=='register');
+  setErr('');
+};
+
+function setErr(m){document.getElementById('authErr').textContent=m;}
+function frErr(c){return({'auth/user-not-found':'Email introuvable','auth/wrong-password':'Mot de passe incorrect','auth/email-already-in-use':'Email déjà utilisé','auth/weak-password':'Mot de passe trop court','auth/invalid-email':'Email invalide','auth/invalid-credential':'Email ou mot de passe incorrect'})[c]||'Erreur : '+c;}
+
+function showXPPopup(msg){const p=document.getElementById('xpPopup');p.textContent=msg;p.classList.add('show');clearTimeout(p._t);p._t=setTimeout(()=>p.classList.remove('show'),3000);}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
+
+const D={1:{label:"1ère Année",modules:[{name:"Biologie Cellulaire",icon:"🔬",color:"blue",lessons:["Introduction à la cellule","Structure membranaire","Le noyau cellulaire","La mitose et méiose","Organites cellulaires","Communication cellulaire"]},{name:"Biochimie",icon:"⚗️",color:"cyan",lessons:["Acides aminés","Protéines & enzymes","Glucides","Lipides","Métabolisme énergétique","Biochimie nucléique"]},{name:"Biophysique",icon:"⚡",color:"red",lessons:["Électricité médicale","Ondes & acoustique","Optique médicale","Radioactivité","Biomécanique"]},{name:"Histologie",icon:"🧫",color:"green",lessons:["Tissus épithéliaux","Tissus conjonctifs","Tissus musculaires","Tissu nerveux","Tissu osseux"]},{name:"Embryologie",icon:"🧬",color:"blue",lessons:["Gamétogenèse","Fécondation","Segmentation","Gastrulation","Organogenèse"]},{name:"Anatomie I",icon:"🦴",color:"cyan",lessons:["Ostéologie générale","Le membre supérieur","Le membre inférieur","Le thorax","L'abdomen","Le pelvis"]}],qcm:[{module:"Biologie Cellulaire",count:58,ok:true},{module:"Biochimie",count:72,ok:true},{module:"Biophysique",count:44,ok:false},{module:"Histologie",count:51,ok:true}],exams:[{year:"2023",module:"Biologie Cellulaire",q:"40 QCM",session:"Juin"},{year:"2023",module:"Biochimie",q:"35 QCM",session:"Juin"},{year:"2022",module:"Anatomie I",q:"50 QCM",session:"Juin"},{year:"2022",module:"Histologie",q:"30 QCM",session:"Rattrapage"},{year:"2021",module:"Biophysique",q:"25 QCM",session:"Juin"}],driveLink:"#"},2:{label:"2ème Année",modules:[{name:"Physiologie",icon:"💓",color:"red",lessons:["Physiologie cardiaque","Physiologie rénale","Physiologie respiratoire","Système nerveux autonome","Physiologie digestive"]},{name:"Anatomie II",icon:"🫀",color:"blue",lessons:["Système cardiovasculaire","Système respiratoire","Système digestif","Système nerveux central","Système lymphatique"]},{name:"Pharmacologie",icon:"💊",color:"green",lessons:["Introduction pharmacologie","Pharmacocinétique","Pharmacodynamique","Antibiotiques","Analgésiques & anti-inflam."]},{name:"Microbiologie",icon:"🦠",color:"cyan",lessons:["Bactériologie générale","Virologie","Parasitologie","Mycologie","Antibiogramme"]},{name:"Pathologie Générale",icon:"🔍",color:"red",lessons:["Inflammation aiguë","Inflammation chronique","Néoplasies","Troubles circulatoires","Mort cellulaire & apoptose"]}],qcm:[{module:"Physiologie",count:65,ok:true},{module:"Pharmacologie",count:80,ok:true},{module:"Microbiologie",count:55,ok:true},{module:"Pathologie Générale",count:48,ok:false}],exams:[{year:"2023",module:"Physiologie",q:"45 QCM",session:"Juin"},{year:"2023",module:"Pharmacologie",q:"40 QCM",session:"Juin"},{year:"2022",module:"Microbiologie",q:"38 QCM",session:"Juin"},{year:"2021",module:"Pathologie Générale",q:"32 QCM",session:"Rattrapage"}],driveLink:"#"},3:{label:"3ème Année",modules:[{name:"Sémiologie Médicale",icon:"🩺",color:"blue",lessons:["Anamnèse & interrogatoire","Examen cardiovasculaire","Examen pulmonaire","Examen abdominal","Neurologie clinique","Examen ostéo-articulaire"]},{name:"Cardiologie",icon:"💓",color:"red",lessons:["ECG normal & pathologique","Insuffisance cardiaque","Coronaropathies","Troubles du rythme","Valvulopathies"]},{name:"Pneumologie",icon:"🫁",color:"cyan",lessons:["BPCO & Asthme","Pneumonies","Tuberculose pulmonaire","Cancer bronchique","Épanchements pleuraux"]},{name:"Gastro-entérologie",icon:"🩻",color:"green",lessons:["Ulcère gastroduodénal","Cirrhose hépatique","MICI (Crohn & RCH)","Cancers digestifs","Pancréatite"]},{name:"Neurologie",icon:"🧠",color:"blue",lessons:["AVC ischémique & hémorragique","Épilepsie","Sclérose en plaques","Maladie de Parkinson","Céphalées & migraines"]}],qcm:[{module:"Sémiologie",count:90,ok:true},{module:"Cardiologie",count:75,ok:true},{module:"Pneumologie",count:60,ok:true},{module:"Neurologie",count:68,ok:false}],exams:[{year:"2023",module:"Sémiologie",q:"50 QCM",session:"Juin"},{year:"2023",module:"Cardiologie",q:"42 QCM",session:"Juin"},{year:"2022",module:"Pneumologie",q:"38 QCM",session:"Juin"},{year:"2022",module:"Neurologie",q:"35 QCM",session:"Rattrapage"}],driveLink:"https://drive.google.com/drive/folders/1coBMUiI0stbz0BlmmZ3wwxlU33MrQzX5?usp=drive_link"},4:{label:"4ème Année",modules:[{name:"Chirurgie Générale",icon:"🔪",color:"red",lessons:["Appendicite aiguë","Hernie inguinale","Occlusion intestinale","Péritonite","Traumatismes abdominaux","Chirurgie thyroïdienne"]},{name:"Gynécologie-Obstétrique",icon:"🌸",color:"cyan",lessons:["Grossesse normale","Accouchement eutocique","Pathologies gynécologiques","Contraception","Complications grossesse"]},{name:"Pédiatrie",icon:"👶",color:"green",lessons:["Néonatologie","Croissance & développement","Pédiatrie infectieuse","Urgences pédiatriques","Malnutrition"]},{name:"Ophtalmologie",icon:"👁️",color:"blue",lessons:["Anatomie de l'œil","Pathologies cornéennes","Glaucome","Rétinopathie diabétique","Urgences oculaires"]},{name:"ORL",icon:"👂",color:"cyan",lessons:["Pathologies ORL courantes","Surdité & hypoacousie","Sinusites","Cancers ORL","Vertiges"]}],qcm:[{module:"Chirurgie Générale",count:85,ok:true},{module:"Gynécologie",count:70,ok:true},{module:"Pédiatrie",count:78,ok:true},{module:"ORL",count:42,ok:false}],exams:[{year:"2023",module:"Chirurgie Générale",q:"48 QCM",session:"Juin"},{year:"2022",module:"Gynécologie",q:"35 QCM",session:"Juin"},{year:"2022",module:"Pédiatrie",q:"40 QCM",session:"Juin"},{year:"2021",module:"Ophtalmologie",q:"28 QCM",session:"Juin"}],driveLink:"#"},5:{label:"5ème Année",modules:[{name:"Médecine Interne",icon:"🏥",color:"blue",lessons:["Maladies auto-immunes","Vascularites systémiques","Sarcoïdose","Amylose","Maladies de système"]},{name:"Infectiologie",icon:"🦠",color:"green",lessons:["VIH/SIDA","Hépatites virales B & C","Paludisme","Fièvres typhoïdes","Méningites infectieuses"]},{name:"Endocrinologie",icon:"⚖️",color:"cyan",lessons:["Diabète type 1 & 2","Dysthyroïdies","Pathologies surrénales","Hypophyse","Parathyroïdes"]},{name:"Rhumatologie",icon:"💪",color:"red",lessons:["Polyarthrite rhumatoïde","Spondylarthrite ankylosante","Goutte","Ostéoporose","Lupus érythémateux"]},{name:"Dermatologie",icon:"🌿",color:"green",lessons:["Dermatoses inflammatoires","Infections cutanées","Cancers cutanés","Acné & rosacée","Psoriasis & eczéma"]}],qcm:[{module:"Médecine Interne",count:55,ok:true},{module:"Infectiologie",count:68,ok:true},{module:"Endocrinologie",count:72,ok:true},{module:"Rhumatologie",count:48,ok:false}],exams:[{year:"2023",module:"Endocrinologie",q:"44 QCM",session:"Juin"},{year:"2022",module:"Infectiologie",q:"36 QCM",session:"Juin"},{year:"2021",module:"Rhumatologie",q:"30 QCM",session:"Rattrapage"},{year:"2021",module:"Médecine Interne",q:"38 QCM",session:"Juin"}],driveLink:"#"},6:{label:"6ème Année",modules:[{name:"Médecine d'Urgence",icon:"🚨",color:"red",lessons:["RCP & réanimation","Arrêt cardiaque","États de choc","Polytraumatisé","Intoxications aiguës","Urgences neurologiques"]},{name:"Anesthésie-Réanimation",icon:"😷",color:"blue",lessons:["Bases de l'anesthésie","Anesthésie générale","Anesthésie locorégionale","Monitorage patient","Période post-opératoire"]},{name:"Médecine Légale",icon:"⚖️",color:"cyan",lessons:["Thanatologie médico-légale","Traumatologie légale","Déontologie médicale","Responsabilité médicale","Certificats médicaux"]},{name:"Santé Publique",icon:"📊",color:"green",lessons:["Épidémiologie descriptive","Statistiques médicales","Médecine préventive","Système de santé algérien","Programmes nationaux"]},{name:"Stage Clinique Final",icon:"🏨",color:"blue",lessons:["Stages hospitaliers polyvalents","Gardes de nuit","Rotation dans les services","Présentation de cas","Mémoire de fin d'études"]}],qcm:[{module:"Médecine d'Urgence",count:95,ok:true},{module:"Anesthésie-Réa",count:60,ok:true},{module:"Médecine Légale",count:45,ok:false},{module:"Santé Publique",count:52,ok:true}],exams:[{year:"2023",module:"Médecine d'Urgence",q:"55 QCM",session:"Juin"},{year:"2022",module:"Anesthésie-Réa",q:"40 QCM",session:"Juin"},{year:"2021",module:"Santé Publique",q:"35 QCM",session:"Juin"},{year:"2021",module:"Médecine Légale",q:"30 QCM",session:"Rattrapage"}],driveLink:"#"}};
+
+let CY=null;
+function buildYears(){const g=document.getElementById('yearsGrid');g.innerHTML='';for(let y=1;y<=6;y++){const c=document.createElement('div');c.className='year-card afu d'+y;c.id='yc'+y;c.innerHTML=`<div class="year-num">${y}</div><div class="year-label">Année</div><div class="year-badge">${D[y].modules.length} modules</div>`;c.onclick=()=>selectYear(y);g.appendChild(c);}}
+function setupTabs(){document.querySelectorAll('.tab-btn').forEach(b=>{b.onclick=()=>{setTab(b.dataset.tab);closePanel();};});}
+function selectYear(y){if(CY===y)return;CY=y;document.querySelectorAll('.year-card').forEach(c=>c.classList.remove('active'));document.getElementById('yc'+y).classList.add('active');document.getElementById('emptyState').classList.add('hidden');document.getElementById('yearContent').classList.remove('hidden');setTab('cours');closePanel();render(y);toast(D[y].label+' chargée ✓');}
+function render(y){
+  const mg=document.getElementById('modulesGrid');document.getElementById('modulesLabel').textContent='Modules — '+D[y].label;mg.innerHTML='';
+  D[y].modules.forEach((m,i)=>{const c=document.createElement('div');c.className='module-card afu d'+(Math.min(i+1,6));c.innerHTML=`<div class="module-emoji ${m.color}">${m.icon}</div><div class="module-info"><h3>${m.name}</h3><span>${m.lessons.length} cours</span></div>`;c.onclick=()=>openLessons(m);mg.appendChild(c);});
+  const qg=document.getElementById('qcmGrid');qg.innerHTML='';
+  D[y].qcm.forEach((q,i)=>{const c=document.createElement('div');c.className='qcm-card afu d'+(Math.min(i+1,6));c.innerHTML=`<h4>🧩 ${q.module}</h4><p>QCM d'entraînement & annales corrigées</p><div class="qcm-meta"><span class="chip chip-red">${q.count} questions</span>${q.ok?'<span class="chip chip-green">Corrigé ✓</span>':'<span class="chip chip-cyan">En cours</span>'}</div>`;c.onclick=()=>{toast('Ouverture QCM — '+q.module);addXP(XP_QCM,'QCM complété 🧩');};qg.appendChild(c);});
+  const el=document.getElementById('examList');el.innerHTML='';
+  D[y].exams.forEach((e,i)=>{const d=document.createElement('div');d.className='exam-item afu d'+(Math.min(i+1,6));d.innerHTML=`<div><div class="exam-year">${e.year}</div><div class="exam-session">${e.session}</div></div><div class="exam-info"><h4>${e.module}</h4><span>${e.q}</span></div><button class="exam-dl">⬇ Télécharger</button>`;d.querySelector('.exam-dl').onclick=(ev)=>{ev.stopPropagation();toast('Téléchargement : '+e.module+' '+e.year);addXP(XP_EXAM,'Examen téléchargé 📄');};el.appendChild(d);});
+  const dr=document.getElementById('driveGrid'),link=D[y].driveLink,has=link&&link!=='#';
+  dr.innerHTML=`<div class="drive-box afu"><div class="drive-big-icon">☁️</div><h3>Drive Promo — ${D[y].label}</h3><p>Tous les fichiers partagés de ta promo :<br>cours PDF, fiches, vidéos, examens corrigés et plus.</p>${has?`<a class="drive-btn" href="${link}" target="_blank" rel="noopener"><span>📂</span> Ouvrir le Drive</a>`:`<a class="drive-btn disabled"><span>🔒</span> Lien bientôt disponible</a><div class="drive-coming">Le lien Google Drive sera ajouté prochainement</div>`}</div>`;
+}
+function openLessons(m){document.getElementById('lessonsPanelTitle').textContent=m.icon+'  '+m.name;const ll=document.getElementById('lessonsList');ll.innerHTML='';m.lessons.forEach((l,i)=>{const d=document.createElement('div');d.className='lesson-item';d.style.animationDelay=(i*.04)+'s';d.innerHTML=`<div class="lesson-num">${String(i+1).padStart(2,'0')}</div><div class="lesson-name">${l}</div><span class="chip chip-cyan">PDF</span>`;d.onclick=()=>toast('Ouverture : '+l);ll.appendChild(d);});const p=document.getElementById('lessonsPanel');p.classList.remove('hidden');setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),50);}
+window.closePanel=()=>document.getElementById('lessonsPanel').classList.add('hidden');
+function setTab(tab){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('hidden',p.dataset.pane!==tab));}
+</script>
+</body>
+</html>
