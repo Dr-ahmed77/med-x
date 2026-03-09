@@ -662,26 +662,26 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
       <div class="section-label">💬 Avis des Étudiants</div>
       <div class="avis-grid">
         <div class="avis-card afu">
-          <p class="avis-text">MEDX m'a vraiment changé la vie. Je révise mes cours d'immunologie en 30 minutes grâce aux QCM bien structurés.</p>
+          <p class="avis-text">Enfin une plateforme adaptée à notre fac ! Les cours sont bien classés par module et les QCM m'ont vraiment aidé à préparer mes partiels de 2ème année.</p>
           <div class="avis-author">
             <div class="avis-avatar">S</div>
-            <div><div class="avis-name">Sara B.</div><div class="avis-year">2ème Année · Oran</div></div>
+            <div><div class="avis-name">Sarah K.</div><div class="avis-year">2ème Année · Médecine Oran</div></div>
             <div class="avis-stars">★★★★★</div>
           </div>
         </div>
         <div class="avis-card afu">
-          <p class="avis-text">Les examens passés sont organisés par promo et par module, c'est exactement ce qu'il me fallait avant les partiels.</p>
+          <p class="avis-text">J'utilise MEDX tous les jours avant les examens. Avoir les sujets des années précédentes par promo et par module, c'est un énorme gain de temps.</p>
           <div class="avis-author">
-            <div class="avis-avatar" style="background:linear-gradient(135deg,#8b5cf6,#ec4899)">K</div>
-            <div><div class="avis-name">Karim M.</div><div class="avis-year">4ème Année · Oran</div></div>
+            <div class="avis-avatar" style="background:linear-gradient(135deg,#8b5cf6,#ec4899)">A</div>
+            <div><div class="avis-name">Amine T.</div><div class="avis-year">4ème Année · Médecine Oran</div></div>
             <div class="avis-stars">★★★★★</div>
           </div>
         </div>
         <div class="avis-card afu">
-          <p class="avis-text">Les salles d'étude vocales sont une super idée ! On peut réviser ensemble même à distance. Bravo à l'équipe.</p>
+          <p class="avis-text">Les salles d'étude en direct sont vraiment utiles pendant la période des révisions. On s'organise entre étudiants du même module facilement.</p>
           <div class="avis-author">
             <div class="avis-avatar" style="background:linear-gradient(135deg,var(--green),var(--accent))">N</div>
-            <div><div class="avis-name">Nadia R.</div><div class="avis-year">3ème Année · Oran</div></div>
+            <div><div class="avis-name">Nour B.</div><div class="avis-year">3ème Année · Médecine Oran</div></div>
             <div class="avis-stars">★★★★★</div>
           </div>
         </div>
@@ -707,7 +707,7 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
         <div>
           <div class="footer-title">Contact</div>
           <div class="footer-links">
-            <a href="mailto:contact@medx-oran.dz">📧 Email</a>
+            <a href="/cdn-cgi/l/email-protection#1a7975746e7b796e5a777f7e623775687b74347e60">📧 Email</a>
             <a href="#">💬 Telegram</a>
             <a href="#">📱 Instagram</a>
           </div>
@@ -757,7 +757,7 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 <div id="toast"></div>
 <div class="xp-popup" id="xpPopup"></div>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import{getFirestore,doc,setDoc,getDoc,updateDoc,collection,query,orderBy,limit,getDocs,where,increment,addDoc,deleteDoc,onSnapshot,deleteField}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -1100,17 +1100,25 @@ async function loadLB(mode){
   const list=document.getElementById('lbList');
   list.innerHTML='<div class="lb-loading">Chargement...</div>';
   try{
-    let q=mode==='year'&&UD?query(collection(db,'users'),where('year','==',UD.year),orderBy('xp','desc'),limit(20)):query(collection(db,'users'),orderBy('xp','desc'),limit(20));
-    const snap=await getDocs(q);list.innerHTML='';
-    if(snap.empty){list.innerHTML='<div class="lb-loading">Aucun étudiant encore 🎓</div>';return;}
-    let i=0;
-    snap.forEach(d=>{
-      const u=d.data(),isMe=CU&&d.id===CU.uid;
+    let snap;
+    if(mode==='year'&&UD){
+      snap=await getDocs(query(collection(db,'users'),where('year','==',UD.year),limit(20)));
+    } else {
+      snap=await getDocs(query(collection(db,'users'),limit(50)));
+    }
+    let users=[];
+    snap.forEach(d=>users.push({id:d.id,...d.data()}));
+    users.sort((a,b)=>(b.xp||0)-(a.xp||0));
+    if(mode==='year'&&UD)users=users.slice(0,20);
+    else users=users.slice(0,20);
+    list.innerHTML='';
+    if(users.length===0){list.innerHTML='<div class="lb-loading">Aucun étudiant encore 🎓</div>';return;}
+    users.forEach((u,i)=>{
+      const isMe=CU&&u.id===CU.uid;
       const rCls=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
       const rIcon=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
       const el=document.createElement('div');el.className='lb-item'+(isMe?' me':'');
       const avatarHtml=u.photoURL?`<img src="${u.photoURL}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:(u.name||'?').charAt(0).toUpperCase();
-      // Online: last seen within 5 minutes
       const isOnline=u.lastSeen&&(Date.now()-u.lastSeen)<5*60*1000;
       el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div>
         <div class="lb-avatar-wrap">
@@ -1122,9 +1130,9 @@ async function loadLB(mode){
           <div class="lb-year-s">${YL[u.year]||''} · Niveau ${getLevel(u.xp||0)}</div>
         </div>
         <div class="lb-xp">${u.xp||0} XP</div>`;
-      list.appendChild(el);i++;
+      list.appendChild(el);
     });
-  }catch(e){list.innerHTML='<div class="lb-loading">Erreur de chargement</div>';}
+  }catch(e){list.innerHTML='<div class="lb-loading">Erreur: '+e.message+'</div>';}
 }
 window.switchLB=(mode,btn)=>{document.querySelectorAll('.lb-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');loadLB(mode);};
 window.scrollToLB=()=>document.getElementById('lbSection').scrollIntoView({behavior:'smooth'});
@@ -1554,10 +1562,4 @@ window.uploadAvatar=async(input)=>{
       UD.photoURL=data.secure_url;
       updateUI();
       toast('Photo mise à jour ✓ 🎉');
-    } else {toast('Erreur upload: '+JSON.stringify(data));}
-  }catch(e){toast('Erreur: '+e.message);}
-  finally{profAv.classList.remove('avatar-uploading');input.value='';}
-};
-</script>
-</body>
-</html>
+    } else {toast('Erreur upload: '+JSON.stringify(
