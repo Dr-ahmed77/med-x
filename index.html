@@ -190,14 +190,22 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 .lb-tab{padding:6px 14px;border-radius:var(--rs);font-size:.78rem;font-weight:500;color:var(--muted);transition:all var(--t);cursor:pointer}
 .lb-tab.active{background:var(--gold);color:#000}
 .lb-tab:hover:not(.active){color:var(--text)}
-.lb-list{display:flex;flex-direction:column;gap:.5rem}
-.lb-item{display:flex;align-items:center;gap:12px;padding:.8rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r)}
+.lb-list{display:flex;flex-direction:column;gap:.6rem}
+.lb-item{display:flex;align-items:center;gap:14px;padding:1rem 1.2rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);transition:all var(--t)}
+.lb-item:hover{border-color:var(--border2);background:var(--surface3)}
 .lb-item.me{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.05)}
-.lb-rank{font-family:var(--ff);font-size:1rem;font-weight:800;min-width:32px;text-align:center}
-.r1{color:#FFD700}.r2{color:#C0C0C0}.r3{color:#CD7F32}.rn{color:var(--muted)}
-.lb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#fff;flex-shrink:0}
-.lb-info{flex:1}.lb-name{font-size:.85rem;font-weight:600}.lb-year-s{font-size:.68rem;color:var(--muted)}
-.lb-xp{font-family:var(--ff);font-size:.9rem;font-weight:800;color:var(--gold)}
+.lb-rank{font-family:var(--ff);font-size:1.2rem;font-weight:800;min-width:36px;text-align:center}
+.r1{color:#FFD700}.r2{color:#C0C0C0}.r3{color:#CD7F32}.rn{color:var(--muted);font-size:.95rem}
+.lb-avatar-wrap{position:relative;flex-shrink:0}
+.lb-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;overflow:hidden;border:2px solid transparent}
+.lb-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.lb-online-dot{position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;border:2px solid var(--surface2)}
+.lb-online-dot.online{background:var(--green);box-shadow:0 0 6px var(--green)}
+.lb-online-dot.offline{background:var(--muted)}
+.lb-info{flex:1}
+.lb-name{font-size:.9rem;font-weight:700}
+.lb-year-s{font-size:.72rem;color:var(--muted);margin-top:2px}
+.lb-xp{font-family:var(--ff);font-size:1.05rem;font-weight:800;color:var(--gold)}
 .lb-loading{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
 
 /* ROOMS */
@@ -524,7 +532,13 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
             <div class="avatar-overlay">📷<br>Changer</div>
           </div>
           <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
-          <div><div class="profile-name" id="profileName">...</div><div class="profile-year-lbl" id="profileYear">...</div></div>
+          <div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <div class="profile-name" id="profileName">...</div>
+              <button onclick="openEditName()" title="Modifier le nom" style="background:var(--surface3);border:1px solid var(--border2);border-radius:6px;padding:2px 7px;font-size:.7rem;color:var(--muted);transition:all var(--t)" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">✏️</button>
+            </div>
+            <div class="profile-year-lbl" id="profileYear">...</div>
+          </div>
         </div>
         <div style="display:flex;align-items:flex-end;justify-content:space-between">
           <div><div class="xp-total" id="profileXP">0</div><div class="xp-label">XP Total</div></div>
@@ -609,6 +623,20 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
   <footer class="footer"><div class="container"><p>MED<span class="x">X</span> · Faculté de Médecine d'Oran · 2024–2025</p></div></footer>
 </div>
 
+<!-- EDIT NAME MODAL -->
+<div id="editNameModal" class="hidden" style="position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Modifier le nom</div>
+    <div class="modal-form">
+      <input class="form-input" type="text" id="newNameInput" placeholder="Nouveau nom...">
+      <div class="modal-actions">
+        <button class="btn-auth" style="margin-top:0" onclick="saveName()">💾 Sauvegarder</button>
+        <button class="btn-ghost" onclick="document.getElementById('editNameModal').classList.add('hidden')">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CREATE ROOM MODAL -->
 <div id="createRoomModal" class="hidden">
   <div class="modal-box">
@@ -666,7 +694,7 @@ onAuthStateChanged(auth,async user=>{
     document.getElementById('mainApp').style.display='flex';
     if(isAdmin)document.getElementById('adminNavBtn').classList.remove('hidden');
     updateUI();buildYears();setupTabs();loadLB('global');loadStudentCount();
-    loadDriveLinks();startListeners();
+    loadDriveLinks();startListeners();startPresence();
   } else {
     document.getElementById('authOverlay').style.display='flex';
     document.getElementById('mainApp').style.display='none';
@@ -694,7 +722,9 @@ function updateUI(){
   document.getElementById('profileLevel').textContent='Niveau '+lvl;
   document.getElementById('levelMin').textContent=prog.cur+' XP';
   document.getElementById('levelMax').textContent=prog.next+' XP';
-  document.getElementById('levelFill').style.width=prog.pct+'%';
+  const fill=document.getElementById('levelFill');
+  fill.style.width='0%';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{fill.style.width=prog.pct+'%';}));
 }
 
 async function addXP(amount,reason){
@@ -965,7 +995,18 @@ async function loadLB(mode){
       const rIcon=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
       const el=document.createElement('div');el.className='lb-item'+(isMe?' me':'');
       const avatarHtml=u.photoURL?`<img src="${u.photoURL}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:(u.name||'?').charAt(0).toUpperCase();
-      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div><div class="lb-avatar">${avatarHtml}</div><div class="lb-info"><div class="lb-name">${u.name||'Anonyme'}${isMe?' (moi)':''}</div><div class="lb-year-s">${YL[u.year]||''} · Niveau ${getLevel(u.xp||0)}</div></div><div class="lb-xp">${u.xp||0} XP</div>`;
+      // Online: last seen within 5 minutes
+      const isOnline=u.lastSeen&&(Date.now()-u.lastSeen)<5*60*1000;
+      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div>
+        <div class="lb-avatar-wrap">
+          <div class="lb-avatar">${avatarHtml}</div>
+          <div class="lb-online-dot ${isOnline?'online':'offline'}"></div>
+        </div>
+        <div class="lb-info">
+          <div class="lb-name">${u.name||'Anonyme'}${isMe?' <span style="font-size:.68rem;color:var(--gold);font-weight:500">(moi)</span>':''}</div>
+          <div class="lb-year-s">${YL[u.year]||''} · Niveau ${getLevel(u.xp||0)}</div>
+        </div>
+        <div class="lb-xp">${u.xp||0} XP</div>`;
       list.appendChild(el);i++;
     });
   }catch(e){list.innerHTML='<div class="lb-loading">Erreur de chargement</div>';}
@@ -1094,7 +1135,15 @@ function setTab(tab){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('hidden',p.dataset.pane!==tab));
 }
-function setupTabs(){document.querySelectorAll('.tab-btn').forEach(b=>{b.onclick=()=>{setTab(b.dataset.tab);closePanel();};});}
+function setupTabs(){
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    b.onclick=()=>{
+      setTab(b.dataset.tab);
+      closePanel();
+      if(b.dataset.tab==='rooms')startRoomsListener();
+    };
+  });
+}
 
 // ── AUTH ACTIONS ──
 window.doLogin=async()=>{
@@ -1120,7 +1169,34 @@ function frErr(c){return({'auth/user-not-found':'Email introuvable','auth/wrong-
 
 function showXPPopup(msg){const p=document.getElementById('xpPopup');p.textContent=msg;p.classList.add('show');clearTimeout(p._t);p._t=setTimeout(()=>p.classList.remove('show'),3000);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
-// ── ROOMS ──
+// ── EDIT NAME ──
+window.openEditName=()=>{
+  document.getElementById('newNameInput').value=UD.name||'';
+  document.getElementById('editNameModal').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('newNameInput').focus(),100);
+};
+
+window.saveName=async()=>{
+  const name=document.getElementById('newNameInput').value.trim();
+  if(!name){toast('Nom invalide');return;}
+  try{
+    await updateDoc(doc(db,'users',CU.uid),{name});
+    UD.name=name;updateUI();
+    document.getElementById('editNameModal').classList.add('hidden');
+    toast('Nom mis à jour ✓');
+  }catch(e){toast('Erreur: '+e.message);}
+};
+
+// ── ONLINE PRESENCE ──
+function startPresence(){
+  if(!CU)return;
+  const ref=doc(db,'users',CU.uid);
+  const tick=()=>updateDoc(ref,{lastSeen:Date.now()}).catch(()=>{});
+  tick();
+  setInterval(tick,60000); // every 60s
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
+}
+
 const AGORA_APP_ID='f19452a586d7415f9205fdef9209d8f8';
 let agoraClient=null,localAudioTrack=null,currentRoomId=null,micOn=true;
 let roomsListener=null,chatListener=null;
@@ -1316,18 +1392,6 @@ function renderRoomsGrid(rooms){
     grid.appendChild(card);
   });
 }
-
-// Start rooms listener when rooms tab is clicked
-const origSetupTabs=setupTabs;
-function setupTabs(){
-  document.querySelectorAll('.tab-btn').forEach(b=>{
-    b.onclick=()=>{
-      setTab(b.dataset.tab);closePanel();
-      if(b.dataset.tab==='rooms')startRoomsListener();
-    };
-  });
-}
-
 
 // ── AVATAR UPLOAD ──
 const CLOUDINARY_CLOUD='dfbsprbwy';
