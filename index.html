@@ -49,7 +49,8 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 .xp-badge{display:flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid rgba(245,158,11,.25);border-radius:100px;padding:4px 12px;cursor:pointer}
 .xp-val{font-family:var(--ff);font-size:.8rem;font-weight:700;color:var(--gold)}
 .user-btn{display:flex;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border2);border-radius:100px;padding:5px 12px 5px 5px;cursor:pointer}
-.user-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff}
+.user-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;overflow:hidden}
+.user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .user-name{font-size:.78rem;font-weight:500;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .logout-btn{font-size:.72rem;color:var(--muted);padding:4px 8px;border-radius:var(--rs);transition:color var(--t)}
 .logout-btn:hover{color:var(--red)}
@@ -68,7 +69,11 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 .profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.4rem}
 .profile-card h3{font-family:var(--ff);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
 .profile-top{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
-.profile-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;flex-shrink:0}
+.profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;flex-shrink:0;position:relative;cursor:pointer;overflow:hidden}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.avatar-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;border-radius:50%;font-size:.65rem;color:#fff;font-weight:600;text-align:center;line-height:1.2}
+.profile-avatar:hover .avatar-overlay{opacity:1}
+.avatar-uploading{opacity:.5;pointer-events:none}
 .profile-name{font-family:var(--ff);font-size:1rem;font-weight:700}
 .profile-year-lbl{font-size:.72rem;color:var(--muted);margin-top:2px}
 .xp-total{font-family:var(--ff);font-size:2rem;font-weight:800;color:var(--gold);line-height:1}
@@ -456,7 +461,11 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
       <div class="profile-card">
         <h3>Mon Profil</h3>
         <div class="profile-top">
-          <div class="profile-avatar" id="profileAvatar">?</div>
+          <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('avatarInput').click()" title="Changer la photo">
+            <span id="profileAvatarInitial">?</span>
+            <div class="avatar-overlay">📷<br>Changer</div>
+          </div>
+          <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
           <div><div class="profile-name" id="profileName">...</div><div class="profile-year-lbl" id="profileYear">...</div></div>
         </div>
         <div style="display:flex;align-items:flex-end;justify-content:space-between">
@@ -582,10 +591,17 @@ onAuthStateChanged(auth,async user=>{
 function updateUI(){
   if(!UD)return;
   const xp=UD.xp||0,name=UD.name||'Étudiant',init=name.charAt(0).toUpperCase(),y=parseInt(UD.year)||1,lvl=getLevel(xp),prog=getLevelProg(xp);
-  document.getElementById('navAvatar').textContent=init;
+  // nav avatar
+  const navAv=document.getElementById('navAvatar');
+  if(UD.photoURL){navAv.innerHTML=`<img src="${UD.photoURL}" alt="avatar">`;}
+  else{navAv.textContent=init;}
   document.getElementById('navName').textContent=name.split(' ')[0];
   document.getElementById('navXP').textContent=xp+' XP';
-  document.getElementById('profileAvatar').textContent=init;
+  // profile avatar
+  const profAv=document.getElementById('profileAvatar');
+  const profInit=document.getElementById('profileAvatarInitial');
+  if(UD.photoURL){profInit.innerHTML=`<img src="${UD.photoURL}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;position:absolute;inset:0">`;}
+  else{profInit.textContent=init;}
   document.getElementById('profileName').textContent=name;
   document.getElementById('profileYear').textContent=YL[y]||'';
   document.getElementById('profileXP').textContent=xp;
@@ -862,7 +878,8 @@ async function loadLB(mode){
       const rCls=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
       const rIcon=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
       const el=document.createElement('div');el.className='lb-item'+(isMe?' me':'');
-      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div><div class="lb-avatar">${(u.name||'?').charAt(0).toUpperCase()}</div><div class="lb-info"><div class="lb-name">${u.name||'Anonyme'}${isMe?' (moi)':''}</div><div class="lb-year-s">${YL[u.year]||''} · Niveau ${getLevel(u.xp||0)}</div></div><div class="lb-xp">${u.xp||0} XP</div>`;
+      const avatarHtml=u.photoURL?`<img src="${u.photoURL}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:(u.name||'?').charAt(0).toUpperCase();
+      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div><div class="lb-avatar">${avatarHtml}</div><div class="lb-info"><div class="lb-name">${u.name||'Anonyme'}${isMe?' (moi)':''}</div><div class="lb-year-s">${YL[u.year]||''} · Niveau ${getLevel(u.xp||0)}</div></div><div class="lb-xp">${u.xp||0} XP</div>`;
       list.appendChild(el);i++;
     });
   }catch(e){list.innerHTML='<div class="lb-loading">Erreur de chargement</div>';}
@@ -1018,6 +1035,34 @@ function frErr(c){return({'auth/user-not-found':'Email introuvable','auth/wrong-
 function showXPPopup(msg){const p=document.getElementById('xpPopup');p.textContent=msg;p.classList.add('show');clearTimeout(p._t);p._t=setTimeout(()=>p.classList.remove('show'),3000);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
 window.addXP=addXP;
+
+// ── AVATAR UPLOAD ──
+const CLOUDINARY_CLOUD='dfbsprbwy';
+const CLOUDINARY_PRESET='medx_avatars';
+
+window.uploadAvatar=async(input)=>{
+  if(!input.files||!input.files[0])return;
+  const file=input.files[0];
+  if(file.size>5*1024*1024){toast('Image trop grande (max 5MB)');return;}
+  const profAv=document.getElementById('profileAvatar');
+  profAv.classList.add('avatar-uploading');
+  toast('Envoi en cours...');
+  try{
+    const fd=new FormData();
+    fd.append('file',file);
+    fd.append('upload_preset',CLOUDINARY_PRESET);
+    fd.append('folder','medx_avatars');
+    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,{method:'POST',body:fd});
+    const data=await res.json();
+    if(data.secure_url){
+      await updateDoc(doc(db,'users',CU.uid),{photoURL:data.secure_url});
+      UD.photoURL=data.secure_url;
+      updateUI();
+      toast('Photo mise à jour ✓ 🎉');
+    } else {toast('Erreur upload: '+JSON.stringify(data));}
+  }catch(e){toast('Erreur: '+e.message);}
+  finally{profAv.classList.remove('avatar-uploading');input.value='';}
+};
 </script>
 </body>
 </html>
