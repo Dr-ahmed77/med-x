@@ -490,6 +490,7 @@ async function addXP(amount,reason){
 function loadLessonsRealtime(){
   onSnapshot(collection(db,'lessons'),snap=>{
     allLessons=snap.docs.map(d=>({id:d.id,...d.data()}));
+    buildYears();
     if(CY)renderYear(CY);
     updateStats();
     if(isAdmin)renderAdminList();
