@@ -662,7 +662,7 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import{getFirestore,doc,setDoc,getDoc,updateDoc,collection,query,orderBy,limit,getDocs,where,increment,addDoc,deleteDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getFirestore,doc,setDoc,getDoc,updateDoc,collection,query,orderBy,limit,getDocs,where,increment,addDoc,deleteDoc,onSnapshot,deleteField}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app=initializeApp({apiKey:"AIzaSyB7p3phF_ex1EY5bj3Wu3R9-CtOJnqHieA",authDomain:"medx-d67fb.firebaseapp.com",projectId:"medx-d67fb",storageBucket:"medx-d67fb.firebasestorage.app",messagingSenderId:"698164411256",appId:"1:698164411256:web:091edcae6c58749688a68d"});
 const auth=getAuth(app),db=getFirestore(app);
@@ -1191,10 +1191,19 @@ window.saveName=async()=>{
 function startPresence(){
   if(!CU)return;
   const ref=doc(db,'users',CU.uid);
-  const tick=()=>updateDoc(ref,{lastSeen:Date.now()}).catch(()=>{});
-  tick();
-  setInterval(tick,60000); // every 60s
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
+  const setOnline=()=>updateDoc(ref,{lastSeen:Date.now()}).catch(()=>{});
+  const setOffline=()=>{
+    // Use sendBeacon for reliability on page close
+    const url=`https://firestore.googleapis.com/v1/projects/medx-d67fb/databases/(default)/documents/users/${CU.uid}?updateMask.fieldPaths=lastSeen`;
+    navigator.sendBeacon&&navigator.sendBeacon(url);
+    updateDoc(ref,{lastSeen:0}).catch(()=>{});
+  };
+  setOnline();
+  setInterval(setOnline,60000);
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden)setOffline();else setOnline();
+  });
+  window.addEventListener('beforeunload',setOffline);
 }
 
 const AGORA_APP_ID='f19452a586d7415f9205fdef9209d8f8';
@@ -1273,24 +1282,24 @@ async function leaveRoom(){
   try{
     if(localAudioTrack){localAudioTrack.stop();localAudioTrack.close();}
     if(agoraClient){await agoraClient.leave();}
-    // Remove member from room
-    await updateDoc(doc(db,'rooms',roomId),{[`members.${CU.uid}`]:null});
-    // Check if room is empty → delete it
+  }catch(e){}
+  try{
+    await updateDoc(doc(db,'rooms',roomId),{[`members.${CU.uid}`]:deleteField()});
     const snap=await getDoc(doc(db,'rooms',roomId));
     if(snap.exists()){
       const members=snap.data().members||{};
-      const active=Object.values(members).filter(Boolean);
-      if(active.length===0){
-        await deleteDoc(doc(db,'rooms',roomId));
-      }
+      if(Object.keys(members).length===0) await deleteDoc(doc(db,'rooms',roomId));
     }
   }catch(e){}
   if(chatListener){chatListener();chatListener=null;}
+  if(membersListener){membersListener();membersListener=null;}
   localAudioTrack=null;agoraClient=null;currentRoomId=null;
   document.getElementById('activeRoomBox').innerHTML='';
   toast('Salle quittée');
 }
 window.leaveRoom=leaveRoom;
+
+let membersListener=null;
 
 function renderActiveRoom(roomId,roomName,module,year){
   const box=document.getElementById('activeRoomBox');
@@ -1320,8 +1329,10 @@ function renderActiveRoom(roomId,roomName,module,year){
       </div>
     </div>
   </div>`;
-  // Load members from Firestore
-  getDoc(doc(db,'rooms',roomId)).then(snap=>{
+
+  // Realtime members listener
+  if(membersListener)membersListener();
+  membersListener=onSnapshot(doc(db,'rooms',roomId),snap=>{
     if(!snap.exists())return;
     const members=snap.data().members||{};
     const ml=document.getElementById('membersList');
