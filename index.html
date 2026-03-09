@@ -215,7 +215,32 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 .lb-xp{font-family:var(--ff);font-size:1.05rem;font-weight:800;color:var(--gold)}
 .lb-loading{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
 
-/* ROOMS */
+/* AVIS */
+.avis-section{padding:3rem 0;border-top:1px solid var(--border)}
+.avis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:1.5rem}
+.avis-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem 1.6rem;position:relative;transition:all var(--t)}
+.avis-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.avis-card::before{content:'"';position:absolute;top:.6rem;left:1.1rem;font-size:3.5rem;font-family:Georgia,serif;color:var(--accent);opacity:.25;line-height:1}
+.avis-text{font-size:.88rem;color:var(--text2);line-height:1.7;margin-bottom:1rem;padding-top:.5rem}
+.avis-author{display:flex;align-items:center;gap:.6rem}
+.avis-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff}
+.avis-name{font-size:.78rem;font-weight:600;color:var(--text)}
+.avis-year{font-size:.68rem;color:var(--muted)}
+.avis-stars{font-size:.75rem;color:var(--gold);margin-left:auto}
+
+/* FOOTER */
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5rem 0 1.5rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
+@media(max-width:640px){.footer-grid{grid-template-columns:1fr}}
+.footer-brand .nav-logo{font-size:1.4rem;margin-bottom:.5rem}
+.footer-desc{font-size:.78rem;color:var(--muted);line-height:1.6;max-width:240px;margin-top:.4rem}
+.footer-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.8rem}
+.footer-links{display:flex;flex-direction:column;gap:.5rem}
+.footer-links a{font-size:.82rem;color:var(--text2);transition:color var(--t)}
+.footer-links a:hover{color:var(--accent)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:1.2rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.footer-copy{font-size:.72rem;color:var(--muted)}
+.footer-badge{font-size:.68rem;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:3px 10px}
 .rooms-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
 .btn-create-room{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--blue),var(--accent));color:#fff;padding:9px 18px;border-radius:var(--rs);font-size:.85rem;font-weight:600;transition:all var(--t)}
 .btn-create-room:hover{opacity:.9;transform:translateY(-1px)}
@@ -631,7 +656,69 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
     </div>
   </main>
 
-  <footer class="footer"><div class="container"><p>MED<span class="x">X</span> · Faculté de Médecine d'Oran · 2024–2025</p></div></footer>
+  <!-- AVIS -->
+  <section class="avis-section">
+    <div class="container">
+      <div class="section-label">💬 Avis des Étudiants</div>
+      <div class="avis-grid">
+        <div class="avis-card afu">
+          <p class="avis-text">MEDX m'a vraiment changé la vie. Je révise mes cours d'immunologie en 30 minutes grâce aux QCM bien structurés.</p>
+          <div class="avis-author">
+            <div class="avis-avatar">S</div>
+            <div><div class="avis-name">Sara B.</div><div class="avis-year">2ème Année · Oran</div></div>
+            <div class="avis-stars">★★★★★</div>
+          </div>
+        </div>
+        <div class="avis-card afu">
+          <p class="avis-text">Les examens passés sont organisés par promo et par module, c'est exactement ce qu'il me fallait avant les partiels.</p>
+          <div class="avis-author">
+            <div class="avis-avatar" style="background:linear-gradient(135deg,#8b5cf6,#ec4899)">K</div>
+            <div><div class="avis-name">Karim M.</div><div class="avis-year">4ème Année · Oran</div></div>
+            <div class="avis-stars">★★★★★</div>
+          </div>
+        </div>
+        <div class="avis-card afu">
+          <p class="avis-text">Les salles d'étude vocales sont une super idée ! On peut réviser ensemble même à distance. Bravo à l'équipe.</p>
+          <div class="avis-author">
+            <div class="avis-avatar" style="background:linear-gradient(135deg,var(--green),var(--accent))">N</div>
+            <div><div class="avis-name">Nadia R.</div><div class="avis-year">3ème Année · Oran</div></div>
+            <div class="avis-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo">MED<span class="x">X</span></div>
+          <p class="footer-desc">Plateforme numérique de révision médicale pour les étudiants de la Faculté de Médecine d'Oran.</p>
+        </div>
+        <div>
+          <div class="footer-title">Navigation</div>
+          <div class="footer-links">
+            <a href="#" onclick="document.querySelector('.years-grid').scrollIntoView({behavior:'smooth'})">📚 Cours</a>
+            <a href="#" onclick="document.getElementById('lbSection').scrollIntoView({behavior:'smooth'})">🏆 Classement</a>
+            <a href="#" onclick="openAdmin&&isAdmin&&openAdmin()">⚙️ Admin</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-title">Contact</div>
+          <div class="footer-links">
+            <a href="mailto:contact@medx-oran.dz">📧 Email</a>
+            <a href="#">💬 Telegram</a>
+            <a href="#">📱 Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025–2026 MED<span class="x">X</span> · Faculté de Médecine d'Oran</span>
+        <span class="footer-badge">⚡ Powered by Firebase</span>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <!-- EDIT NAME MODAL -->
