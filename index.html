@@ -6,411 +6,426 @@
 <title>MEDX — Faculté de Médecine d'Oran</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0e1a;--surface:#111827;--surface2:#1a2235;--surface3:#212d44;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8edf5;--text2:#a8b4cc;--muted:#6b7a99;--blue:#3b82f6;--blue-dim:rgba(59,130,246,0.12);--accent:#00e5ff;--accent-dim:rgba(0,229,255,0.08);--red:#ff4d6d;--red-dim:rgba(255,77,109,0.10);--green:#10b981;--green-dim:rgba(16,185,129,0.10);--gold:#f59e0b;--gold-dim:rgba(245,158,11,0.12);--r:12px;--rl:16px;--rs:8px;--shadow:0 4px 24px rgba(0,0,0,0.35);--shadow-lg:0 12px 48px rgba(0,0,0,0.5);--t:0.22s ease;--ff:'Syne',sans-serif;--fb:'DM Sans',sans-serif}
+:root{
+  --bg:#0a0e1a;--surface:#111827;--surface2:#1a2235;--surface3:#212d44;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#e8edf5;--text2:#a8b4cc;--muted:#6b7a99;
+  --blue:#3b82f6;--blue-dim:rgba(59,130,246,0.12);
+  --accent:#00e5ff;--accent-dim:rgba(0,229,255,0.08);
+  --red:#ff4d6d;--red-dim:rgba(255,77,109,0.10);
+  --green:#10b981;--green-dim:rgba(16,185,129,0.10);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,0.12);
+  --r:10px;--rs:7px;--shadow:0 4px 24px rgba(0,0,0,.4);
+  --t:0.2s ease;--ff:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+  --sidebar:240px;--topbar:52px;
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer;border:none;background:none}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--surface)}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
-.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.bg-glow::before{content:'';position:absolute;top:-300px;left:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(59,130,246,.10) 0%,transparent 65%)}
-.bg-glow::after{content:'';position:absolute;bottom:-250px;right:-150px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,229,255,.07) 0%,transparent 65%)}
-.page-wrapper{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
-.container{max-width:1140px;margin:0 auto;padding:0 1.5rem;width:100%}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:inherit}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px}
 .hidden{display:none!important}
 
-/* AUTH */
-#authOverlay{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:1rem}
-.auth-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:420px;box-shadow:var(--shadow-lg)}
-.auth-logo{font-family:var(--ff);font-size:2.2rem;font-weight:800;color:#fff;text-align:center;margin-bottom:.3rem}
-.auth-logo .x{color:var(--accent);text-shadow:0 0 22px rgba(0,229,255,.65)}
-.auth-sub{text-align:center;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2rem}
-.auth-tabs{display:flex;gap:4px;background:var(--surface2);border-radius:var(--r);padding:4px;margin-bottom:1.5rem}
-.auth-tab{flex:1;padding:8px;border-radius:var(--rs);font-size:.82rem;font-weight:500;color:var(--muted);transition:all var(--t);text-align:center;cursor:pointer}
+/* ── AUTH ── */
+#authOverlay{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:1rem}
+.auth-box{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:2.2rem 2rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.auth-logo{font-family:var(--ff);font-size:2rem;font-weight:800;color:#fff;text-align:center;margin-bottom:.2rem}
+.auth-logo .x{color:var(--accent);text-shadow:0 0 20px rgba(0,229,255,.6)}
+.auth-sub{text-align:center;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.8rem}
+.auth-tabs{display:flex;gap:3px;background:var(--surface2);border-radius:var(--r);padding:3px;margin-bottom:1.4rem}
+.auth-tab{flex:1;padding:7px;border-radius:var(--rs);font-size:.8rem;font-weight:500;color:var(--muted);transition:all var(--t);text-align:center;cursor:pointer}
 .auth-tab.active{background:var(--blue);color:#fff}
-.form-group{margin-bottom:1rem}
-.form-group label{display:block;font-size:.75rem;font-weight:500;color:var(--text2);margin-bottom:.4rem}
-.form-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:10px 14px;color:var(--text);font-family:var(--fb);font-size:.9rem;outline:none;transition:border-color var(--t)}
-.form-input:focus{border-color:var(--blue)}.form-input::placeholder{color:var(--muted)}
-.form-select{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:10px 14px;color:var(--text);font-family:var(--fb);font-size:.9rem;outline:none;cursor:pointer}
+.form-group{margin-bottom:.85rem}
+.form-group label{display:block;font-size:.72rem;font-weight:500;color:var(--text2);margin-bottom:.35rem}
+.form-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-family:var(--fb);font-size:.88rem;outline:none;transition:border-color var(--t)}
+.form-input:focus{border-color:var(--blue)}
+.form-input::placeholder{color:var(--muted)}
+.form-select{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-family:var(--fb);font-size:.88rem;outline:none;cursor:pointer}
 .form-select option{background:var(--surface2)}
-.btn-auth{width:100%;padding:11px;background:var(--blue);color:#fff;border-radius:var(--rs);font-size:.9rem;font-weight:600;margin-top:.5rem;transition:all var(--t)}
-.btn-auth:hover{background:#4f8ef7;transform:translateY(-1px)}
-.auth-err{color:var(--red);font-size:.75rem;margin-top:.8rem;text-align:center;min-height:18px}
+.btn-auth{width:100%;padding:10px;background:var(--blue);color:#fff;border-radius:var(--rs);font-size:.88rem;font-weight:600;margin-top:.4rem;transition:all var(--t)}
+.btn-auth:hover{background:#4f8ef7}
+.auth-err{color:var(--red);font-size:.72rem;margin-top:.7rem;text-align:center;min-height:16px}
 
-/* NAVBAR */
-.navbar{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.95);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;min-height:56px;padding:.5rem 0}
-.navbar .container{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:nowrap}
-.nav-logo{font-family:var(--ff);font-size:1.4rem;font-weight:800;letter-spacing:-1px;color:#fff;line-height:1;flex-shrink:0}
-.nav-logo .x{color:var(--accent);text-shadow:0 0 22px rgba(0,229,255,.65)}
-.nav-sub{font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
-.nav-right{display:flex;align-items:center;gap:.4rem;flex-wrap:nowrap;overflow:hidden}
-.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;flex-shrink:0}
-.xp-badge{display:flex;align-items:center;gap:4px;background:var(--gold-dim);border:1px solid rgba(245,158,11,.25);border-radius:100px;padding:4px 9px;cursor:pointer;flex-shrink:0}
-.xp-val{font-family:var(--ff);font-size:.75rem;font-weight:700;color:var(--gold)}
-.user-btn{display:flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border2);border-radius:100px;padding:4px 9px 4px 4px;cursor:pointer;flex-shrink:0;max-width:110px}
-.user-avatar{width:26px;height:26px;min-width:26px;border-radius:50% !important;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
-.user-avatar img{width:26px;height:26px;object-fit:cover;border-radius:50%;display:block}
-.user-name{font-size:.72rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.logout-btn{font-size:.68rem;color:var(--muted);padding:4px 6px;border-radius:var(--rs);transition:color var(--t);flex-shrink:0;white-space:nowrap}
-.logout-btn:hover{color:var(--red)}
-.admin-btn{display:flex;align-items:center;gap:4px;font-size:.7rem;font-weight:600;color:#000;background:var(--gold);padding:4px 9px;border-radius:100px;transition:all var(--t);flex-shrink:0;white-space:nowrap}
-.admin-btn:hover{background:#fbbf24}
-@media(max-width:480px){
-  .nav-sub{display:none}
-  .user-name{display:none}
-  .logout-btn{font-size:0;padding:4px}
-  .logout-btn::after{content:'🚪';font-size:.8rem}
-  .admin-btn span{display:none}
-}
+/* ── APP LAYOUT ── */
+#mainApp{display:none;height:100vh;flex-direction:column}
+.topbar{height:var(--topbar);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1rem;gap:.6rem;flex-shrink:0;z-index:50}
+.topbar-logo{font-family:var(--ff);font-size:1.2rem;font-weight:800;letter-spacing:-0.5px;color:#fff}
+.topbar-logo .x{color:var(--accent);text-shadow:0 0 18px rgba(0,229,255,.6)}
+.topbar-divider{width:1px;height:20px;background:var(--border2);flex-shrink:0}
+.topbar-page-title{font-size:.82rem;font-weight:600;color:var(--text2);flex:1}
+.topbar-right{display:flex;align-items:center;gap:.5rem;margin-left:auto}
+.xp-badge{display:flex;align-items:center;gap:4px;background:var(--gold-dim);border:1px solid rgba(245,158,11,.25);border-radius:100px;padding:3px 9px;cursor:pointer;font-family:var(--ff);font-size:.72rem;font-weight:700;color:var(--gold)}
+.topbar-avatar-wrap{display:flex;align-items:center;gap:6px;cursor:pointer}
+.topbar-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
+.topbar-avatar img{width:28px;height:28px;object-fit:cover;border-radius:50%;display:block}
+.topbar-username{font-size:.75rem;font-weight:500;color:var(--text2)}
+.btn-admin-top{font-size:.68rem;font-weight:700;color:#000;background:var(--gold);padding:4px 10px;border-radius:100px}
+.btn-logout{font-size:.7rem;color:var(--muted);padding:4px 8px;border-radius:var(--rs);transition:color var(--t)}
+.btn-logout:hover{color:var(--red)}
+.hamburger{display:none;flex-direction:column;gap:4px;padding:6px;cursor:pointer}
+.hamburger span{width:18px;height:2px;background:var(--text);border-radius:1px;transition:all .2s}
 
-/* HERO */
-.hero{padding:3rem 0 2rem;text-align:center}
-.hero-pill{display:inline-flex;align-items:center;gap:7px;background:var(--accent-dim);border:1px solid rgba(0,229,255,.2);color:var(--accent);font-size:.72rem;font-weight:500;padding:5px 14px;border-radius:100px;margin-bottom:1.2rem;letter-spacing:.04em;text-transform:uppercase}
-.hero h1{font-family:var(--ff);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:800;line-height:1.1;color:#fff;margin-bottom:.8rem}
-.gradient-text{background:linear-gradient(135deg,var(--blue) 0%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{color:var(--text2);font-size:.95rem;max-width:460px;margin:0 auto 2rem;line-height:1.75}
+.app-body{flex:1;display:flex;overflow:hidden}
 
-/* PROFILE */
-.profile-bar{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem}
-.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.4rem}
-.profile-card h3{font-family:var(--ff);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
-.profile-top{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
-.profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;flex-shrink:0;position:relative;cursor:pointer;overflow:hidden}
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease}
+.sidebar-user{padding:.9rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.7rem}
+.sidebar-user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0;cursor:pointer;position:relative}
+.sidebar-user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.sidebar-user-info{flex:1;overflow:hidden}
+.sidebar-user-name{font-size:.82rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-user-year{font-size:.68rem;color:var(--muted)}
+.sidebar-xp-bar{padding:.6rem 1rem .3rem;border-bottom:1px solid var(--border)}
+.sidebar-xp-top{display:flex;justify-content:space-between;font-size:.65rem;color:var(--muted);margin-bottom:.3rem}
+.sidebar-xp-lvl{font-family:var(--ff);font-size:.7rem;font-weight:700;color:var(--blue)}
+.sidebar-bar{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden}
+.sidebar-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.sidebar-nav{flex:1;overflow-y:auto;padding:.5rem 0}
+.nav-section{padding:.5rem .7rem .2rem;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.nav-item{display:flex;align-items:center;gap:.6rem;padding:.52rem .8rem;border-radius:var(--rs);margin:1px .4rem;cursor:pointer;transition:all var(--t);font-size:.82rem;font-weight:500;color:var(--text2);position:relative}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--blue-dim);color:var(--blue)}
+.nav-item.active::before{content:'';position:absolute;left:-4px;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--blue);border-radius:0 2px 2px 0}
+.nav-item-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.nav-item-badge{margin-left:auto;font-size:.6rem;font-weight:700;background:var(--blue);color:#fff;padding:1px 6px;border-radius:100px}
+.sidebar-year-selector{padding:.5rem .4rem}
+.year-btn{display:flex;align-items:center;gap:.5rem;padding:.45rem .8rem;border-radius:var(--rs);margin:1px 0;cursor:pointer;transition:all var(--t);font-size:.8rem;color:var(--text2);width:100%}
+.year-btn:hover{background:var(--surface2);color:var(--text)}
+.year-btn.active{background:var(--surface2);color:var(--accent)}
+.year-btn-num{width:22px;height:22px;border-radius:6px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-family:var(--ff);font-size:.72rem;font-weight:800;flex-shrink:0}
+.year-btn.active .year-btn-num{background:var(--accent);color:#000}
+.year-btn-count{margin-left:auto;font-size:.65rem;color:var(--muted)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:89}
+
+/* ── MAIN CONTENT ── */
+.main-content{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.content-area{flex:1;padding:1.5rem}
+
+/* ── VIEWS ── */
+.view{display:none}
+.view.active{display:block}
+
+/* ── HOME VIEW ── */
+.home-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.5rem}
+@media(max-width:700px){.home-stats{grid-template-columns:repeat(2,1fr)}}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;display:flex;align-items:center;gap:.75rem}
+.stat-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.stat-val{font-family:var(--ff);font-size:1.2rem;font-weight:800;line-height:1}
+.stat-lbl{font-size:.65rem;color:var(--muted);margin-top:2px}
+.home-profile{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem}
+@media(max-width:600px){.home-profile{grid-template-columns:1fr}}
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem}
+.profile-card-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.9rem}
+.profile-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.9rem}
+.profile-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#fff;flex-shrink:0;position:relative;cursor:pointer;overflow:hidden}
 .profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.avatar-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;border-radius:50%;font-size:.65rem;color:#fff;font-weight:600;text-align:center;line-height:1.2}
+.avatar-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;border-radius:50%;font-size:.6rem;color:#fff;font-weight:600;text-align:center;line-height:1.2}
 .profile-avatar:hover .avatar-overlay{opacity:1}
-.avatar-uploading{opacity:.5;pointer-events:none}
-.profile-name{font-family:var(--ff);font-size:1rem;font-weight:700}
-.profile-year-lbl{font-size:.72rem;color:var(--muted);margin-top:2px}
-.xp-total{font-family:var(--ff);font-size:2rem;font-weight:800;color:var(--gold);line-height:1}
-.xp-label{font-size:.68rem;color:var(--muted)}
-.level-bar-wrap{margin-top:.8rem}
-.level-info{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:.4rem}
-.level-bar{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden}
-.level-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:3px;transition:width .6s ease}
-.xp-actions{display:flex;flex-direction:column;gap:.5rem}
-.xp-action-item{display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;background:var(--surface2);border-radius:var(--rs);font-size:.78rem}
-.xp-pill{font-family:var(--ff);font-size:.72rem;font-weight:700;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(245,158,11,.2);padding:2px 8px;border-radius:100px}
+.profile-name-row{display:flex;align-items:center;gap:.4rem}
+.profile-name{font-family:var(--ff);font-size:.95rem;font-weight:700}
+.btn-edit-name{background:var(--surface3);border:1px solid var(--border2);border-radius:5px;padding:2px 6px;font-size:.62rem;color:var(--muted);transition:color var(--t)}
+.btn-edit-name:hover{color:var(--text)}
+.profile-year-lbl{font-size:.7rem;color:var(--muted);margin-top:2px}
+.profile-xp-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:.7rem}
+.xp-total{font-family:var(--ff);font-size:1.8rem;font-weight:800;color:var(--gold);line-height:1}
+.xp-label{font-size:.62rem;color:var(--muted)}
+.level-label{font-family:var(--ff);font-size:1rem;font-weight:800;color:var(--blue);text-align:right}
+.level-sub{font-size:.62rem;color:var(--muted)}
+.level-bar-wrap{margin-top:.2rem}
+.level-info{display:flex;justify-content:space-between;font-size:.65rem;color:var(--muted);margin-bottom:.3rem}
+.level-bar{height:5px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.level-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.level-progress-text{text-align:center;font-size:.65rem;color:var(--muted);margin-top:.3rem}
+.xp-actions{display:flex;flex-direction:column;gap:.4rem}
+.xp-action-item{display:flex;align-items:center;justify-content:space-between;padding:.5rem .7rem;background:var(--surface2);border-radius:var(--rs);font-size:.75rem}
+.xp-pill{font-family:var(--ff);font-size:.68rem;font-weight:700;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(245,158,11,.2);padding:2px 7px;border-radius:100px}
 
-/* STATS */
-.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:2rem}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;display:flex;align-items:center;gap:12px}
-.stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
-.stat-val{font-family:var(--ff);font-size:1.35rem;font-weight:800;line-height:1}
-.stat-lbl{font-size:.68rem;color:var(--muted);margin-top:3px}
-.section-label{font-family:var(--ff);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+/* ── COURS VIEW ── */
+.view-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem}
+.view-title{font-family:var(--ff);font-size:1.1rem;font-weight:800}
+.section-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.8rem}
+.sem-block{margin-bottom:1.2rem}
+.sem-title{font-family:var(--ff);font-size:.8rem;font-weight:700;color:var(--text2);margin-bottom:.6rem;padding:.4rem .8rem;background:var(--surface2);border-radius:var(--rs);display:inline-block}
+.unite-block{margin-bottom:.8rem}
+.unite-title{font-size:.75rem;font-weight:600;color:var(--accent);margin-bottom:.5rem}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.6rem}
+.module-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:.7rem}
+.module-card:hover{border-color:var(--border2);background:var(--surface2);transform:translateY(-1px)}
+.module-emoji{font-size:1.3rem}
+.module-info h3{font-size:.82rem;font-weight:700;margin-bottom:2px}
+.module-info span{font-size:.65rem;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-top:1rem;overflow:hidden}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-bottom:1px solid var(--border)}
+.panel-title{font-family:var(--ff);font-size:.88rem;font-weight:700}
+.panel-body{padding:.7rem}
+.lesson-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .7rem;border-radius:var(--rs);cursor:pointer;transition:all var(--t)}
+.lesson-item:hover{background:var(--surface2)}
+.lesson-num{font-family:var(--ff);font-size:.65rem;font-weight:700;color:var(--muted);min-width:22px}
+.lesson-name{flex:1;font-size:.82rem;font-weight:500}
+.lesson-open{font-size:.7rem;color:var(--accent);font-weight:600}
+.lesson-soon{font-size:.68rem;color:var(--muted)}
 
-/* YEARS */
-.years-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.75rem;margin-bottom:2rem}
-.year-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem .6rem;text-align:center;cursor:pointer;transition:all var(--t);position:relative;overflow:hidden}
-.year-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--accent));transform:scaleX(0);transition:transform .3s ease;transform-origin:left}
-.year-card:hover::before,.year-card.active::before{transform:scaleX(1)}
-.year-card:hover{border-color:rgba(59,130,246,.35);background:var(--surface2);transform:translateY(-3px)}
-.year-card.active{border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.08)}
-.year-num{font-family:var(--ff);font-size:2rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:.2rem}
-.year-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.year-badge{margin-top:.6rem;font-size:.65rem;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:2px 7px;display:inline-block;border:1px solid rgba(0,229,255,.15)}
-
-/* TABS */
-.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:5px;width:fit-content;margin-bottom:1.5rem;flex-wrap:wrap}
-.tab-btn{padding:8px 16px;border-radius:var(--rs);font-size:.8rem;font-weight:500;color:var(--muted);transition:all var(--t);display:flex;align-items:center;gap:6px;white-space:nowrap}
-.tab-btn:hover{color:var(--text);background:var(--surface2)}
-.tab-btn.active{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(59,130,246,.35)}
-
-/* COURS STRUCTURE */
-.sem-block{margin-bottom:1.5rem}
-.sem-title{font-family:var(--ff);font-size:.78rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;padding:.5rem .8rem;background:var(--blue-dim);border:1px solid rgba(59,130,246,.2);border-radius:var(--rs);margin-bottom:.75rem;display:inline-flex;align-items:center;gap:6px}
-.unite-block{margin-bottom:1.2rem;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.unite-title{font-family:var(--ff);font-size:.78rem;font-weight:700;color:var(--accent);padding:.6rem 1rem;background:var(--accent-dim);border-bottom:1px solid rgba(0,229,255,.15);display:flex;align-items:center;gap:6px}
-.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;padding:.75rem}
-.module-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all var(--t);display:flex;align-items:flex-start;gap:10px}
-.module-card:hover{border-color:rgba(0,229,255,.25);background:var(--surface2);transform:translateY(-2px)}
-.module-emoji{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;background:var(--blue-dim)}
-.module-info h3{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:2px}
-.module-info span{font-size:.7rem;color:var(--muted)}
-.standalone-modules{margin-top:.75rem}
-
-/* PANEL */
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-top:1rem}
-.panel-header{padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
-.panel-title{font-family:var(--ff);font-size:.95rem;font-weight:700}
-.panel-body{padding:.6rem}
-.lesson-item{padding:.65rem .8rem;border-radius:var(--rs);cursor:pointer;display:flex;align-items:center;gap:10px;transition:all var(--t);border:1px solid transparent}
-.lesson-item:hover{background:var(--surface2);border-color:var(--border)}
-.lesson-num{width:26px;height:26px;border-radius:7px;background:var(--blue-dim);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--blue);flex-shrink:0}
-.lesson-name{font-size:.82rem;color:var(--text);flex:1}
-.lesson-open{font-size:.68rem;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(0,229,255,.2);padding:3px 9px;border-radius:100px;white-space:nowrap}
-.lesson-soon{font-size:.68rem;color:var(--muted);background:var(--surface3);padding:3px 9px;border-radius:100px;white-space:nowrap}
-
-/* QCM */
-.qcm-container{display:flex;flex-direction:column;gap:1rem}
-.qcm-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;transition:all var(--t)}
-.qcm-card:hover{border-color:rgba(0,229,255,.2)}
-.qcm-num{font-size:.68rem;font-weight:700;color:var(--muted);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.06em}
-.qcm-question{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:1rem;line-height:1.5}
-.qcm-choices{display:flex;flex-direction:column;gap:.4rem}
-.qcm-choice{display:flex;align-items:center;gap:10px;padding:.55rem .8rem;border-radius:var(--rs);border:1px solid var(--border);cursor:pointer;transition:all var(--t);font-size:.83rem}
-.qcm-choice:hover{border-color:rgba(59,130,246,.3);background:var(--blue-dim)}
-.qcm-choice.selected{border-color:var(--blue);background:var(--blue-dim);color:var(--text)}
+/* ── QCM VIEW ── */
+.qcm-filter{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.qcm-filter-btn{padding:4px 11px;border-radius:100px;font-size:.72rem;font-weight:500;color:var(--muted);background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:all var(--t)}
+.qcm-filter-btn:hover,.qcm-filter-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.qcm-container{display:flex;flex-direction:column;gap:.9rem}
+.qcm-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem}
+.qcm-num{font-size:.65rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.qcm-question{font-size:.9rem;font-weight:600;margin-bottom:.9rem;line-height:1.6}
+.qcm-choices{display:flex;flex-direction:column;gap:.45rem;margin-bottom:.9rem}
+.qcm-choice{display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;border-radius:var(--rs);border:1px solid var(--border2);cursor:pointer;transition:all var(--t);font-size:.82rem}
+.qcm-choice:hover{border-color:var(--blue);background:var(--blue-dim)}
+.qcm-choice.selected{border-color:var(--blue);background:var(--blue-dim)}
 .qcm-choice.correct{border-color:var(--green);background:var(--green-dim);color:var(--green)}
 .qcm-choice.wrong{border-color:var(--red);background:var(--red-dim);color:var(--red)}
-.qcm-choice-letter{width:24px;height:24px;border-radius:6px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0}
-.qcm-actions{display:flex;align-items:center;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
-.btn-submit{background:var(--blue);color:#fff;padding:8px 18px;border-radius:var(--rs);font-size:.82rem;font-weight:600;transition:all var(--t)}
+.qcm-choice-letter{width:22px;height:22px;border-radius:6px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:var(--ff);font-size:.72rem;font-weight:800;flex-shrink:0}
+.qcm-actions{display:flex;align-items:center;gap:.7rem}
+.btn-submit{background:var(--blue);color:#fff;padding:7px 16px;border-radius:var(--rs);font-size:.8rem;font-weight:600;transition:all var(--t)}
 .btn-submit:hover{background:#4f8ef7}
-.btn-next{background:var(--green-dim);border:1px solid rgba(16,185,129,.25);color:var(--green);padding:8px 18px;border-radius:var(--rs);font-size:.82rem;font-weight:600;transition:all var(--t)}
-.qcm-result{font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:var(--rs)}
+.qcm-result{font-size:.8rem;font-weight:600;padding:5px 10px;border-radius:var(--rs)}
 .qcm-result.ok{background:var(--green-dim);color:var(--green)}
 .qcm-result.ko{background:var(--red-dim);color:var(--red)}
-.qcm-filter{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
-.qcm-filter-btn{padding:6px 14px;border-radius:100px;font-size:.75rem;font-weight:500;border:1px solid var(--border);color:var(--muted);transition:all var(--t);cursor:pointer}
-.qcm-filter-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.qcm-filter-btn:hover:not(.active){color:var(--text)}
-.qcm-empty{text-align:center;padding:3rem;color:var(--muted);font-size:.85rem}
 
-/* EXAMS */
-.promo-block{margin-bottom:1.5rem}
-.promo-title{font-family:var(--ff);font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
-.unite-exam-block{margin-bottom:1rem}
-.unite-exam-title{font-size:.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;padding:.4rem .8rem;background:var(--accent-dim);border-radius:var(--rs);display:inline-flex;align-items:center;gap:5px}
-.exam-item{display:flex;align-items:center;padding:.8rem 1rem;border-radius:var(--r);border:1px solid var(--border);margin-bottom:.4rem;transition:all var(--t);gap:12px;background:var(--surface2)}
-.exam-item:hover{border-color:rgba(16,185,129,.3);transform:translateX(4px)}
-.exam-module-name{font-size:.83rem;font-weight:600;flex:1}
-.exam-dl{background:var(--green-dim);border:1px solid rgba(16,185,129,.25);color:var(--green);padding:5px 12px;border-radius:var(--rs);font-size:.72rem;font-weight:500;transition:all var(--t);display:flex;align-items:center;gap:5px;cursor:pointer;text-decoration:none}
-.exam-dl:hover{background:rgba(16,185,129,.18)}
-.exam-dl.disabled{background:var(--surface3);color:var(--muted);border-color:var(--border);cursor:not-allowed;pointer-events:none}
+/* ── EXAMS VIEW ── */
+.promo-block{margin-bottom:1.2rem}
+.promo-title{font-family:var(--ff);font-size:.82rem;font-weight:700;color:var(--gold);margin-bottom:.6rem;padding:.4rem .8rem;background:var(--gold-dim);border:1px solid rgba(245,158,11,.2);border-radius:var(--rs);display:inline-block}
+.unite-exam-block{margin-bottom:.7rem}
+.unite-exam-title{font-size:.72rem;font-weight:600;color:var(--accent);margin-bottom:.4rem}
+.exam-item{display:flex;align-items:center;justify-content:space-between;padding:.6rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);margin-bottom:.35rem;gap:.5rem;flex-wrap:wrap}
+.exam-module-name{font-size:.82rem;font-weight:500;flex:1}
+.exam-dl{font-size:.72rem;font-weight:600;color:var(--accent);padding:4px 10px;border:1px solid rgba(0,229,255,.25);border-radius:100px;transition:all var(--t)}
+.exam-dl:hover{background:var(--accent-dim)}
+.exam-dl.disabled{color:var(--muted);border-color:var(--border);pointer-events:none}
 
-/* DRIVE */
-.drive-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:2.5rem 2rem;text-align:center}
-.drive-big-icon{font-size:3.5rem;margin-bottom:1rem}
-.drive-box h3{font-family:var(--ff);font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
-.drive-box p{font-size:.82rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.6}
-.drive-btn{display:inline-flex;align-items:center;gap:10px;background:var(--blue);color:#fff;font-size:.9rem;font-weight:600;padding:12px 28px;border-radius:var(--r);transition:all var(--t)}
-.drive-btn:hover{background:#4f8ef7;transform:translateY(-2px)}
+/* ── DRIVE VIEW ── */
+.drive-box{text-align:center;padding:2.5rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
+.drive-big-icon{font-size:3rem;margin-bottom:1rem}
+.drive-box h3{font-family:var(--ff);font-size:1.1rem;font-weight:800;margin-bottom:.5rem}
+.drive-box p{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:1.3rem}
+.drive-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue);color:#fff;padding:9px 20px;border-radius:var(--rs);font-size:.85rem;font-weight:600;transition:all var(--t)}
+.drive-btn:hover{background:#4f8ef7}
 .drive-btn.disabled{background:var(--surface3);color:var(--muted);cursor:not-allowed;pointer-events:none;border:1px solid var(--border)}
-.drive-coming{margin-top:1rem;font-size:.72rem;color:var(--muted)}
+.drive-coming{margin-top:.8rem;font-size:.7rem;color:var(--muted)}
 
-/* LEADERBOARD */
-.lb-tabs{display:flex;gap:4px;background:var(--surface2);border-radius:var(--r);padding:4px;width:fit-content;margin-bottom:1rem}
-.lb-tab{padding:6px 14px;border-radius:var(--rs);font-size:.78rem;font-weight:500;color:var(--muted);transition:all var(--t);cursor:pointer}
+/* ── DISCORD ROOMS ── */
+.discord-layout{display:flex;height:100%;overflow:hidden}
+.discord-sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.discord-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.discord-server-header{padding:.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.discord-server-name{font-family:var(--ff);font-size:.88rem;font-weight:800}
+.discord-channels{flex:1;overflow-y:auto;padding:.4rem 0}
+.dc-category{padding:.5rem .7rem .2rem;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.dc-category:hover{color:var(--text)}
+.dc-channel{display:flex;align-items:center;gap:.5rem;padding:.38rem .9rem;border-radius:var(--rs);margin:1px .4rem;cursor:pointer;transition:all var(--t);font-size:.8rem;color:var(--text2)}
+.dc-channel:hover{background:var(--surface2);color:var(--text)}
+.dc-channel.active{background:var(--surface2);color:var(--text)}
+.dc-channel-icon{font-size:.85rem;width:16px;text-align:center;flex-shrink:0}
+.dc-channel-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc-channel-count{font-size:.6rem;font-weight:700;color:var(--green)}
+.discord-content{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.dc-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--muted);gap:.7rem}
+.dc-empty-icon{font-size:3rem;opacity:.4}
+.dc-empty-text{font-size:.85rem}
+.dc-channel-header{padding:.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.dc-channel-header-icon{font-size:1rem}
+.dc-channel-header-name{font-family:var(--ff);font-size:.9rem;font-weight:700;flex:1}
+.dc-channel-header-desc{font-size:.72rem;color:var(--muted)}
+.btn-create-room{display:inline-flex;align-items:center;gap:.4rem;background:var(--blue);color:#fff;padding:5px 12px;border-radius:var(--rs);font-size:.75rem;font-weight:600;transition:all var(--t)}
+.btn-create-room:hover{background:#4f8ef7}
+.dc-rooms-list{flex:1;overflow-y:auto;padding:.7rem}
+.dc-no-rooms{text-align:center;padding:2rem;color:var(--muted);font-size:.82rem}
+.room-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:.6rem;transition:all var(--t)}
+.room-card:hover{border-color:var(--border2)}
+.room-card.active-room{border-color:rgba(0,229,255,.3);background:var(--accent-dim)}
+.room-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem}
+.room-name{font-size:.88rem;font-weight:700}
+.room-live{font-size:.58rem;font-weight:700;background:var(--red);color:#fff;padding:2px 6px;border-radius:100px;letter-spacing:.05em}
+.room-meta{font-size:.7rem;color:var(--muted);margin-bottom:.7rem}
+.room-footer{display:flex;align-items:center;justify-content:space-between}
+.room-members{font-size:.72rem;color:var(--text2)}
+.btn-join{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.3);padding:5px 13px;border-radius:var(--rs);font-size:.75rem;font-weight:600;transition:all var(--t)}
+.btn-join:hover{background:rgba(16,185,129,.2)}
+.btn-leave{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,77,109,.3);padding:5px 13px;border-radius:var(--rs);font-size:.75rem;font-weight:600}
+.active-room-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.active-room-header{padding:.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.active-room-title{font-family:var(--ff);font-size:.88rem;font-weight:700;flex:1}
+.room-controls{display:flex;gap:.4rem}
+.btn-mic{padding:5px 11px;border-radius:var(--rs);font-size:.72rem;font-weight:600;border:1px solid;transition:all var(--t)}
+.btn-mic.on{background:var(--green-dim);color:var(--green);border-color:rgba(16,185,129,.3)}
+.btn-mic.off{background:var(--surface2);color:var(--muted);border-color:var(--border)}
+.active-room-body{flex:1;display:grid;grid-template-columns:180px 1fr;overflow:hidden}
+.members-panel{border-right:1px solid var(--border);overflow-y:auto;padding:.6rem}
+.members-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 .3rem .5rem}
+.member-item{display:flex;align-items:center;gap:.5rem;padding:.4rem .3rem;border-radius:var(--rs);transition:all var(--t)}
+.member-item:hover{background:var(--surface2)}
+.member-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
+.member-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.member-name{font-size:.75rem;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.member-mic{font-size:.75rem;opacity:.5}
+.chat-panel{display:flex;flex-direction:column;overflow:hidden}
+.chat-messages{flex:1;overflow-y:auto;padding:.7rem}
+.chat-msg{margin-bottom:.5rem;max-width:85%}
+.chat-msg.me{margin-left:auto}
+.chat-msg-name{font-size:.62rem;color:var(--muted);margin-bottom:.2rem;padding-left:.2rem}
+.chat-msg-text{font-size:.8rem;padding:.5rem .8rem;border-radius:var(--rs);line-height:1.5}
+.chat-msg.me .chat-msg-text{background:var(--blue);color:#fff}
+.chat-msg.other .chat-msg-text{background:var(--surface2);color:var(--text)}
+.chat-input-row{display:flex;gap:.5rem;padding:.7rem;border-top:1px solid var(--border);flex-shrink:0}
+.chat-input{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:7px 11px;color:var(--text);font-family:var(--fb);font-size:.82rem;outline:none}
+.chat-input:focus{border-color:var(--blue)}
+.btn-send{background:var(--blue);color:#fff;padding:6px 13px;border-radius:var(--rs);font-size:.8rem;font-weight:600;transition:all var(--t)}
+.btn-send:hover{background:#4f8ef7}
+
+/* ── LEADERBOARD VIEW ── */
+.lb-tabs{display:flex;gap:3px;background:var(--surface2);border-radius:var(--r);padding:3px;width:fit-content;margin-bottom:1rem}
+.lb-tab{padding:5px 13px;border-radius:var(--rs);font-size:.75rem;font-weight:500;color:var(--muted);transition:all var(--t);cursor:pointer}
 .lb-tab.active{background:var(--gold);color:#000}
-.lb-tab:hover:not(.active){color:var(--text)}
-.lb-list{display:flex;flex-direction:column;gap:.6rem}
-.lb-item{display:flex;align-items:center;gap:14px;padding:1rem 1.2rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);transition:all var(--t)}
-.lb-item:hover{border-color:var(--border2);background:var(--surface3)}
+.lb-list{display:flex;flex-direction:column;gap:.5rem}
+.lb-item{display:flex;align-items:center;gap:11px;padding:.85rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);transition:all var(--t)}
+.lb-item:hover{border-color:var(--border2)}
 .lb-item.me{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.05)}
-.lb-rank{font-family:var(--ff);font-size:1.2rem;font-weight:800;min-width:36px;text-align:center}
-.r1{color:#FFD700}.r2{color:#C0C0C0}.r3{color:#CD7F32}.rn{color:var(--muted);font-size:.95rem}
+.lb-rank{font-family:var(--ff);font-size:1.1rem;font-weight:800;min-width:34px;text-align:center}
+.r1{color:#FFD700}.r2{color:#C0C0C0}.r3{color:#CD7F32}.rn{color:var(--muted);font-size:.9rem}
 .lb-avatar-wrap{position:relative;flex-shrink:0}
-.lb-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;overflow:hidden;border:2px solid transparent}
+.lb-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:700;color:#fff;overflow:hidden}
 .lb-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.lb-online-dot{position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;border:2px solid var(--surface2)}
-.lb-online-dot.online{background:var(--green);box-shadow:0 0 6px var(--green)}
+.lb-online-dot{position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;border:2px solid var(--surface)}
+.lb-online-dot.online{background:var(--green);box-shadow:0 0 5px var(--green)}
 .lb-online-dot.offline{background:var(--muted)}
 .lb-info{flex:1}
-.lb-name{font-size:.9rem;font-weight:700}
-.lb-year-s{font-size:.72rem;color:var(--muted);margin-top:2px}
-.lb-xp{font-family:var(--ff);font-size:1.05rem;font-weight:800;color:var(--gold)}
-.lb-loading{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
+.lb-name{font-size:.85rem;font-weight:700}
+.lb-year-s{font-size:.68rem;color:var(--muted);margin-top:1px}
+.lb-xp{font-family:var(--ff);font-size:1rem;font-weight:800;color:var(--gold)}
+.lb-loading{text-align:center;padding:2rem;color:var(--muted);font-size:.82rem}
 
-/* AVIS */
-.avis-section{padding:3rem 0;border-top:1px solid var(--border)}
-.avis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:1.5rem}
-.avis-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem 1.6rem;position:relative;transition:all var(--t)}
-.avis-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.avis-card::before{content:'"';position:absolute;top:.6rem;left:1.1rem;font-size:3.5rem;font-family:Georgia,serif;color:var(--accent);opacity:.25;line-height:1}
-.avis-text{font-size:.88rem;color:var(--text2);line-height:1.7;margin-bottom:1rem;padding-top:.5rem}
-.avis-author{display:flex;align-items:center;gap:.6rem}
-.avis-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff}
-.avis-name{font-size:.78rem;font-weight:600;color:var(--text)}
-.avis-year{font-size:.68rem;color:var(--muted)}
-.avis-stars{font-size:.75rem;color:var(--gold);margin-left:auto}
-
-/* FOOTER */
-.footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5rem 0 1.5rem}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
-@media(max-width:640px){.footer-grid{grid-template-columns:1fr}}
-.footer-brand .nav-logo{font-size:1.4rem;margin-bottom:.5rem}
-.footer-desc{font-size:.78rem;color:var(--muted);line-height:1.6;max-width:240px;margin-top:.4rem}
-.footer-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.8rem}
-.footer-links{display:flex;flex-direction:column;gap:.5rem}
-.footer-links a{font-size:.82rem;color:var(--text2);transition:color var(--t)}
-.footer-links a:hover{color:var(--accent)}
-.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:1.2rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
-.footer-copy{font-size:.72rem;color:var(--muted)}
-.footer-badge{font-size:.68rem;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:3px 10px}
-.rooms-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
-.btn-create-room{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--blue),var(--accent));color:#fff;padding:9px 18px;border-radius:var(--rs);font-size:.85rem;font-weight:600;transition:all var(--t)}
-.btn-create-room:hover{opacity:.9;transform:translateY(-1px)}
-.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;margin-bottom:1.5rem}
-.room-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;transition:all var(--t);cursor:pointer}
-.room-card:hover{border-color:rgba(0,229,255,.3);transform:translateY(-2px)}
-.room-card.active-room{border-color:var(--green);background:var(--green-dim)}
-.room-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.6rem}
-.room-name{font-family:var(--ff);font-size:.9rem;font-weight:700}
-.room-live{display:flex;align-items:center;gap:4px;font-size:.65rem;font-weight:600;color:var(--green);background:var(--green-dim);border:1px solid rgba(16,185,129,.25);padding:2px 8px;border-radius:100px}
-.room-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
-.room-meta{font-size:.72rem;color:var(--muted);margin-bottom:.8rem}
-.room-footer{display:flex;align-items:center;justify-content:space-between}
-.room-members{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text2)}
-.btn-join{background:var(--blue);color:#fff;padding:5px 14px;border-radius:var(--rs);font-size:.75rem;font-weight:600;transition:all var(--t)}
-.btn-join:hover{background:#4f8ef7}
-.btn-leave{background:var(--red-dim);border:1px solid rgba(255,77,109,.25);color:var(--red);padding:5px 14px;border-radius:var(--rs);font-size:.75rem;font-weight:600;transition:all var(--t)}
-
-/* ACTIVE ROOM */
-.active-room-box{background:var(--surface);border:1px solid rgba(16,185,129,.3);border-radius:var(--rl);overflow:hidden;margin-bottom:1.5rem}
-.active-room-header{background:rgba(16,185,129,.08);border-bottom:1px solid rgba(16,185,129,.2);padding:.9rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
-.active-room-title{font-family:var(--ff);font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px}
-.active-room-body{display:grid;grid-template-columns:1fr 280px;height:340px}
-.members-panel{padding:.8rem;border-right:1px solid var(--border);overflow-y:auto}
-.members-title{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
-.member-item{display:flex;align-items:center;gap:8px;padding:.4rem .5rem;border-radius:var(--rs);margin-bottom:.3rem}
-.member-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex-shrink:0;overflow:hidden}
-.member-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.member-name{font-size:.78rem;font-weight:500;flex:1}
-.member-mic{font-size:.8rem}
-.member-speaking{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)}
-.chat-panel{display:flex;flex-direction:column;padding:.8rem}
-.chat-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.4rem;margin-bottom:.6rem}
-.chat-msg{padding:.4rem .7rem;border-radius:var(--rs);max-width:100%}
-.chat-msg.me{background:var(--blue-dim);border:1px solid rgba(59,130,246,.2);align-self:flex-end}
-.chat-msg.other{background:var(--surface2);border:1px solid var(--border);align-self:flex-start}
-.chat-msg-name{font-size:.62rem;font-weight:700;color:var(--muted);margin-bottom:2px}
-.chat-msg-text{font-size:.78rem;line-height:1.4}
-.chat-input-row{display:flex;gap:.4rem}
-.chat-input{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:7px 10px;color:var(--text);font-family:var(--fb);font-size:.8rem;outline:none}
-.chat-input:focus{border-color:var(--blue)}
-.btn-send{background:var(--blue);color:#fff;padding:7px 12px;border-radius:var(--rs);font-size:.8rem;transition:all var(--t)}
-.btn-send:hover{background:#4f8ef7}
-.room-controls{display:flex;align-items:center;gap:.5rem}
-.btn-mic{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--rs);font-size:.78rem;font-weight:600;transition:all var(--t);border:1px solid var(--border)}
-.btn-mic.on{background:var(--green-dim);border-color:rgba(16,185,129,.3);color:var(--green)}
-.btn-mic.off{background:var(--red-dim);border-color:rgba(255,77,109,.3);color:var(--red)}
-
-/* CREATE ROOM MODAL */
-#createRoomModal{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem}
-.modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:2rem;width:100%;max-width:420px}
-.modal-title{font-family:var(--ff);font-size:1.1rem;font-weight:800;margin-bottom:1.2rem;display:flex;align-items:center;gap:8px}
-.modal-form{display:flex;flex-direction:column;gap:.8rem}
-.modal-actions{display:flex;gap:.5rem;margin-top:.5rem}
-
-@media(max-width:700px){.active-room-body{grid-template-columns:1fr;height:auto}.members-panel{border-right:none;border-bottom:1px solid var(--border);max-height:150px}}
-
-/* PDF VIEWER */
-#pdfOverlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;flex-direction:column}
-.pdf-header{height:56px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;flex-shrink:0;gap:1rem}
-.pdf-title{font-family:var(--ff);font-size:.95rem;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pdf-actions{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
-.pdf-btn{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:500;padding:6px 12px;border-radius:var(--rs);transition:all var(--t);border:1px solid var(--border);color:var(--text2);text-decoration:none}
-.pdf-btn:hover{background:var(--surface2)}
-.pdf-btn.close-btn{background:var(--red-dim);border-color:rgba(255,77,109,.3);color:var(--red)}
-#pdfFrame{flex:1;border:none;background:#fff}
-
-/* ADMIN PANEL */
-#adminOverlay{position:fixed;inset:0;z-index:400;background:var(--bg);overflow-y:auto}
-.admin-wrap{max-width:960px;margin:0 auto;padding:2rem 1.5rem}
-.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
-.admin-title{font-family:var(--ff);font-size:1.5rem;font-weight:800;display:flex;align-items:center;gap:10px}
-.admin-badge{font-size:.7rem;background:var(--gold);color:#000;padding:3px 10px;border-radius:100px;font-weight:700}
-.admin-close{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted);border:1px solid var(--border);padding:7px 14px;border-radius:var(--rs);transition:all var(--t)}
-.admin-close:hover{color:var(--text);border-color:var(--border2)}
-.admin-tabs{display:flex;gap:4px;background:var(--surface2);border-radius:var(--r);padding:4px;margin-bottom:1.5rem;flex-wrap:wrap}
-.admin-tab-btn{padding:8px 16px;border-radius:var(--rs);font-size:.82rem;font-weight:500;color:var(--muted);transition:all var(--t)}
-.admin-tab-btn.active{background:var(--blue);color:#fff}
-.admin-tab-btn:hover:not(.active){color:var(--text)}
-.admin-pane{display:none}.admin-pane.active{display:block}
-.admin-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:1.5rem}
-.admin-section-title{font-family:var(--ff);font-size:.85rem;font-weight:700;margin-bottom:1.2rem;color:var(--text2);display:flex;align-items:center;gap:8px}
-.admin-form{display:grid;gap:.8rem}
-.admin-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-.admin-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem}
-.admin-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-family:var(--fb);font-size:.85rem;outline:none;transition:border-color var(--t)}
-.admin-input:focus{border-color:var(--blue)}
-.admin-input::placeholder{color:var(--muted)}
-.admin-select{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-family:var(--fb);font-size:.85rem;outline:none;cursor:pointer}
-.admin-select option{background:var(--surface2)}
-.admin-textarea{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-family:var(--fb);font-size:.85rem;outline:none;resize:vertical;min-height:70px;transition:border-color var(--t)}
-.admin-textarea:focus{border-color:var(--blue)}
-.btn-add{display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;padding:9px 18px;border-radius:var(--rs);font-size:.85rem;font-weight:600;transition:all var(--t)}
-.btn-add:hover{background:#4f8ef7}
-.btn-save{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;padding:9px 18px;border-radius:var(--rs);font-size:.85rem;font-weight:600;transition:all var(--t)}
-.btn-save:hover{background:#0ea572}
-.admin-list{display:flex;flex-direction:column;gap:.5rem;margin-top:1rem;max-height:320px;overflow-y:auto}
-.admin-list-item{display:flex;align-items:flex-start;gap:10px;padding:.7rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);flex-shrink:0}
-.ali-info{flex:1}
-.ali-name{font-size:.83rem;font-weight:600}
-.ali-sub{font-size:.7rem;color:var(--muted);margin-top:2px}
-.btn-del{background:var(--red-dim);border:1px solid rgba(255,77,109,.25);color:var(--red);padding:4px 10px;border-radius:var(--rs);font-size:.72rem;font-weight:500;transition:all var(--t);flex-shrink:0}
-.btn-del:hover{background:rgba(255,77,109,.2)}
-.choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
-.choice-row{display:flex;align-items:center;gap:.5rem}
-.choice-letter{font-family:var(--ff);font-size:.8rem;font-weight:700;color:var(--muted);min-width:16px}
-.correct-checks{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem}
-.correct-check{display:flex;align-items:center;gap:4px;font-size:.78rem;color:var(--text2);cursor:pointer}
-.correct-check input{accent-color:var(--green)}
-
-/* MISC */
-.btn-ghost{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:500;padding:7px 14px;border-radius:var(--rs);transition:all var(--t);border:1px solid var(--border);color:var(--muted)}
-.btn-ghost:hover{color:var(--text);border-color:var(--border2);background:var(--surface2)}
-.empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
-.empty-state .empty-icon{font-size:3rem;margin-bottom:1rem}
-#toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--surface2);border:1px solid rgba(0,229,255,.25);color:var(--text);padding:10px 18px;border-radius:var(--rs);font-size:.8rem;box-shadow:var(--shadow-lg);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:280px}
-#toast.show{transform:translateY(0);opacity:1}
-.xp-popup{position:fixed;top:80px;right:2rem;z-index:9998;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:var(--gold);padding:10px 18px;border-radius:var(--rs);font-family:var(--ff);font-size:.9rem;font-weight:700;box-shadow:var(--shadow-lg);transform:translateY(-20px);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
-.xp-popup.show{transform:translateY(0);opacity:1}
-
-/* AVIS SYSTEM */
-.avis-section{padding:2.5rem 0;border-top:1px solid var(--border)}
-.avis-add-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.4rem;margin-bottom:1.5rem}
-.avis-add-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.8rem}
-.avis-add-row{display:flex;gap:.7rem;align-items:flex-start}
-.avis-textarea{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:10px 14px;color:var(--text);font-family:var(--fb);font-size:.85rem;outline:none;resize:none;height:70px;transition:border-color var(--t)}
-.avis-textarea:focus{border-color:var(--blue)}
-.avis-textarea::placeholder{color:var(--muted)}
-.btn-avis{background:var(--blue);color:#fff;padding:10px 16px;border-radius:var(--rs);font-size:.82rem;font-weight:600;transition:all var(--t);white-space:nowrap;align-self:flex-end}
-.btn-avis:hover{background:#4f8ef7}
-.avis-stars-row{display:flex;gap:4px;margin-bottom:.6rem}
-.star-btn{font-size:1.1rem;cursor:pointer;transition:transform .1s;background:none;border:none;padding:0;color:var(--muted)}
+/* ── AVIS VIEW ── */
+.avis-add-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem;margin-bottom:1.2rem}
+.avis-add-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.7rem}
+.avis-stars-row{display:flex;gap:3px;margin-bottom:.6rem}
+.star-btn{font-size:1.2rem;cursor:pointer;background:none;border:none;padding:0;color:var(--muted);transition:transform .1s}
 .star-btn.active{color:var(--gold)}
 .star-btn:hover{transform:scale(1.2)}
-.avis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
-.avis-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.4rem;position:relative;transition:all var(--t)}
+.avis-add-row{display:flex;gap:.6rem;align-items:flex-end}
+.avis-textarea{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-family:var(--fb);font-size:.82rem;outline:none;resize:none;height:65px;transition:border-color var(--t)}
+.avis-textarea:focus{border-color:var(--blue)}
+.avis-textarea::placeholder{color:var(--muted)}
+.btn-avis{background:var(--blue);color:#fff;padding:9px 14px;border-radius:var(--rs);font-size:.8rem;font-weight:600;white-space:nowrap;transition:all var(--t)}
+.btn-avis:hover{background:#4f8ef7}
+.avis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8rem}
+.avis-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem;position:relative;transition:all var(--t)}
 .avis-card:hover{border-color:var(--border2)}
-.avis-card::before{content:'"';position:absolute;top:.4rem;left:1rem;font-size:3rem;font-family:Georgia,serif;color:var(--accent);opacity:.2;line-height:1}
-.avis-text{font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:.9rem;padding-top:.3rem}
-.avis-author{display:flex;align-items:center;gap:.6rem}
-.avis-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
+.avis-card::before{content:'"';position:absolute;top:.3rem;left:.9rem;font-size:3rem;font-family:Georgia,serif;color:var(--accent);opacity:.18;line-height:1}
+.avis-text{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:.8rem;padding-top:.2rem}
+.avis-author{display:flex;align-items:center;gap:.5rem}
+.avis-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
 .avis-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.avis-name{font-size:.78rem;font-weight:600}
-.avis-year-tag{font-size:.68rem;color:var(--muted)}
-.avis-stars-display{font-size:.72rem;color:var(--gold);margin-left:auto}
-.avis-empty{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
+.avis-name{font-size:.75rem;font-weight:600}
+.avis-year-tag{font-size:.65rem;color:var(--muted)}
+.avis-stars-display{font-size:.7rem;color:var(--gold);margin-left:auto}
+.avis-empty{text-align:center;padding:2rem;color:var(--muted);font-size:.82rem}
 
-/* FOOTER */
-.site-footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5rem 0 1.5rem;margin-top:0}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
-@media(max-width:640px){.footer-grid{grid-template-columns:1fr;gap:1.2rem}}
-.footer-brand .nav-logo{font-size:1.3rem;margin-bottom:.4rem}
-.footer-desc{font-size:.78rem;color:var(--muted);line-height:1.65;max-width:220px;margin-top:.3rem}
-.footer-col-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.7rem}
-.footer-links{display:flex;flex-direction:column;gap:.45rem}
-.footer-links a{font-size:.8rem;color:var(--text2);transition:color var(--t)}
-.footer-links a:hover{color:var(--accent)}
-.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:1rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
-.footer-copy{font-size:.7rem;color:var(--muted)}
-.footer-badge{font-size:.66rem;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:3px 9px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+/* ── PDF VIEWER ── */
+#pdfOverlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.9);display:flex;flex-direction:column}
+.pdf-header{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.pdf-title{font-family:var(--ff);font-size:.85rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%}
+.pdf-actions{display:flex;gap:.5rem}
+.pdf-btn{font-size:.75rem;font-weight:600;padding:5px 12px;border-radius:var(--rs);background:var(--surface2);border:1px solid var(--border2);color:var(--text);transition:all var(--t)}
+.pdf-btn:hover{background:var(--surface3)}
+.close-btn{color:var(--red)}
+#pdfFrame{flex:1;border:none}
+
+/* ── ADMIN ── */
+#adminOverlay{position:fixed;inset:0;z-index:400;background:var(--bg);overflow-y:auto;padding:1.5rem}
+.admin-wrap{max-width:900px;margin:0 auto}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem}
+.admin-title{font-family:var(--ff);font-size:1.1rem;font-weight:800}
+.admin-badge{font-size:.62rem;font-weight:700;background:var(--blue-dim);color:var(--blue);padding:2px 8px;border-radius:100px;border:1px solid rgba(59,130,246,.2)}
+.admin-close{font-size:.8rem;color:var(--muted);border:1px solid var(--border);padding:5px 13px;border-radius:var(--rs);transition:all var(--t)}
+.admin-close:hover{color:var(--text)}
+.admin-tabs{display:flex;gap:3px;background:var(--surface2);border-radius:var(--r);padding:3px;margin-bottom:1.2rem;flex-wrap:wrap}
+.admin-tab-btn{padding:7px 14px;border-radius:var(--rs);font-size:.78rem;font-weight:500;color:var(--muted);transition:all var(--t)}
+.admin-tab-btn.active{background:var(--blue);color:#fff}
+.admin-pane{display:none}.admin-pane.active{display:block}
+.admin-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;margin-bottom:1.2rem}
+.admin-section-title{font-family:var(--ff);font-size:.82rem;font-weight:700;margin-bottom:1rem;color:var(--text2)}
+.admin-form{display:grid;gap:.7rem}
+.admin-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.admin-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem}
+.admin-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:8px 11px;color:var(--text);font-family:var(--fb);font-size:.82rem;outline:none;transition:border-color var(--t)}
+.admin-input:focus{border-color:var(--blue)}
+.admin-input::placeholder{color:var(--muted)}
+.admin-select{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:8px 11px;color:var(--text);font-family:var(--fb);font-size:.82rem;outline:none;cursor:pointer}
+.admin-select option{background:var(--surface2)}
+.admin-textarea{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:8px 11px;color:var(--text);font-family:var(--fb);font-size:.82rem;outline:none;resize:vertical;min-height:65px;transition:border-color var(--t)}
+.admin-textarea:focus{border-color:var(--blue)}
+.btn-add{display:inline-flex;align-items:center;gap:5px;background:var(--blue);color:#fff;padding:7px 15px;border-radius:var(--rs);font-size:.8rem;font-weight:600;transition:all var(--t)}
+.btn-add:hover{background:#4f8ef7}
+.btn-save{display:inline-flex;align-items:center;gap:5px;background:var(--green);color:#fff;padding:7px 15px;border-radius:var(--rs);font-size:.8rem;font-weight:600;transition:all var(--t)}
+.btn-save:hover{background:#0ea572}
+.admin-list{display:flex;flex-direction:column;gap:.4rem;margin-top:.8rem;max-height:280px;overflow-y:auto}
+.admin-list-item{display:flex;align-items:flex-start;gap:8px;padding:.6rem .8rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)}
+.ali-info{flex:1}
+.ali-name{font-size:.8rem;font-weight:600}
+.ali-sub{font-size:.67rem;color:var(--muted);margin-top:1px}
+.btn-del{background:var(--red-dim);border:1px solid rgba(255,77,109,.25);color:var(--red);padding:3px 9px;border-radius:var(--rs);font-size:.68rem;font-weight:500;transition:all var(--t);flex-shrink:0}
+.btn-del:hover{background:rgba(255,77,109,.2)}
+.choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.choice-row{display:flex;align-items:center;gap:.4rem}
+.choice-letter{font-family:var(--ff);font-size:.75rem;font-weight:700;color:var(--muted);min-width:14px}
+.correct-checks{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.2rem}
+.correct-check{display:flex;align-items:center;gap:3px;font-size:.75rem;color:var(--text2);cursor:pointer}
+.correct-check input{accent-color:var(--green)}
+
+/* ── MODALS ── */
+.modal-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem}
+.modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:1.4rem;width:100%;max-width:380px;box-shadow:var(--shadow)}
+.modal-title{font-family:var(--ff);font-size:.95rem;font-weight:800;margin-bottom:1rem}
+.modal-form{display:flex;flex-direction:column;gap:.7rem}
+.modal-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* ── MISC ── */
+.btn-ghost{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:500;padding:6px 12px;border-radius:var(--rs);transition:all var(--t);border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border2);background:var(--surface2)}
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:var(--surface2);border:1px solid rgba(0,229,255,.25);color:var(--text);padding:9px 16px;border-radius:var(--rs);font-size:.78rem;box-shadow:var(--shadow);transform:translateY(70px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:260px}
+#toast.show{transform:translateY(0);opacity:1}
+.xp-popup{position:fixed;top:70px;right:1.5rem;z-index:9998;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:var(--gold);padding:9px 16px;border-radius:var(--rs);font-family:var(--ff);font-size:.88rem;font-weight:700;box-shadow:var(--shadow);transform:translateY(-20px);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.xp-popup.show{transform:translateY(0);opacity:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.afu{animation:fadeUp .35s ease both}
-.d1{animation-delay:.05s}.d2{animation-delay:.10s}.d3{animation-delay:.15s}.d4{animation-delay:.20s}.d5{animation-delay:.25s}.d6{animation-delay:.30s}
-@media(max-width:900px){.stats-bar{grid-template-columns:repeat(2,1fr)}.profile-bar{grid-template-columns:1fr}.admin-row{grid-template-columns:1fr}.admin-row-3{grid-template-columns:1fr}.choices-grid{grid-template-columns:1fr}}
-@media(max-width:600px){.years-grid{grid-template-columns:repeat(3,1fr)}.container{padding:0 1rem}.tabs{flex-wrap:wrap}}
+.afu{animation:fadeUp .3s ease both}
+.d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  :root{--sidebar:220px}
+  .sidebar{position:fixed;top:0;left:0;height:100%;z-index:90;transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{display:block}
+  .hamburger{display:flex}
+  .topbar-username{display:none}
+  .home-stats{grid-template-columns:repeat(2,1fr)}
+  .admin-row,.admin-row-3{grid-template-columns:1fr}
+  .choices-grid{grid-template-columns:1fr}
+  .active-room-body{grid-template-columns:1fr}
+  .members-panel{display:none}
+  .discord-sidebar{width:180px}
+}
+@media(max-width:480px){
+  .home-profile{grid-template-columns:1fr}
+  .discord-layout{flex-direction:column}
+  .discord-sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .discord-channels{display:flex;flex-direction:row;overflow-x:auto;padding:.3rem}
+  .dc-category{display:none}
+  .dc-channel{flex-shrink:0;white-space:nowrap}
+}
 </style>
 </head>
 <body>
-<div class="bg-glow"></div>
 
 <!-- AUTH -->
 <div id="authOverlay">
@@ -422,7 +437,7 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
       <div class="auth-tab" onclick="switchAuthTab('register')">Inscription</div>
     </div>
     <div id="loginForm">
-      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="loginEmail" placeholder="ton@email.com"></div>
+      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="loginEmail" placeholder="ton@email.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="form-group"><label>Mot de passe</label><input class="form-input" type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="btn-auth" onclick="doLogin()">Se connecter</button>
     </div>
@@ -458,8 +473,11 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 <div id="adminOverlay" class="hidden">
   <div class="admin-wrap">
     <div class="admin-header">
-      <div class="admin-title">⚙️ Admin Panel <span class="admin-badge">MEDX</span></div>
-      <button class="admin-close" onclick="closeAdmin()">← Retour au site</button>
+      <div style="display:flex;align-items:center;gap:.6rem">
+        <div class="admin-title">⚙️ Admin Panel</div>
+        <span class="admin-badge">MEDX</span>
+      </div>
+      <button class="admin-close" onclick="closeAdmin()">← Retour</button>
     </div>
     <div class="admin-tabs">
       <button class="admin-tab-btn active" onclick="setAdminTab('cours',this)">📖 Cours</button>
@@ -467,51 +485,32 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
       <button class="admin-tab-btn" onclick="setAdminTab('exams',this)">📄 Examens</button>
       <button class="admin-tab-btn" onclick="setAdminTab('drive',this)">☁️ Drive</button>
     </div>
-
-    <!-- ── COURS ── -->
     <div class="admin-pane active" id="ap-cours">
       <div class="admin-section">
         <div class="admin-section-title">➕ Ajouter un Cours</div>
         <div class="admin-form">
           <div class="admin-row">
-            <select class="admin-select" id="aYear">
-              <option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option>
-              <option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option>
-            </select>
-            <select class="admin-select" id="aSemUnite">
-              <option value="">— Semestre / Unité (optionnel) —</option>
-              <option value="Semestre 1">Semestre 1</option>
-              <option value="Semestre 2">Semestre 2</option>
-              <option value="Unité 1">Unité 1</option>
-              <option value="Unité 2">Unité 2</option>
-              <option value="Unité 3">Unité 3</option>
-              <option value="Unité 4">Unité 4</option>
-              <option value="Module seul">Module seul (sans unité)</option>
-            </select>
+            <select class="admin-select" id="aYear"><option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option><option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option></select>
+            <select class="admin-select" id="aSemUnite"><option value="">— Semestre / Unité —</option><option value="Semestre 1">Semestre 1</option><option value="Semestre 2">Semestre 2</option><option value="Unité 1">Unité 1</option><option value="Unité 2">Unité 2</option><option value="Unité 3">Unité 3</option><option value="Unité 4">Unité 4</option><option value="Module seul">Module seul</option></select>
           </div>
-          <input class="admin-input" type="text" id="aModule" placeholder="Nom du module (ex: Immunologie)">
-          <input class="admin-input" type="text" id="aLesson" placeholder="Nom du cours (ex: Introduction à l'Immunologie)">
-          <input class="admin-input" type="url" id="aLink" placeholder="Lien PDF Google Drive (optionnel)">
-          <div><button class="btn-add" onclick="addLesson()">➕ Ajouter le cours</button></div>
+          <input class="admin-input" type="text" id="aModule" placeholder="Module (ex: Immunologie)">
+          <input class="admin-input" type="text" id="aLesson" placeholder="Nom du cours">
+          <input class="admin-input" type="url" id="aLink" placeholder="Lien PDF (optionnel)">
+          <div><button class="btn-add" onclick="addLesson()">➕ Ajouter</button></div>
         </div>
         <div class="admin-list" id="adminLessonList"></div>
       </div>
     </div>
-
-    <!-- ── QCM ── -->
     <div class="admin-pane" id="ap-qcm">
       <div class="admin-section">
         <div class="admin-section-title">➕ Ajouter un QCM</div>
         <div class="admin-form">
           <div class="admin-row-3">
-            <select class="admin-select" id="qYear">
-              <option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option>
-              <option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option>
-            </select>
-            <input class="admin-input" type="text" id="qUnite" placeholder="Unité (ex: Unité 1) — optionnel">
-            <input class="admin-input" type="text" id="qModule" placeholder="Module (ex: Immunologie)">
+            <select class="admin-select" id="qYear"><option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option><option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option></select>
+            <input class="admin-input" type="text" id="qUnite" placeholder="Unité (optionnel)">
+            <input class="admin-input" type="text" id="qModule" placeholder="Module">
           </div>
-          <input class="admin-input" type="text" id="qLesson" placeholder="Cours concerné (ex: Introduction à l'Immunologie)">
+          <input class="admin-input" type="text" id="qLesson" placeholder="Cours (optionnel)">
           <textarea class="admin-textarea" id="qQuestion" placeholder="La question..."></textarea>
           <div class="choices-grid">
             <div class="choice-row"><span class="choice-letter">A</span><input class="admin-input" type="text" id="qA" placeholder="Choix A"></div>
@@ -521,7 +520,7 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
             <div class="choice-row"><span class="choice-letter">E</span><input class="admin-input" type="text" id="qE" placeholder="Choix E"></div>
           </div>
           <div>
-            <div style="font-size:.75rem;color:var(--text2);margin-bottom:.4rem">✅ Réponses correctes (plusieurs possibles) :</div>
+            <div style="font-size:.72rem;color:var(--text2);margin-bottom:.3rem">✅ Réponses correctes :</div>
             <div class="correct-checks">
               <label class="correct-check"><input type="checkbox" id="cA"> A</label>
               <label class="correct-check"><input type="checkbox" id="cB"> B</label>
@@ -530,239 +529,292 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
               <label class="correct-check"><input type="checkbox" id="cE"> E</label>
             </div>
           </div>
-          <div><button class="btn-add" onclick="addQCM()">➕ Ajouter le QCM</button></div>
+          <div><button class="btn-add" onclick="addQCM()">➕ Ajouter</button></div>
         </div>
         <div class="admin-list" id="adminQCMList"></div>
       </div>
     </div>
-
-    <!-- ── EXAMS ── -->
     <div class="admin-pane" id="ap-exams">
       <div class="admin-section">
-        <div class="admin-section-title">➕ Ajouter un Examen Passé</div>
+        <div class="admin-section-title">➕ Ajouter un Examen</div>
         <div class="admin-form">
           <div class="admin-row">
-            <select class="admin-select" id="eYear">
-              <option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option>
-              <option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option>
-            </select>
+            <select class="admin-select" id="eYear"><option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option><option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option></select>
             <input class="admin-input" type="text" id="ePromo" placeholder="Promo (ex: Promo 2023)">
           </div>
           <div class="admin-row">
-            <input class="admin-input" type="text" id="eUnite" placeholder="Unité (ex: Unité 1) — optionnel">
-            <input class="admin-input" type="text" id="eModule" placeholder="Module (ex: Immunologie)">
+            <input class="admin-input" type="text" id="eUnite" placeholder="Unité (optionnel)">
+            <input class="admin-input" type="text" id="eModule" placeholder="Module">
           </div>
-          <input class="admin-input" type="url" id="eLink" placeholder="Lien PDF de l'examen (Google Drive)">
-          <div><button class="btn-add" onclick="addExam()">➕ Ajouter l'examen</button></div>
+          <input class="admin-input" type="url" id="eLink" placeholder="Lien PDF">
+          <div><button class="btn-add" onclick="addExam()">➕ Ajouter</button></div>
         </div>
         <div class="admin-list" id="adminExamList"></div>
       </div>
     </div>
-
-    <!-- ── DRIVE ── -->
     <div class="admin-pane" id="ap-drive">
       <div class="admin-section">
-        <div class="admin-section-title">☁️ Liens Google Drive par Année</div>
+        <div class="admin-section-title">☁️ Liens Drive par Année</div>
         <div id="adminDriveList"></div>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- MAIN APP -->
-<div class="page-wrapper" id="mainApp" style="display:none">
-  <nav class="navbar">
-    <div class="container">
-      <div><div class="nav-logo">MED<span class="x">X</span></div><div class="nav-sub">Faculté de Médecine · Oran</div></div>
-      <div class="nav-right">
-        <div class="xp-badge" onclick="scrollToLB()"><span>⚡</span><span class="xp-val" id="navXP">0 XP</span></div>
-        <div style="display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:100px;padding:4px 12px 4px 4px;cursor:pointer;flex-shrink:0">
-          <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0" id="navAvatar"></div>
-          <span class="user-name" id="navName">...</span>
+<div id="mainApp" style="display:none;flex-direction:column;height:100vh">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-logo">MED<span class="x">X</span></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-page-title" id="topbarTitle">Accueil</div>
+    <div class="topbar-right">
+      <div class="xp-badge" id="navXP">0 XP</div>
+      <div class="nav-dot"></div>
+      <div class="topbar-avatar-wrap">
+        <div class="topbar-avatar" id="navAvatar"></div>
+        <span class="topbar-username" id="navName">...</span>
+      </div>
+      <button class="btn-admin-top hidden" id="adminNavBtn" onclick="openAdmin()">⚙️ Admin</button>
+      <button class="btn-logout" onclick="doLogout()">🚪</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay hidden" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <!-- User info -->
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar" id="sidebarAvatar" onclick="document.getElementById('avatarInput').click()"></div>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebarName">...</div>
+          <div class="sidebar-user-year" id="sidebarYear">...</div>
         </div>
-        <button class="admin-btn hidden" id="adminNavBtn" onclick="openAdmin()">⚙️ Admin</button>
-        <button class="logout-btn" onclick="doLogout()">Déconnexion</button>
-        <div class="nav-dot"></div>
+      </div>
+      <!-- XP bar -->
+      <div class="sidebar-xp-bar">
+        <div class="sidebar-xp-top">
+          <span id="sidebarLvlLabel">Niv. 1</span>
+          <span class="sidebar-xp-lvl" id="sidebarXpVal">0 XP</span>
+        </div>
+        <div class="sidebar-bar"><div class="sidebar-bar-fill" id="sidebarBarFill" style="width:0%"></div></div>
+      </div>
+      <!-- Nav -->
+      <div class="sidebar-nav">
+        <div class="nav-section">Menu</div>
+        <div class="nav-item active" data-view="home" onclick="navTo('home',this)">
+          <span class="nav-item-icon">🏠</span> Accueil
+        </div>
+        <div class="nav-item" data-view="classement" onclick="navTo('classement',this)">
+          <span class="nav-item-icon">🏆</span> Classement
+        </div>
+        <div class="nav-item" data-view="avis" onclick="navTo('avis',this)">
+          <span class="nav-item-icon">💬</span> Avis
+        </div>
+
+        <div class="nav-section" style="margin-top:.5rem">Choisir une Année</div>
+        <div class="sidebar-year-selector" id="yearSelector"></div>
+
+        <!-- Sub-nav for selected year -->
+        <div id="yearSubNav" class="hidden">
+          <div class="nav-section" style="margin-top:.3rem">Contenu</div>
+          <div class="nav-item" data-view="cours" onclick="navTo('cours',this)">
+            <span class="nav-item-icon">📖</span> Cours
+          </div>
+          <div class="nav-item" data-view="qcm" onclick="navTo('qcm',this)">
+            <span class="nav-item-icon">🧩</span> QCM
+          </div>
+          <div class="nav-item" data-view="examens" onclick="navTo('examens',this)">
+            <span class="nav-item-icon">📄</span> Examens passés
+          </div>
+          <div class="nav-item" data-view="drive" onclick="navTo('drive',this)">
+            <span class="nav-item-icon">☁️</span> Drive Promo
+          </div>
+          <div class="nav-item" data-view="rooms" onclick="navTo('rooms',this)">
+            <span class="nav-item-icon">🎙️</span> Salles d'étude
+          </div>
+        </div>
       </div>
     </div>
-  </nav>
 
-  <section class="hero">
-    <div class="container">
-      <div class="hero-pill afu"><span style="font-size:.45rem;animation:pulse 2s infinite">●</span> Bibliothèque Médicale Numérique</div>
-      <h1 class="afu d1">Bienvenue sur <span class="gradient-text">MEDX</span></h1>
-      <p class="afu d2">Cours, QCM, examens passés — organisés par année et par module.</p>
-    </div>
-  </section>
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="content-area">
 
-  <main class="container" style="padding-bottom:4rem">
-    <div class="profile-bar afu d2">
-      <div class="profile-card">
-        <h3>Mon Profil</h3>
-        <div class="profile-top">
-          <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('avatarInput').click()" title="Changer la photo">
-            <span id="profileAvatarInitial">?</span>
-            <div class="avatar-overlay">📷<br>Changer</div>
-          </div>
-          <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
-          <div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <div class="profile-name" id="profileName">...</div>
-              <button onclick="openEditName()" title="Modifier le nom" style="background:var(--surface3);border:1px solid var(--border2);border-radius:6px;padding:2px 7px;font-size:.7rem;color:var(--muted);transition:all var(--t)" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">✏️</button>
+        <!-- HOME VIEW -->
+        <div class="view active" id="view-home">
+          <div class="home-stats afu">
+            <div class="stat-card">
+              <div class="stat-icon" style="background:var(--blue-dim)">📚</div>
+              <div><div class="stat-val" style="color:var(--blue)">6</div><div class="stat-lbl">Années</div></div>
             </div>
-            <div class="profile-year-lbl" id="profileYear">...</div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:var(--accent-dim)">📖</div>
+              <div><div class="stat-val" style="color:var(--accent)" id="statLessons">0</div><div class="stat-lbl">Cours</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:var(--red-dim)">🧩</div>
+              <div><div class="stat-val" style="color:var(--red)" id="statQCM">0</div><div class="stat-lbl">QCM</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:var(--green-dim)">👥</div>
+              <div><div class="stat-val" style="color:var(--green)" id="statStudents">0</div><div class="stat-lbl">Étudiants</div></div>
+            </div>
+          </div>
+          <div class="home-profile afu d2">
+            <div class="profile-card">
+              <div class="profile-card-title">Mon Profil</div>
+              <div class="profile-top">
+                <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('avatarInput').click()" title="Changer la photo">
+                  <span id="profileAvatarInitial">?</span>
+                  <div class="avatar-overlay">📷<br>Changer</div>
+                </div>
+                <div>
+                  <div class="profile-name-row">
+                    <div class="profile-name" id="profileName">...</div>
+                    <button class="btn-edit-name" onclick="openEditName()">✏️</button>
+                  </div>
+                  <div class="profile-year-lbl" id="profileYear">...</div>
+                </div>
+              </div>
+              <div class="profile-xp-row">
+                <div><div class="xp-total" id="profileXP">0</div><div class="xp-label">XP Total</div></div>
+                <div style="text-align:right"><div class="level-label" id="profileLevel">Niveau 1</div><div class="level-sub">Niveau actuel</div></div>
+              </div>
+              <div class="level-bar-wrap">
+                <div class="level-info"><span id="levelMin">Niv. 1</span><span id="levelMax">Niv. 2</span></div>
+                <div class="level-bar"><div class="level-fill" id="levelFill" style="width:0%"></div></div>
+                <div class="level-progress-text" id="levelProgress"></div>
+              </div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">Comment gagner des XP</div>
+              <div class="xp-actions">
+                <div class="xp-action-item"><span>📖 Ouvrir un cours</span><span class="xp-pill">+5 XP</span></div>
+                <div class="xp-action-item"><span>🧩 Compléter un QCM</span><span class="xp-pill">+30 XP</span></div>
+                <div class="xp-action-item"><span>📅 Connexion quotidienne</span><span class="xp-pill">+10 XP</span></div>
+                <div class="xp-action-item"><span>📄 Télécharger un examen</span><span class="xp-pill">+15 XP</span></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div style="display:flex;align-items:flex-end;justify-content:space-between">
-          <div><div class="xp-total" id="profileXP">0</div><div class="xp-label">XP Total</div></div>
-          <div style="text-align:right"><div style="font-family:var(--ff);font-size:1.1rem;font-weight:800;color:var(--blue)" id="profileLevel">Niveau 1</div><div class="xp-label">Niveau actuel</div></div>
-        </div>
-        <div class="level-bar-wrap">
-          <div class="level-info"><span id="levelMin"></span><span id="levelMax"></span></div>
-          <div class="level-bar"><div class="level-fill" id="levelFill" style="width:0%"></div></div>
-          <div style="text-align:center;font-size:.68rem;color:var(--muted);margin-top:.3rem" id="levelProgress"></div>
-        </div>
-      </div>
-      <div class="profile-card">
-        <h3>Comment gagner des XP</h3>
-        <div class="xp-actions">
-          <div class="xp-action-item"><span>📖 Ouvrir un cours</span><span class="xp-pill">+5 XP</span></div>
-          <div class="xp-action-item"><span>🧩 Compléter un QCM</span><span class="xp-pill">+30 XP</span></div>
-          <div class="xp-action-item"><span>📅 Connexion quotidienne</span><span class="xp-pill">+10 XP</span></div>
-          <div class="xp-action-item"><span>📄 Télécharger un examen</span><span class="xp-pill">+15 XP</span></div>
-        </div>
-      </div>
-    </div>
 
-    <div class="stats-bar afu d3">
-      <div class="stat-card"><div class="stat-icon" style="background:var(--blue-dim)">📚</div><div><div class="stat-val" style="color:var(--blue)">6</div><div class="stat-lbl">Années</div></div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:var(--accent-dim)">📖</div><div><div class="stat-val" style="color:var(--accent)" id="statLessons">0</div><div class="stat-lbl">Cours</div></div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:var(--red-dim)">🧩</div><div><div class="stat-val" style="color:var(--red)" id="statQCM">0</div><div class="stat-lbl">QCM</div></div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:var(--green-dim)">👥</div><div><div class="stat-val" style="color:var(--green)" id="statStudents">0</div><div class="stat-lbl">Étudiants</div></div></div>
-    </div>
-
-    <div class="section-label afu d4">Choisir une année</div>
-    <div class="years-grid" id="yearsGrid"></div>
-    <div class="empty-state" id="emptyState"><div class="empty-icon">👆</div><p>Sélectionne une année pour commencer</p></div>
-
-    <div id="yearContent" class="hidden">
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="cours">📖 Cours</button>
-        <button class="tab-btn" data-tab="qcm">🧩 QCM</button>
-        <button class="tab-btn" data-tab="examens">📄 Examens passés</button>
-        <button class="tab-btn" data-tab="drive">☁️ Drive Promo</button>
-        <button class="tab-btn" data-tab="rooms">🎙️ Salles d'étude</button>
-      </div>
-      <div class="tab-pane" data-pane="cours">
-        <div class="section-label" id="modulesLabel">Modules</div>
-        <div id="coursContainer"></div>
-        <div class="panel hidden" id="lessonsPanel">
-          <div class="panel-header">
-            <div class="panel-title" id="lessonsPanelTitle">📖 Cours</div>
-            <button class="btn-ghost" onclick="closePanel()">← Retour</button>
+        <!-- COURS VIEW -->
+        <div class="view" id="view-cours">
+          <div class="view-header">
+            <div class="view-title" id="coursTitle">📖 Cours</div>
           </div>
-          <div class="panel-body" id="lessonsList"></div>
-        </div>
-      </div>
-      <div class="tab-pane hidden" data-pane="qcm">
-        <div id="qcmContainer"></div>
-      </div>
-      <div class="tab-pane hidden" data-pane="examens">
-        <div id="examsContainer"></div>
-      </div>
-      <div class="tab-pane hidden" data-pane="drive">
-        <div class="section-label">Drive de la Promo</div>
-        <div id="driveGrid"></div>
-      </div>
-      <div class="tab-pane hidden" data-pane="rooms">
-        <div id="activeRoomBox"></div>
-        <div class="rooms-header">
-          <div class="section-label" style="margin:0">Salles d'étude en direct</div>
-          <button class="btn-create-room" onclick="openCreateRoom()">➕ Créer une salle</button>
-        </div>
-        <div class="rooms-grid" id="roomsGrid"><div class="lb-loading">Chargement des salles...</div></div>
-      </div>
-    </div>
-
-    <div style="margin-top:3rem" id="lbSection">
-      <div class="section-label">🏆 Classement MEDX</div>
-      <div class="lb-tabs">
-        <div class="lb-tab active" onclick="switchLB('global',this)">🌍 Global</div>
-        <div class="lb-tab" onclick="switchLB('year',this)">📅 Ma Promotion</div>
-      </div>
-      <div class="lb-list" id="lbList"><div class="lb-loading">Chargement...</div></div>
-    </div>
-  </main>
-
-  <!-- AVIS -->
-  <section class="avis-section">
-    <div class="container">
-      <div class="section-label">💬 Avis des Étudiants</div>
-
-      <!-- Add review box -->
-      <div class="avis-add-box">
-        <div class="avis-add-title">✍️ Partager ton avis</div>
-        <div class="avis-stars-row" id="starsRow">
-          <button class="star-btn" data-v="1" onclick="setStars(1)">★</button>
-          <button class="star-btn" data-v="2" onclick="setStars(2)">★</button>
-          <button class="star-btn" data-v="3" onclick="setStars(3)">★</button>
-          <button class="star-btn" data-v="4" onclick="setStars(4)">★</button>
-          <button class="star-btn" data-v="5" onclick="setStars(5)">★</button>
-        </div>
-        <div class="avis-add-row">
-          <textarea class="avis-textarea" id="avisInput" placeholder="Partage ton expérience avec MEDX..."></textarea>
-          <button class="btn-avis" onclick="submitAvis()">➤ Envoyer</button>
-        </div>
-      </div>
-
-      <!-- Reviews list -->
-      <div class="avis-grid" id="avisList">
-        <div class="avis-empty">Chargement des avis...</div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="nav-logo footer-brand">MED<span class="x">X</span></div>
-          <p class="footer-desc">Plateforme numérique de révision médicale pour les étudiants de la Faculté de Médecine d'Oran.</p>
-        </div>
-        <div>
-          <div class="footer-col-title">Navigation</div>
-          <div class="footer-links">
-            <a href="#" onclick="document.querySelector('.years-grid').scrollIntoView({behavior:'smooth'})">📚 Cours</a>
-            <a href="#" onclick="document.getElementById('lbSection').scrollIntoView({behavior:'smooth'})">🏆 Classement</a>
-            <a href="#" onclick="document.querySelector('.avis-section').scrollIntoView({behavior:'smooth'})">💬 Avis</a>
+          <div id="coursContainer"></div>
+          <div class="panel hidden" id="lessonsPanel">
+            <div class="panel-header">
+              <div class="panel-title" id="lessonsPanelTitle">📖 Cours</div>
+              <button class="btn-ghost" onclick="closePanel()">← Retour</button>
+            </div>
+            <div class="panel-body" id="lessonsList"></div>
           </div>
         </div>
-        <div>
-          <div class="footer-col-title">Contact</div>
-          <div class="footer-links">
-            <a href="mailto:medx.oran@gmail.com">📧 Email</a>
-            <a href="#">💬 Telegram</a>
-            <a href="#">📱 Instagram</a>
+
+        <!-- QCM VIEW -->
+        <div class="view" id="view-qcm">
+          <div class="view-header">
+            <div class="view-title" id="qcmTitle">🧩 QCM</div>
+          </div>
+          <div id="qcmContainer"></div>
+        </div>
+
+        <!-- EXAMENS VIEW -->
+        <div class="view" id="view-examens">
+          <div class="view-header">
+            <div class="view-title" id="examensTitle">📄 Examens Passés</div>
+          </div>
+          <div id="examsContainer"></div>
+        </div>
+
+        <!-- DRIVE VIEW -->
+        <div class="view" id="view-drive">
+          <div class="view-header">
+            <div class="view-title">☁️ Drive Promo</div>
+          </div>
+          <div id="driveGrid"></div>
+        </div>
+
+        <!-- ROOMS VIEW (Discord style) -->
+        <div class="view" id="view-rooms" style="padding:0;margin:-1.5rem">
+          <div class="discord-layout" style="height:calc(100vh - var(--topbar))">
+            <!-- Channels sidebar -->
+            <div class="discord-sidebar">
+              <div class="discord-server-header">
+                <div class="discord-server-name" id="discordServerName">🎙️ Salles</div>
+              </div>
+              <div class="discord-channels" id="discordChannels"></div>
+            </div>
+            <!-- Main area -->
+            <div class="discord-main">
+              <div id="discordContent">
+                <div class="dc-empty">
+                  <div class="dc-empty-icon">🎙️</div>
+                  <div class="dc-empty-text">Sélectionne une catégorie</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="footer-bottom">
-        <span class="footer-copy">© 2025–2026 MED<span class="x">X</span> · Faculté de Médecine d'Oran</span>
-        <span class="footer-badge">⚡ Powered by Firebase</span>
+
+        <!-- CLASSEMENT VIEW -->
+        <div class="view" id="view-classement">
+          <div class="view-header">
+            <div class="view-title">🏆 Classement MEDX</div>
+          </div>
+          <div class="lb-tabs">
+            <div class="lb-tab active" onclick="switchLB('global',this)">🌍 Global</div>
+            <div class="lb-tab" onclick="switchLB('year',this)">📅 Ma Promotion</div>
+          </div>
+          <div class="lb-list" id="lbList"><div class="lb-loading">Chargement...</div></div>
+        </div>
+
+        <!-- AVIS VIEW -->
+        <div class="view" id="view-avis">
+          <div class="view-header">
+            <div class="view-title">💬 Avis des Étudiants</div>
+          </div>
+          <div class="avis-add-box">
+            <div class="avis-add-title">✍️ Partager ton avis</div>
+            <div class="avis-stars-row" id="starsRow">
+              <button class="star-btn active" data-v="1" onclick="setStars(1)">★</button>
+              <button class="star-btn active" data-v="2" onclick="setStars(2)">★</button>
+              <button class="star-btn active" data-v="3" onclick="setStars(3)">★</button>
+              <button class="star-btn active" data-v="4" onclick="setStars(4)">★</button>
+              <button class="star-btn active" data-v="5" onclick="setStars(5)">★</button>
+            </div>
+            <div class="avis-add-row">
+              <textarea class="avis-textarea" id="avisInput" placeholder="Partage ton expérience avec MEDX..."></textarea>
+              <button class="btn-avis" onclick="submitAvis()">➤ Envoyer</button>
+            </div>
+          </div>
+          <div class="avis-grid" id="avisList"><div class="avis-empty">Chargement...</div></div>
+        </div>
+
       </div>
     </div>
-  </footer>
+  </div>
 </div>
 
 <!-- EDIT NAME MODAL -->
-<div id="editNameModal" class="hidden" style="position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem">
+<div id="editNameModal" class="modal-overlay hidden">
   <div class="modal-box">
     <div class="modal-title">✏️ Modifier le nom</div>
     <div class="modal-form">
       <input class="form-input" type="text" id="newNameInput" placeholder="Nouveau nom...">
       <div class="modal-actions">
-        <button class="btn-auth" style="margin-top:0" onclick="saveName()">💾 Sauvegarder</button>
+        <button class="btn-auth" style="margin-top:0;width:auto;padding:8px 16px" onclick="saveName()">💾 Sauvegarder</button>
         <button class="btn-ghost" onclick="document.getElementById('editNameModal').classList.add('hidden')">Annuler</button>
       </div>
     </div>
@@ -770,18 +822,14 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 </div>
 
 <!-- CREATE ROOM MODAL -->
-<div id="createRoomModal" class="hidden">
+<div id="createRoomModal" class="modal-overlay hidden">
   <div class="modal-box">
-    <div class="modal-title">🎙️ Créer une salle d'étude</div>
+    <div class="modal-title">🎙️ Créer une salle</div>
     <div class="modal-form">
-      <select class="form-select" id="roomYear">
-        <option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option>
-        <option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option>
-      </select>
-      <input class="form-input" type="text" id="roomModule" placeholder="Module (ex: Immunologie)">
       <input class="form-input" type="text" id="roomName" placeholder="Nom de la salle (ex: Révision partiel)">
+      <input class="form-input" type="text" id="roomModule" placeholder="Module (ex: Immunologie)">
       <div class="modal-actions">
-        <button class="btn-auth" style="margin-top:0" onclick="createRoom()">🚀 Créer</button>
+        <button class="btn-auth" style="margin-top:0;width:auto;padding:8px 16px" onclick="createRoom()">🚀 Créer</button>
         <button class="btn-ghost" onclick="closeCreateRoom()">Annuler</button>
       </div>
     </div>
@@ -794,58 +842,52 @@ a{color:inherit;text-decoration:none}button{font-family:var(--fb);cursor:pointer
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.20.0.js"></script>
 <script>
+// ── FIREBASE ──
 const app=firebase.initializeApp({apiKey:"AIzaSyB7p3phF_ex1EY5bj3Wu3R9-CtOJnqHieA",authDomain:"medx-d67fb.firebaseapp.com",projectId:"medx-d67fb",storageBucket:"medx-d67fb.firebasestorage.app",messagingSenderId:"698164411256",appId:"1:698164411256:web:091edcae6c58749688a68d"});
 const auth=firebase.auth(),db=firebase.firestore();
-const increment=firebase.firestore.FieldValue.increment;
-const deleteField=()=>firebase.firestore.FieldValue.delete();
-function addDoc(col,data){return col.add(data);}
-function setDoc(ref,data,opts){return opts?ref.set(data,opts):ref.set(data);}
-async function getDoc(ref){const snap=await ref.get();return{exists:()=>snap.exists,data:()=>snap.data(),id:snap.id};}
-async function getDocs(q){const snap=await q.get();snap.forEach2=snap.forEach.bind(snap);return snap;}
-function updateDoc(ref,data){return ref.update(data);}
-function deleteDoc(ref){return ref.delete();}
-function doc(db,col,id){return id?db.collection(col).doc(id):db.collection(col).doc();}
-function collection(db,col){return db.collection(col);}
-function query(col,...constraints){let q=col;constraints.forEach(c=>q=c(q));return q;}
-function where(f,op,v){return q=>q.where(f,op,v);}
-function orderBy(f,dir){return q=>q.orderBy(f,dir||'asc');}
-function limit(n){return q=>q.limit(n);}
-function onSnapshot(ref,cb){return ref.onSnapshot(cb);}
-function onAuthStateChanged(auth,cb){return auth.onAuthStateChanged(cb);}
-function signOut(auth){return auth.signOut();}
-function createUserWithEmailAndPassword(auth,e,p){return auth.createUserWithEmailAndPassword(e,p);}
-function signInWithEmailAndPassword(auth,e,p){return auth.signInWithEmailAndPassword(e,p);}
+const FV=firebase.firestore.FieldValue;
 
+// ── CONSTANTS ──
 const LEVELS=[0,100,250,500,900,1500,2500,4000,6000,10000];
 const YL={1:"1ère Année",2:"2ème Année",3:"3ème Année",4:"4ème Année",5:"5ème Année",6:"6ème Année"};
+const AGORA_APP_ID='f19452a586d7415f9205fdef9209d8f8';
 
-function getLevel(xp){let l=1;LEVELS.forEach((v,i)=>{if(xp>=v)l=i+1});return Math.min(l,10)}
-function getLevelProg(xp){const l=getLevel(xp)-1,cur=LEVELS[l]||0,next=LEVELS[l+1]||(LEVELS[l]+1000);return{cur,next,pct:Math.min(100,Math.round((xp-cur)/(next-cur)*100))}}
-function extractDriveId(url){const m=(url||'').match(/\/d\/([a-zA-Z0-9_-]+)/);return m?m[1]:null}
-
+// ── STATE ──
 let CU=null,UD=null,isAdmin=false,CY=null;
 let allLessons=[],allQCM=[],allExams=[];
 const driveLinks={1:"#",2:"#",3:"https://drive.google.com/drive/folders/1coBMUiI0stbz0BlmmZ3wwxlU33MrQzX5?usp=drive_link",4:"#",5:"#",6:"#"};
+let agoraClient=null,localAudioTrack=null,currentRoomId=null,micOn=true;
+let chatListener=null,roomsListener=null,membersListener=null;
+let selectedStars=5,currentDCYear=null,currentDCView='text';
+
+// ── HELPERS ──
+function getLevel(xp){let l=1;LEVELS.forEach((v,i)=>{if(xp>=v)l=i+1});return Math.min(l,10)}
+function getLevelProg(xp){const l=getLevel(xp)-1,cur=LEVELS[l]||0,next=LEVELS[l+1]||(LEVELS[l]+1000);return{cur,next,pct:Math.min(100,Math.round((xp-cur)/(next-cur)*100))}}
+function extractDriveId(url){const m=(url||'').match(/\/d\/([a-zA-Z0-9_-]+)/);return m?m[1]:null}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
+function showXPPopup(msg){const p=document.getElementById('xpPopup');p.textContent=msg;p.classList.add('show');clearTimeout(p._t);p._t=setTimeout(()=>p.classList.remove('show'),3000);}
 
 // ── AUTH ──
-onAuthStateChanged(auth,async user=>{
+auth.onAuthStateChanged(async user=>{
   if(user){
     CU=user;
-    const snap=await getDoc(doc(db,'users',user.uid));
-    if(snap.exists()){
+    const snap=await db.collection('users').doc(user.uid).get();
+    if(snap.exists){
       UD=snap.data();isAdmin=UD.isAdmin===true;
       const today=new Date().toDateString();
       if(UD.lastLogin!==today){
-        await updateDoc(doc(db,'users',user.uid),{xp:increment(10),lastLogin:today});
+        await db.collection('users').doc(user.uid).update({xp:FV.increment(10),lastLogin:today});
         UD.xp=(UD.xp||0)+10;showXPPopup('+10 XP — Connexion du jour ! 🎉');
       }
     }
     document.getElementById('authOverlay').style.display='none';
     document.getElementById('mainApp').style.display='flex';
     if(isAdmin)document.getElementById('adminNavBtn').classList.remove('hidden');
-    updateUI();buildYears();setupTabs();loadLB('global');loadStudentCount();
+    updateUI();buildYearSelector();loadLB('global');loadStudentCount();
     loadDriveLinks();startListeners();startPresence();loadAvis();
+    buildDiscordChannels();
   } else {
     document.getElementById('authOverlay').style.display='flex';
     document.getElementById('mainApp').style.display='none';
@@ -853,27 +895,33 @@ onAuthStateChanged(auth,async user=>{
   }
 });
 
+// ── UPDATE UI ──
 function updateUI(){
   if(!UD)return;
   const xp=UD.xp||0,name=UD.name||'Étudiant',init=name.charAt(0).toUpperCase(),y=parseInt(UD.year)||1,lvl=getLevel(xp),prog=getLevelProg(xp);
-  // nav avatar
+  // topbar avatar
   const navAv=document.getElementById('navAvatar');
   navAv.innerHTML='';
-  if(UD.photoURL){
-    const img=document.createElement('img');
-    img.src=UD.photoURL;
-    img.style.cssText='width:28px;height:28px;object-fit:cover;display:block;border-radius:50%';
-    navAv.appendChild(img);
-  } else {
-    navAv.textContent=init;
-  }
+  if(UD.photoURL){const img=document.createElement('img');img.src=UD.photoURL;img.style.cssText='width:28px;height:28px;object-fit:cover;display:block;border-radius:50%';navAv.appendChild(img);}
+  else navAv.textContent=init;
   document.getElementById('navName').textContent=name.split(' ')[0];
-  document.getElementById('navXP').textContent=xp+' XP';
-  // profile avatar
-  const profAv=document.getElementById('profileAvatar');
+  document.getElementById('navXP').textContent='⚡ '+xp+' XP';
+  // sidebar
+  const sbAv=document.getElementById('sidebarAvatar');
+  sbAv.innerHTML='';
+  if(UD.photoURL){const img=document.createElement('img');img.src=UD.photoURL;img.style.cssText='width:36px;height:36px;object-fit:cover;border-radius:50%';sbAv.appendChild(img);}
+  else sbAv.textContent=init;
+  document.getElementById('sidebarName').textContent=name;
+  document.getElementById('sidebarYear').textContent=YL[y]||'';
+  document.getElementById('sidebarLvlLabel').textContent='Niv. '+lvl+' → Niv. '+(lvl+1);
+  document.getElementById('sidebarXpVal').textContent=xp+' XP';
+  const sbFill=document.getElementById('sidebarBarFill');
+  sbFill.style.transition='none';sbFill.style.width='0%';
+  setTimeout(()=>{sbFill.style.transition='width .8s cubic-bezier(.4,0,.2,1)';sbFill.style.width=prog.pct+'%';},150);
+  // profile
   const profInit=document.getElementById('profileAvatarInitial');
-  if(UD.photoURL){profInit.innerHTML=`<img src="${UD.photoURL}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;position:absolute;inset:0">`;}
-  else{profInit.textContent=init;}
+  if(UD.photoURL)profInit.innerHTML=`<img src="${UD.photoURL}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;position:absolute;inset:0">`;
+  else profInit.textContent=init;
   document.getElementById('profileName').textContent=name;
   document.getElementById('profileYear').textContent=YL[y]||'';
   document.getElementById('profileXP').textContent=xp;
@@ -883,231 +931,182 @@ function updateUI(){
   const progEl=document.getElementById('levelProgress');
   if(progEl)progEl.textContent=xp+' / '+prog.next+' XP';
   const fill=document.getElementById('levelFill');
-  const currentWidth=parseFloat(fill.style.width)||0;
-  if(currentWidth===0){
-    // First load — animate from 0
-    fill.style.transition='none';fill.style.width='0%';
-    setTimeout(()=>{fill.style.transition='width .8s cubic-bezier(.4,0,.2,1)';fill.style.width=prog.pct+'%';},150);
-  } else {
-    // XP gained — animate smoothly from current
-    fill.style.transition='width .8s cubic-bezier(.4,0,.2,1)';
-    fill.style.width=prog.pct+'%';
-  }
+  const cw=parseFloat(fill.style.width)||0;
+  if(cw===0){fill.style.transition='none';fill.style.width='0%';setTimeout(()=>{fill.style.transition='width .8s cubic-bezier(.4,0,.2,1)';fill.style.width=prog.pct+'%';},150);}
+  else{fill.style.transition='width .8s cubic-bezier(.4,0,.2,1)';fill.style.width=prog.pct+'%';}
 }
 
 async function addXP(amount,reason){
   if(!CU||!UD)return;
-  await updateDoc(doc(db,'users',CU.uid),{xp:increment(amount)});
+  await db.collection('users').doc(CU.uid).update({xp:FV.increment(amount)});
   UD.xp=(UD.xp||0)+amount;updateUI();showXPPopup('+'+amount+' XP — '+reason);
 }
 
-// ── LISTENERS ──
-function startListeners(){
-  onSnapshot(collection(db,'lessons'),snap=>{
-    allLessons=snap.docs.map(d=>({id:d.id,...d.data()}));
-    document.getElementById('statLessons').textContent=allLessons.length;
-    buildYears();if(CY)renderCours(CY);if(isAdmin)renderAdminLessons();
-  });
-  onSnapshot(collection(db,'qcm'),snap=>{
-    allQCM=snap.docs.map(d=>({id:d.id,...d.data()}));
-    document.getElementById('statQCM').textContent=allQCM.length;
-    if(CY)renderQCM(CY);if(isAdmin)renderAdminQCM();
-  });
-  onSnapshot(collection(db,'exams'),snap=>{
-    allExams=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(CY)renderExams(CY);if(isAdmin)renderAdminExams();
-  });
+// ── NAVIGATION ──
+function navTo(view,el){
+  // deactivate all nav items
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');
+  // hide all views
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const vEl=document.getElementById('view-'+view);
+  if(vEl)vEl.classList.add('active');
+  // update topbar title
+  const titles={home:'Accueil',cours:'Cours',qcm:'QCM',examens:'Examens Passés',drive:'Drive Promo',rooms:'Salles d\'étude',classement:'Classement',avis:'Avis des Étudiants'};
+  document.getElementById('topbarTitle').textContent=titles[view]||view;
+  // rooms
+  if(view==='rooms')buildDiscordChannels();
+  // close sidebar on mobile
+  if(window.innerWidth<=768)closeSidebar();
 }
 
-async function loadStudentCount(){
-  try{const s=await getDocs(collection(db,'users'));document.getElementById('statStudents').textContent=s.size;}catch(e){}
-}
+// ── SIDEBAR TOGGLE ──
+window.toggleSidebar=()=>{
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sidebarOverlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('hidden',!sb.classList.contains('open'));
+};
+window.closeSidebar=()=>{
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
+};
 
-async function loadDriveLinks(){
-  try{const s=await getDoc(doc(db,'config','driveLinks'));if(s.exists())Object.assign(driveLinks,s.data());}catch(e){}
-}
-
-// ── YEARS ──
-function buildYears(){
-  const g=document.getElementById('yearsGrid');g.innerHTML='';
+// ── YEAR SELECTOR ──
+function buildYearSelector(){
+  const g=document.getElementById('yearSelector');g.innerHTML='';
   for(let y=1;y<=6;y++){
-    const c=document.createElement('div');c.className='year-card afu d'+Math.min(y,6);c.id='yc'+y;
     const cnt=allLessons.filter(l=>parseInt(l.year)===y).length;
-    c.innerHTML=`<div class="year-num">${y}</div><div class="year-label">Année</div><div class="year-badge">${cnt} cours</div>`;
-    c.onclick=()=>selectYear(y);g.appendChild(c);
+    const btn=document.createElement('button');btn.className='year-btn'+(CY===y?' active':'');
+    btn.innerHTML=`<div class="year-btn-num">${y}</div>${YL[y]}<span class="year-btn-count">${cnt}</span>`;
+    btn.onclick=()=>selectYear(y);
+    g.appendChild(btn);
   }
 }
 
 function selectYear(y){
   CY=y;
-  document.querySelectorAll('.year-card').forEach(c=>c.classList.remove('active'));
-  document.getElementById('yc'+y).classList.add('active');
-  document.getElementById('emptyState').classList.add('hidden');
-  document.getElementById('yearContent').classList.remove('hidden');
-  setTab('cours');closePanel();
-  renderCours(y);renderQCM(y);renderExams(y);renderDrive(y);
-  toast(YL[y]+' chargée ✓');
+  document.querySelectorAll('.year-btn').forEach((b,i)=>b.classList.toggle('active',i+1===y));
+  document.getElementById('yearSubNav').classList.remove('hidden');
+  // Set titles
+  document.getElementById('coursTitle').textContent='📖 Cours — '+YL[y];
+  document.getElementById('qcmTitle').textContent='🧩 QCM — '+YL[y];
+  document.getElementById('examensTitle').textContent='📄 Examens — '+YL[y];
+  document.getElementById('discordServerName').textContent='🎙️ '+YL[y];
+  renderCours(y);renderQCM(y);renderExams(y);renderDrive(y);buildDiscordChannels();
+  navTo('cours',document.querySelector('.nav-item[data-view="cours"]'));
+  toast(YL[y]+' sélectionnée ✓');
 }
+
+// ── LISTENERS ──
+function startListeners(){
+  db.collection('lessons').onSnapshot(snap=>{
+    allLessons=snap.docs.map(d=>({id:d.id,...d.data()}));
+    document.getElementById('statLessons').textContent=allLessons.length;
+    buildYearSelector();if(CY)renderCours(CY);if(isAdmin)renderAdminLessons();
+  });
+  db.collection('qcm').onSnapshot(snap=>{
+    allQCM=snap.docs.map(d=>({id:d.id,...d.data()}));
+    document.getElementById('statQCM').textContent=allQCM.length;
+    if(CY)renderQCM(CY);if(isAdmin)renderAdminQCM();
+  });
+  db.collection('exams').onSnapshot(snap=>{
+    allExams=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(CY)renderExams(CY);if(isAdmin)renderAdminExams();
+  });
+}
+
+async function loadStudentCount(){try{const s=await db.collection('users').get();document.getElementById('statStudents').textContent=s.size;}catch(e){}}
+async function loadDriveLinks(){try{const s=await db.collection('config').doc('driveLinks').get();if(s.exists)Object.assign(driveLinks,s.data());}catch(e){}}
 
 // ── COURS ──
 function renderCours(y){
-  document.getElementById('modulesLabel').textContent='Modules — '+YL[y];
   const yLessons=allLessons.filter(l=>parseInt(l.year)===y);
   const container=document.getElementById('coursContainer');
   if(yLessons.length===0){container.innerHTML='<div class="lb-loading">Aucun cours pour cette année encore 📚</div>';return;}
-
-  // Group by semUnite → module
   const groups={};
-  yLessons.forEach(l=>{
-    const su=l.semUnite||'Module seul';
-    if(!groups[su])groups[su]={};
-    if(!groups[su][l.module])groups[su][l.module]=[];
-    groups[su][l.module].push(l);
-  });
-
+  yLessons.forEach(l=>{const su=l.semUnite||'Module seul';if(!groups[su])groups[su]={};if(!groups[su][l.module])groups[su][l.module]=[];groups[su][l.module].push(l);});
   container.innerHTML='';
   Object.entries(groups).forEach(([su,modules])=>{
     const block=document.createElement('div');block.className='sem-block';
-    const isSem=su.startsWith('Semestre');
-    const isUnite=su.startsWith('Unité');
-    const isStandalone=su==='Module seul';
-
-    if(isSem){
+    if(su.startsWith('Semestre')){
       block.innerHTML=`<div class="sem-title">📅 ${su}</div>`;
       const mg=document.createElement('div');mg.className='modules-grid';
-      Object.entries(modules).forEach(([mod,lessons])=>{
-        mg.appendChild(makeModuleCard(mod,lessons));
-      });
+      Object.entries(modules).forEach(([mod,lessons])=>mg.appendChild(makeModuleCard(mod,lessons)));
       block.appendChild(mg);
-    } else if(isUnite){
+    } else if(su.startsWith('Unité')){
       const ub=document.createElement('div');ub.className='unite-block';
       ub.innerHTML=`<div class="unite-title">🔷 ${su}</div>`;
       const mg=document.createElement('div');mg.className='modules-grid';
-      Object.entries(modules).forEach(([mod,lessons])=>{
-        mg.appendChild(makeModuleCard(mod,lessons));
-      });
+      Object.entries(modules).forEach(([mod,lessons])=>mg.appendChild(makeModuleCard(mod,lessons)));
       ub.appendChild(mg);block.appendChild(ub);
     } else {
-      // standalone
-      block.innerHTML=`<div style="font-size:.72rem;color:var(--muted);font-weight:600;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.06em">📦 Modules indépendants</div>`;
       const mg=document.createElement('div');mg.className='modules-grid';
-      Object.entries(modules).forEach(([mod,lessons])=>{
-        mg.appendChild(makeModuleCard(mod,lessons));
-      });
+      Object.entries(modules).forEach(([mod,lessons])=>mg.appendChild(makeModuleCard(mod,lessons)));
       block.appendChild(mg);
     }
     container.appendChild(block);
   });
 }
-
 function makeModuleCard(mod,lessons){
   const c=document.createElement('div');c.className='module-card';
   c.innerHTML=`<div class="module-emoji">📚</div><div class="module-info"><h3>${mod}</h3><span>${lessons.length} cours</span></div>`;
-  c.onclick=()=>openLessons(mod,lessons);
-  return c;
+  c.onclick=()=>openLessons(mod,lessons);return c;
 }
-
 function openLessons(mod,lessons){
-  document.getElementById('lessonsPanelTitle').textContent='📚  '+mod;
+  document.getElementById('lessonsPanelTitle').textContent='📚 '+mod;
   const ll=document.getElementById('lessonsList');ll.innerHTML='';
   lessons.forEach((l,i)=>{
     const d=document.createElement('div');d.className='lesson-item';
     const hasLink=l.link&&l.link!=='#';
     d.innerHTML=`<div class="lesson-num">${String(i+1).padStart(2,'0')}</div><div class="lesson-name">${l.name}</div>${hasLink?'<span class="lesson-open">📄 Ouvrir</span>':'<span class="lesson-soon">Bientôt</span>'}`;
-    if(hasLink){d.onclick=()=>{openPDF(l.name,l.link);addXP(5,'Cours ouvert 📖');};}
+    if(hasLink)d.onclick=()=>{openPDF(l.name,l.link);addXP(5,'Cours ouvert 📖');};
     ll.appendChild(d);
   });
   const p=document.getElementById('lessonsPanel');p.classList.remove('hidden');
   setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
 }
-
 window.closePanel=()=>document.getElementById('lessonsPanel').classList.add('hidden');
 
 // ── QCM ──
 function renderQCM(y){
   const container=document.getElementById('qcmContainer');
   const yQCM=allQCM.filter(q=>parseInt(q.year)===y);
-  if(yQCM.length===0){container.innerHTML='<div class="lb-loading" style="padding:3rem;text-align:center">Aucun QCM pour cette année encore 🧩</div>';return;}
-
-  // Filter buttons by module
+  if(yQCM.length===0){container.innerHTML='<div class="lb-loading" style="padding:2rem;text-align:center">Aucun QCM pour cette année encore 🧩</div>';return;}
   const modules=[...new Set(yQCM.map(q=>q.module))];
-  let activeFilter='all';
-
-  const filterHtml=`<div class="qcm-filter" id="qcmFilter">
-    <div class="qcm-filter-btn active" onclick="filterQCM('all',this)">Tous (${yQCM.length})</div>
-    ${modules.map(m=>`<div class="qcm-filter-btn" onclick="filterQCM('${m}',this)">${m}</div>`).join('')}
-  </div><div class="qcm-container" id="qcmList"></div>`;
-  container.innerHTML=filterHtml;
+  container.innerHTML=`<div class="qcm-filter" id="qcmFilter"><div class="qcm-filter-btn active" onclick="filterQCM('all',this)">Tous (${yQCM.length})</div>${modules.map(m=>`<div class="qcm-filter-btn" onclick="filterQCM('${m}',this)">${m}</div>`).join('')}</div><div class="qcm-container" id="qcmList"></div>`;
   renderQCMList(yQCM);
-
-  window.filterQCM=(mod,btn)=>{
-    document.querySelectorAll('.qcm-filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const filtered=mod==='all'?yQCM:yQCM.filter(q=>q.module===mod);
-    renderQCMList(filtered);
-  };
+  window.filterQCM=(mod,btn)=>{document.querySelectorAll('.qcm-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderQCMList(mod==='all'?yQCM:yQCM.filter(q=>q.module===mod));};
 }
-
 function renderQCMList(qcms){
-  const list=document.getElementById('qcmList');
-  if(!list)return;
-  list.innerHTML='';
+  const list=document.getElementById('qcmList');if(!list)return;list.innerHTML='';
   qcms.forEach((q,idx)=>{
     const card=document.createElement('div');card.className='qcm-card';
     const letters=['A','B','C','D','E'];
     const choices=letters.map((l,i)=>q['choice'+l]?{letter:l,text:q['choice'+l]}:null).filter(Boolean);
-    card.innerHTML=`
-      <div class="qcm-num">Question ${idx+1} · ${q.module}${q.lesson?' · '+q.lesson:''}</div>
-      <div class="qcm-question">${q.question}</div>
-      <div class="qcm-choices" id="choices-${q.id}">
-        ${choices.map(c=>`<div class="qcm-choice" data-letter="${c.letter}" onclick="selectChoice(this,'${q.id}')">
-          <div class="qcm-choice-letter">${c.letter}</div><span>${c.text}</span>
-        </div>`).join('')}
-      </div>
-      <div class="qcm-actions">
-        <button class="btn-submit" onclick="submitQCM('${q.id}',${JSON.stringify(q.correct)})">Valider</button>
-        <div class="qcm-result hidden" id="res-${q.id}"></div>
-      </div>`;
+    card.innerHTML=`<div class="qcm-num">Q${idx+1} · ${q.module}${q.lesson?' · '+q.lesson:''}</div><div class="qcm-question">${q.question}</div><div class="qcm-choices" id="choices-${q.id}">${choices.map(c=>`<div class="qcm-choice" data-letter="${c.letter}" onclick="selectChoice(this,'${q.id}')"><div class="qcm-choice-letter">${c.letter}</div><span>${c.text}</span></div>`).join('')}</div><div class="qcm-actions"><button class="btn-submit" onclick="submitQCM('${q.id}',${JSON.stringify(q.correct)})">Valider</button><div class="qcm-result hidden" id="res-${q.id}"></div></div>`;
     list.appendChild(card);
   });
 }
-
-window.selectChoice=(el,qid)=>{el.classList.toggle('selected');};
-
+window.selectChoice=(el)=>el.classList.toggle('selected');
 window.submitQCM=(qid,correct)=>{
   const choicesEl=document.querySelectorAll(`#choices-${qid} .qcm-choice`);
   const selected=[...choicesEl].filter(c=>c.classList.contains('selected')).map(c=>c.dataset.letter);
-  const correctSet=new Set(correct);
-  const selectedSet=new Set(selected);
-  let allCorrect=correctSet.size===selectedSet.size&&[...correctSet].every(c=>selectedSet.has(c));
-  choicesEl.forEach(c=>{
-    c.classList.remove('selected');
-    if(correctSet.has(c.dataset.letter))c.classList.add('correct');
-    else if(selectedSet.has(c.dataset.letter))c.classList.add('wrong');
-    c.onclick=null;
-  });
-  const res=document.getElementById('res-'+qid);
-  res.classList.remove('hidden');
-  if(allCorrect){res.className='qcm-result ok';res.textContent='✅ Bonne réponse !';addXP(30,'QCM réussi 🧩');}
-  else{res.className='qcm-result ko';res.textContent='❌ Réponse incorrecte — Correcte(s): '+correct.join(', ');}
+  const cSet=new Set(correct),sSet=new Set(selected);
+  const ok=cSet.size===sSet.size&&[...cSet].every(c=>sSet.has(c));
+  choicesEl.forEach(c=>{c.classList.remove('selected');if(cSet.has(c.dataset.letter))c.classList.add('correct');else if(sSet.has(c.dataset.letter))c.classList.add('wrong');c.onclick=null;});
+  const res=document.getElementById('res-'+qid);res.classList.remove('hidden');
+  if(ok){res.className='qcm-result ok';res.textContent='✅ Bonne réponse !';addXP(30,'QCM réussi 🧩');}
+  else{res.className='qcm-result ko';res.textContent='❌ Incorrecte — Correcte(s): '+correct.join(', ');}
 };
 
 // ── EXAMS ──
 function renderExams(y){
   const container=document.getElementById('examsContainer');
   const yExams=allExams.filter(e=>parseInt(e.year)===y);
-  if(yExams.length===0){container.innerHTML='<div class="lb-loading" style="padding:3rem;text-align:center">Aucun examen pour cette année encore 📄</div>';return;}
-
-  // Group by promo → unite → module
+  if(yExams.length===0){container.innerHTML='<div class="lb-loading" style="padding:2rem;text-align:center">Aucun examen encore 📄</div>';return;}
   const promos={};
-  yExams.forEach(e=>{
-    const p=e.promo||'Promo ?';
-    if(!promos[p])promos[p]={};
-    const u=e.unite||'__none__';
-    if(!promos[p][u])promos[p][u]=[];
-    promos[p][u].push(e);
-  });
-
+  yExams.forEach(e=>{const p=e.promo||'Promo ?';if(!promos[p])promos[p]={};const u=e.unite||'__none__';if(!promos[p][u])promos[p][u]=[];promos[p][u].push(e);});
   container.innerHTML='';
   Object.entries(promos).sort((a,b)=>b[0].localeCompare(a[0])).forEach(([promo,unites])=>{
     const pb=document.createElement('div');pb.className='promo-block';
@@ -1120,7 +1119,7 @@ function renderExams(y){
         const fileId=extractDriveId(e.link||'');
         const dlUrl=fileId?`https://drive.google.com/uc?export=download&id=${fileId}`:e.link;
         const item=document.createElement('div');item.className='exam-item';
-        item.innerHTML=`<div class="exam-module-name">📄 ${e.module}</div>${hasLink?`<a class="exam-dl" href="${dlUrl}" target="_blank" onclick="addXP(15,'Examen téléchargé 📄')">⬇ Télécharger</a><button class="exam-dl" style="margin-left:.3rem" onclick="openPDF('${e.module} — ${promo}','${e.link}')">👁 Voir</button>`:'<span class="exam-dl disabled">Bientôt</span>'}`;
+        item.innerHTML=`<div class="exam-module-name">📄 ${e.module}</div>${hasLink?`<a class="exam-dl" href="${dlUrl}" target="_blank" onclick="addXP(15,'Examen téléchargé 📄')">⬇ Télécharger</a><button class="exam-dl" style="margin-left:.3rem" onclick="openPDF('${e.module}','${e.link}')">👁 Voir</button>`:'<span class="exam-dl disabled">Bientôt</span>'}`;
         ub.appendChild(item);
       });
       pb.appendChild(ub);
@@ -1132,17 +1131,15 @@ function renderExams(y){
 // ── DRIVE ──
 function renderDrive(y){
   const link=driveLinks[y]||'#',has=link&&link!=='#';
-  document.getElementById('driveGrid').innerHTML=`<div class="drive-box afu"><div class="drive-big-icon">☁️</div><h3>Drive Promo — ${YL[y]}</h3><p>Tous les fichiers partagés de ta promo :<br>cours PDF, fiches, vidéos, examens corrigés.</p>${has?`<a class="drive-btn" href="${link}" target="_blank" rel="noopener">📂 Ouvrir le Drive</a>`:`<a class="drive-btn disabled">🔒 Lien bientôt disponible</a><div class="drive-coming">Le lien sera ajouté prochainement</div>`}</div>`;
+  document.getElementById('driveGrid').innerHTML=`<div class="drive-box"><div class="drive-big-icon">☁️</div><h3>Drive — ${YL[y]}</h3><p>Tous les fichiers partagés : cours PDF, fiches, vidéos, examens corrigés.</p>${has?`<a class="drive-btn" href="${link}" target="_blank">📂 Ouvrir le Drive</a>`:`<div class="drive-btn disabled">🔒 Bientôt disponible</div><div class="drive-coming">Le lien sera ajouté prochainement</div>`}</div>`;
 }
 
 // ── PDF ──
 function openPDF(name,link){
   const fileId=extractDriveId(link);
-  const viewUrl=fileId?`https://drive.google.com/file/d/${fileId}/preview`:link;
-  const dlUrl=fileId?`https://drive.google.com/uc?export=download&id=${fileId}`:link;
   document.getElementById('pdfTitle').textContent=name;
-  document.getElementById('pdfFrame').src=viewUrl;
-  document.getElementById('pdfDlBtn').href=dlUrl;
+  document.getElementById('pdfFrame').src=fileId?`https://drive.google.com/file/d/${fileId}/preview`:link;
+  document.getElementById('pdfDlBtn').href=fileId?`https://drive.google.com/uc?export=download&id=${fileId}`:link;
   document.getElementById('pdfOverlay').classList.remove('hidden');
 }
 window.openPDF=openPDF;
@@ -1154,41 +1151,330 @@ async function loadLB(mode){
   list.innerHTML='<div class="lb-loading">Chargement...</div>';
   try{
     let snap;
-    if(mode==='year'&&UD){
-      snap=await getDocs(query(collection(db,'users'),where('year','==',UD.year),limit(20)));
-    } else {
-      snap=await getDocs(query(collection(db,'users'),limit(50)));
-    }
-    let users=[];
-    snap.forEach(d=>users.push({id:d.id,...d.data()}));
-    users.sort((a,b)=>(b.xp||0)-(a.xp||0));
-    if(mode==='year'&&UD)users=users.slice(0,20);
-    else users=users.slice(0,20);
+    if(mode==='year'&&UD)snap=await db.collection('users').where('year','==',UD.year).limit(50).get();
+    else snap=await db.collection('users').limit(50).get();
+    let users=[];snap.forEach(d=>users.push({id:d.id,...d.data()}));
+    users.sort((a,b)=>(b.xp||0)-(a.xp||0));users=users.slice(0,20);
     list.innerHTML='';
-    if(users.length===0){list.innerHTML='<div class="lb-loading">Aucun étudiant encore 🎓</div>';return;}
+    if(!users.length){list.innerHTML='<div class="lb-loading">Aucun étudiant encore 🎓</div>';return;}
     users.forEach((u,i)=>{
       const isMe=CU&&u.id===CU.uid;
       const rCls=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
       const rIcon=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
       const el=document.createElement('div');el.className='lb-item'+(isMe?' me':'');
-      const avatarHtml=u.photoURL?`<img src="${u.photoURL}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:(u.name||'?').charAt(0).toUpperCase();
+      const avHtml=u.photoURL?`<img src="${u.photoURL}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:(u.name||'?').charAt(0).toUpperCase();
       const isOnline=u.lastSeen&&(Date.now()-u.lastSeen)<5*60*1000;
-      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div>
-        <div class="lb-avatar-wrap">
-          <div class="lb-avatar">${avatarHtml}</div>
-          <div class="lb-online-dot ${isOnline?'online':'offline'}"></div>
-        </div>
-        <div class="lb-info">
-          <div class="lb-name">${u.name||'Anonyme'}${isMe?' <span style="font-size:.68rem;color:var(--gold);font-weight:500">(moi)</span>':''}</div>
-          <div class="lb-year-s">${YL[u.year]||''} · Niveau ${getLevel(u.xp||0)}</div>
-        </div>
-        <div class="lb-xp">${u.xp||0} XP</div>`;
+      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div><div class="lb-avatar-wrap"><div class="lb-avatar">${avHtml}</div><div class="lb-online-dot ${isOnline?'online':'offline'}"></div></div><div class="lb-info"><div class="lb-name">${u.name||'Anonyme'}${isMe?' <span style="font-size:.65rem;color:var(--gold)">(moi)</span>':''}</div><div class="lb-year-s">${YL[u.year]||''} · Niv. ${getLevel(u.xp||0)}</div></div><div class="lb-xp">${u.xp||0} XP</div>`;
       list.appendChild(el);
     });
   }catch(e){list.innerHTML='<div class="lb-loading">Erreur: '+e.message+'</div>';}
 }
 window.switchLB=(mode,btn)=>{document.querySelectorAll('.lb-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');loadLB(mode);};
-window.scrollToLB=()=>document.getElementById('lbSection').scrollIntoView({behavior:'smooth'});
+
+// ── DISCORD ROOMS ──
+function buildDiscordChannels(){
+  const channels=document.getElementById('discordChannels');
+  if(!channels)return;
+  channels.innerHTML='';
+  // General channels (not year-specific)
+  const genCat=document.createElement('div');genCat.className='dc-category';genCat.textContent='📢 Général';channels.appendChild(genCat);
+  ['general','annonces'].forEach(ch=>{
+    const d=document.createElement('div');d.className='dc-channel'+(currentDCYear===ch?' active':'');
+    d.innerHTML=`<span class="dc-channel-icon">#</span><span class="dc-channel-name">${ch}</span>`;
+    d.onclick=()=>openDCChannel(ch,ch==='general'?'Général':'Annonces','text');
+    channels.appendChild(d);
+  });
+  // Year categories
+  for(let y=1;y<=6;y++){
+    const roomCount=0; // will update via listener
+    const cat=document.createElement('div');cat.className='dc-category';
+    cat.innerHTML=`${YL[y]} <span style="font-size:.7rem">▾</span>`;
+    channels.appendChild(cat);
+    // text channel
+    const textCh=document.createElement('div');
+    textCh.className='dc-channel'+(currentDCYear===`text-${y}`?' active':'');
+    textCh.innerHTML=`<span class="dc-channel-icon">#</span><span class="dc-channel-name">discussion-${y}ème</span>`;
+    textCh.onclick=()=>openDCChannel(`text-${y}`,`💬 Discussion — ${YL[y]}`,'text');
+    channels.appendChild(textCh);
+    // voice channel category
+    const voiceCat=document.createElement('div');
+    voiceCat.className='dc-channel'+(currentDCYear===`voice-${y}`?' active':'');
+    voiceCat.innerHTML=`<span class="dc-channel-icon">🔊</span><span class="dc-channel-name">salles-${y}ème</span>`;
+    voiceCat.onclick=()=>openDCChannel(`voice-${y}`,`🎙️ Salles — ${YL[y]}`,'voice',y);
+    channels.appendChild(voiceCat);
+  }
+}
+
+function openDCChannel(id,name,type,year){
+  currentDCYear=id;
+  document.querySelectorAll('.dc-channel').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.dc-channel').forEach(c=>{if(c.textContent.includes(name.replace(/[🎙️💬#]/g,'').trim().split(' ')[0]))c.classList.add('active');});
+  const content=document.getElementById('discordContent');
+  if(type==='voice'&&year){
+    renderVoiceRooms(content,name,year);
+  } else {
+    renderTextChannel(content,name,id);
+  }
+}
+
+function renderVoiceRooms(content,name,year){
+  content.innerHTML=`
+    <div class="dc-channel-header">
+      <span class="dc-channel-header-icon">🎙️</span>
+      <span class="dc-channel-header-name">${name}</span>
+      <button class="btn-create-room" onclick="openCreateRoom(${year})">+ Créer une salle</button>
+    </div>
+    <div class="dc-rooms-list" id="dcRoomsList-${year}">
+      <div class="lb-loading">Chargement...</div>
+    </div>
+    <div id="activeRoomBox"></div>`;
+  // Start rooms listener for this year
+  if(roomsListener)roomsListener();
+  roomsListener=db.collection('rooms').where('active','==',true).where('year','==',year).onSnapshot(snap=>{
+    const rooms=snap.docs.map(d=>({id:d.id,...d.data()}));
+    rooms.sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+    const list=document.getElementById(`dcRoomsList-${year}`);
+    if(!list)return;
+    if(!rooms.length){list.innerHTML='<div class="dc-no-rooms">Aucune salle active — crée la première ! 🎙️</div>';return;}
+    list.innerHTML='';
+    rooms.forEach(r=>{
+      const members=Object.values(r.members||{}).filter(Boolean);
+      const isJoined=r.id===currentRoomId;
+      const card=document.createElement('div');card.className='room-card'+(isJoined?' active-room':'');
+      card.innerHTML=`<div class="room-top"><div class="room-name">🎙️ ${r.name}</div><div class="room-live">LIVE</div></div><div class="room-meta">${r.module} · Par ${r.creatorName||'?'}</div><div class="room-footer"><div class="room-members">👥 ${members.length} membre${members.length>1?'s':''}</div>${isJoined?`<button class="btn-leave" onclick="leaveRoom()">🚪 Quitter</button>`:`<button class="btn-join" onclick="joinRoom('${r.id}','${r.name.replace(/'/g,"\\'")}','${r.module.replace(/'/g,"\\'")}',${r.year})">🎙️ Rejoindre</button>`}</div>`;
+      list.appendChild(card);
+    });
+  });
+}
+
+function renderTextChannel(content,name,channelId){
+  content.innerHTML=`
+    <div class="dc-channel-header">
+      <span class="dc-channel-header-icon">#</span>
+      <span class="dc-channel-header-name">${name}</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;height:calc(100vh - var(--topbar) - 52px)">
+      <div class="chat-messages" id="textChatMessages" style="flex:1;overflow-y:auto;padding:.7rem"></div>
+      <div class="chat-input-row">
+        <input class="chat-input" type="text" id="textChatInput" placeholder="Message dans #${name}..." onkeydown="if(event.key==='Enter')sendTextChat('${channelId}')">
+        <button class="btn-send" onclick="sendTextChat('${channelId}')">➤</button>
+      </div>
+    </div>`;
+  // Load messages
+  if(chatListener)chatListener();
+  chatListener=db.collection('channels').doc(channelId).collection('messages').orderBy('ts','asc').limitToLast(50).onSnapshot(snap=>{
+    const container=document.getElementById('textChatMessages');
+    if(!container)return;
+    container.innerHTML='';
+    snap.forEach(d=>{
+      const m=d.data();const isMe=m.uid===CU.uid;
+      const div=document.createElement('div');div.className='chat-msg '+(isMe?'me':'other');
+      div.innerHTML=`${!isMe?`<div class="chat-msg-name">${m.name}</div>`:''}<div class="chat-msg-text">${m.text}</div>`;
+      container.appendChild(div);
+    });
+    container.scrollTop=container.scrollHeight;
+  });
+}
+
+window.sendTextChat=async(channelId)=>{
+  const input=document.getElementById('textChatInput');
+  const text=input.value.trim();if(!text)return;input.value='';
+  await db.collection('channels').doc(channelId).collection('messages').add({uid:CU.uid,name:UD.name||'Anonyme',text,ts:Date.now()});
+};
+
+// ── CREATE / JOIN / LEAVE ROOM ──
+window.openCreateRoom=(year)=>{
+  document.getElementById('createRoomModal').classList.remove('hidden');
+  window._createRoomYear=year||CY||1;
+};
+window.closeCreateRoom=()=>document.getElementById('createRoomModal').classList.add('hidden');
+
+window.createRoom=async()=>{
+  const name=document.getElementById('roomName').value.trim();
+  const module=document.getElementById('roomModule').value.trim();
+  if(!name||!module){toast('Nom et module obligatoires');return;}
+  const year=window._createRoomYear||CY||1;
+  try{
+    await db.collection('rooms').add({name,module,year,creatorName:UD.name||'Anonyme',active:true,members:{},createdAt:new Date().toISOString()});
+    document.getElementById('roomName').value='';document.getElementById('roomModule').value='';
+    closeCreateRoom();toast('Salle créée ✓');
+  }catch(e){toast('Erreur: '+e.message);}
+};
+
+window.joinRoom=async(roomId,roomName,module,year)=>{
+  if(currentRoomId){toast('Quitte d\'abord ta salle actuelle');return;}
+  currentRoomId=roomId;micOn=true;
+  try{
+    await db.collection('rooms').doc(roomId).update({[`members.${CU.uid}`]:{name:UD.name||'Anonyme',photoURL:UD.photoURL||null,uid:CU.uid}});
+    agoraClient=AgoraRTC.createClient({mode:'rtc',codec:'vp8'});
+    await agoraClient.join(AGORA_APP_ID,roomId,null,CU.uid);
+    localAudioTrack=await AgoraRTC.createMicrophoneAudioTrack();
+    await agoraClient.publish([localAudioTrack]);
+    agoraClient.on('user-published',async(user,mt)=>{if(mt==='audio'){await agoraClient.subscribe(user,mt);user.audioTrack.play();}});
+    renderActiveRoomOverlay(roomId,roomName,module);
+    toast('Connecté 🎙️');
+  }catch(e){toast('Erreur micro: '+e.message);currentRoomId=null;}
+};
+
+function renderActiveRoomOverlay(roomId,roomName,module){
+  let box=document.getElementById('activeRoomBox');
+  if(!box){const el=document.createElement('div');el.id='activeRoomBox';document.getElementById('discordContent').appendChild(el);box=el;}
+  box.style.cssText='position:fixed;bottom:0;left:240px;right:0;height:320px;background:var(--surface);border-top:2px solid var(--accent);display:flex;flex-direction:column;z-index:50';
+  box.innerHTML=`
+    <div class="active-room-header">
+      <span class="room-live">EN DIRECT</span>
+      <span class="active-room-title" style="margin-left:.5rem">${roomName} · ${module}</span>
+      <div class="room-controls">
+        <button class="btn-mic on" id="micBtn" onclick="toggleMic()">🎙️ ON</button>
+        <button class="btn-leave" onclick="leaveRoom()">🚪 Quitter</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;flex:1;overflow:hidden">
+      <div class="members-panel">
+        <div class="members-title">👥 Membres</div>
+        <div id="membersList"></div>
+      </div>
+      <div class="chat-panel">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-row">
+          <input class="chat-input" type="text" id="chatInput" placeholder="Message..." onkeydown="if(event.key==='Enter')sendVoiceChat()">
+          <button class="btn-send" onclick="sendVoiceChat()">➤</button>
+        </div>
+      </div>
+    </div>`;
+  if(membersListener)membersListener();
+  membersListener=db.collection('rooms').doc(roomId).onSnapshot(snap=>{
+    if(!snap.exists)return;
+    const members=snap.data().members||{};
+    const ml=document.getElementById('membersList');if(!ml)return;
+    ml.innerHTML='';
+    Object.entries(members).forEach(([uid,m])=>{
+      if(!m)return;
+      const isMe=uid===CU.uid;
+      const av=m.photoURL?`<img src="${m.photoURL}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:(m.name||'?').charAt(0).toUpperCase();
+      const d=document.createElement('div');d.className='member-item';
+      d.innerHTML=`<div class="member-avatar">${av}</div><div class="member-name">${m.name||'Anonyme'}${isMe?' ✓':''}</div>`;
+      ml.appendChild(d);
+    });
+  });
+  if(chatListener)chatListener();
+  chatListener=db.collection('rooms').doc(roomId).collection('messages').orderBy('ts','asc').limitToLast(30).onSnapshot(snap=>{
+    const container=document.getElementById('chatMessages');if(!container)return;
+    container.innerHTML='';
+    snap.forEach(d=>{
+      const m=d.data();const isMe=m.uid===CU.uid;
+      const div=document.createElement('div');div.className='chat-msg '+(isMe?'me':'other');
+      div.innerHTML=`${!isMe?`<div class="chat-msg-name">${m.name}</div>`:''}<div class="chat-msg-text">${m.text}</div>`;
+      container.appendChild(div);
+    });
+    container.scrollTop=container.scrollHeight;
+  });
+}
+
+window.sendVoiceChat=async()=>{
+  if(!currentRoomId)return;
+  const input=document.getElementById('chatInput');
+  const text=input.value.trim();if(!text)return;input.value='';
+  await db.collection('rooms').doc(currentRoomId).collection('messages').add({uid:CU.uid,name:UD.name||'Anonyme',text,ts:Date.now()});
+};
+
+window.leaveRoom=async()=>{
+  if(!currentRoomId)return;
+  const roomId=currentRoomId;
+  try{if(localAudioTrack){localAudioTrack.stop();localAudioTrack.close();}if(agoraClient)await agoraClient.leave();}catch(e){}
+  try{
+    await db.collection('rooms').doc(roomId).update({[`members.${CU.uid}`]:FV.delete()});
+    const snap=await db.collection('rooms').doc(roomId).get();
+    if(snap.exists){const members=snap.data().members||{};if(!Object.keys(members).length)await db.collection('rooms').doc(roomId).delete();}
+  }catch(e){}
+  if(chatListener){chatListener();chatListener=null;}
+  if(membersListener){membersListener();membersListener=null;}
+  localAudioTrack=null;agoraClient=null;currentRoomId=null;
+  const box=document.getElementById('activeRoomBox');if(box)box.remove();
+  toast('Salle quittée');
+};
+
+window.toggleMic=async()=>{
+  if(!localAudioTrack)return;
+  micOn=!micOn;await localAudioTrack.setEnabled(micOn);
+  const btn=document.getElementById('micBtn');
+  if(btn){btn.className='btn-mic '+(micOn?'on':'off');btn.textContent=micOn?'🎙️ ON':'🔇 OFF';}
+};
+
+// ── PRESENCE ──
+function startPresence(){
+  if(!CU)return;
+  const ref=db.collection('users').doc(CU.uid);
+  const setOn=()=>ref.update({lastSeen:Date.now()}).catch(()=>{});
+  const setOff=()=>ref.update({lastSeen:0}).catch(()=>{});
+  setOn();setInterval(setOn,60000);
+  document.addEventListener('visibilitychange',()=>document.hidden?setOff():setOn());
+  window.addEventListener('beforeunload',setOff);
+}
+
+// ── AVIS ──
+window.setStars=(n)=>{
+  selectedStars=n;
+  document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.v)<=n));
+};
+function loadAvis(){
+  db.collection('avis').orderBy('ts','desc').limit(30).onSnapshot(snap=>{
+    const list=document.getElementById('avisList');if(!list)return;
+    if(snap.empty){list.innerHTML='<div class="avis-empty">Sois le premier à donner ton avis ! 💬</div>';return;}
+    list.innerHTML='';
+    snap.forEach(d=>{
+      const a=d.data();
+      const stars='★'.repeat(a.stars||5)+'☆'.repeat(5-(a.stars||5));
+      const av=a.photoURL?`<img src="${a.photoURL}" alt="">`:(a.name||'?').charAt(0).toUpperCase();
+      const card=document.createElement('div');card.className='avis-card';
+      card.innerHTML=`<p class="avis-text">${a.text}</p><div class="avis-author"><div class="avis-avatar">${av}</div><div><div class="avis-name">${a.name||'Anonyme'}</div><div class="avis-year-tag">${a.yearLabel||''}</div></div><div class="avis-stars-display">${stars}</div></div>`;
+      list.appendChild(card);
+    });
+  });
+}
+window.submitAvis=async()=>{
+  if(!CU||!UD){toast('Connecte-toi d\'abord');return;}
+  const input=document.getElementById('avisInput');const text=input.value.trim();
+  if(text.length<10){toast('Écris au moins 10 caractères');return;}
+  try{
+    const existing=await db.collection('avis').where('uid','==',CU.uid).limit(1).get();
+    if(!existing.empty){toast('Tu as déjà laissé un avis 😊');return;}
+    await db.collection('avis').add({uid:CU.uid,name:UD.name||'Anonyme',photoURL:UD.photoURL||null,yearLabel:YL[UD.year]||'',text,stars:selectedStars,ts:Date.now()});
+    input.value='';setStars(5);toast('Avis publié ✓ Merci ! 🎉');
+  }catch(e){toast('Erreur: '+e.message);}
+};
+
+// ── EDIT NAME ──
+window.openEditName=()=>{document.getElementById('newNameInput').value=UD.name||'';document.getElementById('editNameModal').classList.remove('hidden');setTimeout(()=>document.getElementById('newNameInput').focus(),100);};
+window.saveName=async()=>{
+  const name=document.getElementById('newNameInput').value.trim();if(!name){toast('Nom invalide');return;}
+  try{await db.collection('users').doc(CU.uid).update({name});UD.name=name;updateUI();document.getElementById('editNameModal').classList.add('hidden');toast('Nom mis à jour ✓');}
+  catch(e){toast('Erreur: '+e.message);}
+};
+
+// ── AUTH ACTIONS ──
+window.doLogin=async()=>{
+  const email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPass').value;
+  setErr('');try{await auth.signInWithEmailAndPassword(email,pass);}catch(e){setErr(frErr(e.code));}
+};
+window.doRegister=async()=>{
+  const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim();
+  const year=parseInt(document.getElementById('regYear').value),pass=document.getElementById('regPass').value;
+  setErr('');if(!name||!email||!pass){setErr('Remplis tous les champs');return;}
+  try{
+    const cred=await auth.createUserWithEmailAndPassword(email,pass);
+    await db.collection('users').doc(cred.user.uid).set({name,email,year,xp:0,lastLogin:'',createdAt:new Date().toISOString()});
+  }catch(e){setErr(frErr(e.code));}
+};
+window.doLogout=()=>auth.signOut();
+window.switchAuthTab=(tab)=>{
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',['login','register'][i]===tab));
+  document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');
+  document.getElementById('registerForm').classList.toggle('hidden',tab!=='register');
+  setErr('');
+};
+function setErr(m){document.getElementById('authErr').textContent=m;}
+function frErr(c){return({'auth/user-not-found':'Email introuvable','auth/wrong-password':'Mot de passe incorrect','auth/email-already-in-use':'Email déjà utilisé','auth/weak-password':'Mot de passe trop court','auth/invalid-email':'Email invalide','auth/invalid-credential':'Email ou mot de passe incorrect'})[c]||'Erreur: '+c;}
 
 // ── ADMIN ──
 window.openAdmin=()=>{if(!isAdmin)return;document.getElementById('adminOverlay').classList.remove('hidden');renderAdminLessons();renderAdminQCM();renderAdminExams();renderAdminDrive();};
@@ -1198,485 +1484,83 @@ window.setAdminTab=(tab,btn)=>{
   document.querySelectorAll('.admin-pane').forEach(p=>p.classList.remove('active'));
   document.getElementById('ap-'+tab).classList.add('active');
 };
-
-// ADD LESSON
 window.addLesson=async()=>{
   if(!isAdmin)return;
-  const year=document.getElementById('aYear').value;
-  const semUnite=document.getElementById('aSemUnite').value||'Module seul';
-  const module=document.getElementById('aModule').value.trim();
-  const name=document.getElementById('aLesson').value.trim();
-  const link=document.getElementById('aLink').value.trim();
-  if(!module||!name){toast('Module et nom du cours obligatoires');return;}
-  try{
-    await addDoc(collection(db,'lessons'),{year:parseInt(year),semUnite,module,name,link:link||'#',createdAt:new Date().toISOString()});
-    document.getElementById('aModule').value='';document.getElementById('aLesson').value='';document.getElementById('aLink').value='';
-    toast('Cours ajouté ✓');
-  }catch(e){toast('Erreur: '+e.message);}
+  const year=document.getElementById('aYear').value,semUnite=document.getElementById('aSemUnite').value||'Module seul';
+  const module=document.getElementById('aModule').value.trim(),name=document.getElementById('aLesson').value.trim(),link=document.getElementById('aLink').value.trim();
+  if(!module||!name){toast('Module et nom obligatoires');return;}
+  try{await db.collection('lessons').add({year:parseInt(year),semUnite,module,name,link:link||'#',createdAt:new Date().toISOString()});
+  ['aModule','aLesson','aLink'].forEach(id=>document.getElementById(id).value='');toast('Cours ajouté ✓');}
+  catch(e){toast('Erreur: '+e.message);}
 };
-
-// ADD QCM
 window.addQCM=async()=>{
   if(!isAdmin)return;
-  const year=document.getElementById('qYear').value;
-  const unite=document.getElementById('qUnite').value.trim();
-  const module=document.getElementById('qModule').value.trim();
-  const lesson=document.getElementById('qLesson').value.trim();
-  const question=document.getElementById('qQuestion').value.trim();
+  const year=document.getElementById('qYear').value,unite=document.getElementById('qUnite').value.trim(),module=document.getElementById('qModule').value.trim();
+  const lesson=document.getElementById('qLesson').value.trim(),question=document.getElementById('qQuestion').value.trim();
   const choices={A:document.getElementById('qA').value.trim(),B:document.getElementById('qB').value.trim(),C:document.getElementById('qC').value.trim(),D:document.getElementById('qD').value.trim(),E:document.getElementById('qE').value.trim()};
   const correct=['A','B','C','D','E'].filter(l=>document.getElementById('c'+l).checked);
   if(!module||!question||!choices.A){toast('Module, question et choix A obligatoires');return;}
-  if(correct.length===0){toast('Sélectionne au moins une bonne réponse');return;}
-  try{
-    await addDoc(collection(db,'qcm'),{year:parseInt(year),unite:unite||'',module,lesson:lesson||'',question,choiceA:choices.A,choiceB:choices.B||'',choiceC:choices.C||'',choiceD:choices.D||'',choiceE:choices.E||'',correct,createdAt:new Date().toISOString()});
-    ['qModule','qLesson','qQuestion','qA','qB','qC','qD','qE'].forEach(id=>document.getElementById(id).value='');
-    ['A','B','C','D','E'].forEach(l=>document.getElementById('c'+l).checked=false);
-    toast('QCM ajouté ✓');
-  }catch(e){toast('Erreur: '+e.message);}
+  if(!correct.length){toast('Sélectionne au moins une bonne réponse');return;}
+  try{await db.collection('qcm').add({year:parseInt(year),unite:unite||'',module,lesson:lesson||'',question,choiceA:choices.A,choiceB:choices.B||'',choiceC:choices.C||'',choiceD:choices.D||'',choiceE:choices.E||'',correct,createdAt:new Date().toISOString()});
+  ['qModule','qLesson','qQuestion','qA','qB','qC','qD','qE'].forEach(id=>document.getElementById(id).value='');
+  ['A','B','C','D','E'].forEach(l=>document.getElementById('c'+l).checked=false);toast('QCM ajouté ✓');}
+  catch(e){toast('Erreur: '+e.message);}
 };
-
-// ADD EXAM
 window.addExam=async()=>{
   if(!isAdmin)return;
-  const year=document.getElementById('eYear').value;
-  const promo=document.getElementById('ePromo').value.trim();
-  const unite=document.getElementById('eUnite').value.trim();
-  const module=document.getElementById('eModule').value.trim();
-  const link=document.getElementById('eLink').value.trim();
+  const year=document.getElementById('eYear').value,promo=document.getElementById('ePromo').value.trim(),unite=document.getElementById('eUnite').value.trim(),module=document.getElementById('eModule').value.trim(),link=document.getElementById('eLink').value.trim();
   if(!promo||!module){toast('Promo et module obligatoires');return;}
-  try{
-    await addDoc(collection(db,'exams'),{year:parseInt(year),promo,unite:unite||'',module,link:link||'#',createdAt:new Date().toISOString()});
-    ['ePromo','eUnite','eModule','eLink'].forEach(id=>document.getElementById(id).value='');
-    toast('Examen ajouté ✓');
-  }catch(e){toast('Erreur: '+e.message);}
+  try{await db.collection('exams').add({year:parseInt(year),promo,unite:unite||'',module,link:link||'#',createdAt:new Date().toISOString()});
+  ['ePromo','eUnite','eModule','eLink'].forEach(id=>document.getElementById(id).value='');toast('Examen ajouté ✓');}
+  catch(e){toast('Erreur: '+e.message);}
 };
-
 function renderAdminLessons(){
   const list=document.getElementById('adminLessonList');if(!list)return;list.innerHTML='';
   const sorted=[...allLessons].sort((a,b)=>a.year-b.year||a.module.localeCompare(b.module));
-  if(sorted.length===0){list.innerHTML='<div class="lb-loading">Aucun cours encore</div>';return;}
-  sorted.forEach(l=>{
-    const d=document.createElement('div');d.className='admin-list-item';
-    d.innerHTML=`<div class="ali-info"><div class="ali-name">${l.name}</div><div class="ali-sub">${YL[l.year]} · ${l.semUnite||''} · ${l.module} · ${l.link&&l.link!=='#'?'✅ PDF':'⚠️ Sans PDF'}</div></div><button class="btn-del" onclick="delDoc('lessons','${l.id}')">🗑</button>`;
-    list.appendChild(d);
-  });
+  if(!sorted.length){list.innerHTML='<div class="lb-loading">Aucun cours encore</div>';return;}
+  sorted.forEach(l=>{const d=document.createElement('div');d.className='admin-list-item';d.innerHTML=`<div class="ali-info"><div class="ali-name">${l.name}</div><div class="ali-sub">${YL[l.year]} · ${l.module}</div></div><button class="btn-del" onclick="delDoc('lessons','${l.id}')">🗑</button>`;list.appendChild(d);});
 }
-
 function renderAdminQCM(){
   const list=document.getElementById('adminQCMList');if(!list)return;list.innerHTML='';
-  const sorted=[...allQCM].sort((a,b)=>a.year-b.year||a.module.localeCompare(b.module));
-  if(sorted.length===0){list.innerHTML='<div class="lb-loading">Aucun QCM encore</div>';return;}
-  sorted.forEach(q=>{
-    const d=document.createElement('div');d.className='admin-list-item';
-    d.innerHTML=`<div class="ali-info"><div class="ali-name">${q.question.substring(0,60)}${q.question.length>60?'...':''}</div><div class="ali-sub">${YL[q.year]} · ${q.module} · Correct: ${(q.correct||[]).join(', ')}</div></div><button class="btn-del" onclick="delDoc('qcm','${q.id}')">🗑</button>`;
-    list.appendChild(d);
-  });
+  const sorted=[...allQCM].sort((a,b)=>a.year-b.year);
+  if(!sorted.length){list.innerHTML='<div class="lb-loading">Aucun QCM encore</div>';return;}
+  sorted.forEach(q=>{const d=document.createElement('div');d.className='admin-list-item';d.innerHTML=`<div class="ali-info"><div class="ali-name">${q.question.substring(0,55)}...</div><div class="ali-sub">${YL[q.year]} · ${q.module}</div></div><button class="btn-del" onclick="delDoc('qcm','${q.id}')">🗑</button>`;list.appendChild(d);});
 }
-
 function renderAdminExams(){
   const list=document.getElementById('adminExamList');if(!list)return;list.innerHTML='';
-  const sorted=[...allExams].sort((a,b)=>a.year-b.year||b.promo.localeCompare(a.promo));
-  if(sorted.length===0){list.innerHTML='<div class="lb-loading">Aucun examen encore</div>';return;}
-  sorted.forEach(e=>{
-    const d=document.createElement('div');d.className='admin-list-item';
-    d.innerHTML=`<div class="ali-info"><div class="ali-name">${e.promo} · ${e.module}</div><div class="ali-sub">${YL[e.year]}${e.unite?' · '+e.unite:''} · ${e.link&&e.link!=='#'?'✅ PDF':'⚠️ Sans PDF'}</div></div><button class="btn-del" onclick="delDoc('exams','${e.id}')">🗑</button>`;
-    list.appendChild(d);
-  });
+  const sorted=[...allExams].sort((a,b)=>a.year-b.year);
+  if(!sorted.length){list.innerHTML='<div class="lb-loading">Aucun examen encore</div>';return;}
+  sorted.forEach(e=>{const d=document.createElement('div');d.className='admin-list-item';d.innerHTML=`<div class="ali-info"><div class="ali-name">${e.promo} · ${e.module}</div><div class="ali-sub">${YL[e.year]}${e.unite?' · '+e.unite:''}</div></div><button class="btn-del" onclick="delDoc('exams','${e.id}')">🗑</button>`;list.appendChild(d);});
 }
-
 function renderAdminDrive(){
   const container=document.getElementById('adminDriveList');if(!container)return;container.innerHTML='';
   for(let y=1;y<=6;y++){
-    const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap';
-    row.innerHTML=`<span style="font-size:.8rem;font-weight:600;min-width:90px;color:var(--text2)">${YL[y]}</span><input class="admin-input" style="flex:1;min-width:200px" id="drive${y}" type="url" placeholder="Lien Google Drive..." value="${driveLinks[y]&&driveLinks[y]!=='#'?driveLinks[y]:''}"><button class="btn-save" onclick="saveDrive(${y})">💾 Sauvegarder</button>`;
+    const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem;flex-wrap:wrap';
+    row.innerHTML=`<span style="font-size:.78rem;font-weight:600;min-width:85px;color:var(--text2)">${YL[y]}</span><input class="admin-input" style="flex:1;min-width:180px" id="drive${y}" type="url" placeholder="Lien Drive..." value="${driveLinks[y]&&driveLinks[y]!=='#'?driveLinks[y]:''}"><button class="btn-save" onclick="saveDrive(${y})">💾</button>`;
     container.appendChild(row);
   }
 }
-
-window.delDoc=async(col,id)=>{
-  if(!isAdmin||!confirm('Supprimer ?'))return;
-  await deleteDoc(doc(db,col,id));toast('Supprimé ✓');
-};
-
+window.delDoc=async(col,id)=>{if(!isAdmin||!confirm('Supprimer ?'))return;await db.collection(col).doc(id).delete();toast('Supprimé ✓');};
 window.saveDrive=async(y)=>{
-  if(!isAdmin)return;
-  const val=document.getElementById('drive'+y).value.trim();
-  driveLinks[y]=val||'#';
-  try{await setDoc(doc(db,'config','driveLinks'),{...driveLinks});toast('Drive '+YL[y]+' sauvegardé ✓');if(CY===y)renderDrive(y);}
+  if(!isAdmin)return;const val=document.getElementById('drive'+y).value.trim();driveLinks[y]=val||'#';
+  try{await db.collection('config').doc('driveLinks').set({...driveLinks});toast('Drive '+YL[y]+' sauvegardé ✓');if(CY===y)renderDrive(y);}
   catch(e){toast('Erreur: '+e.message);}
 };
 
-// ── TABS ──
-function setTab(tab){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('hidden',p.dataset.pane!==tab));
-}
-function setupTabs(){
-  document.querySelectorAll('.tab-btn').forEach(b=>{
-    b.onclick=()=>{
-      setTab(b.dataset.tab);
-      closePanel();
-      if(b.dataset.tab==='rooms')startRoomsListener();
-    };
-  });
-}
-
-// ── AUTH ACTIONS ──
-window.doLogin=async()=>{
-  const email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPass').value;
-  setErr('');try{await signInWithEmailAndPassword(auth,email,pass);}catch(e){setErr(frErr(e.code));}
-};
-window.doRegister=async()=>{
-  const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim();
-  const year=parseInt(document.getElementById('regYear').value),pass=document.getElementById('regPass').value;
-  setErr('');if(!name||!email||!pass){setErr('Remplis tous les champs');return;}
-  try{const cred=await createUserWithEmailAndPassword(auth,email,pass);await setDoc(doc(db,'users',cred.user.uid),{name,email,year,xp:0,lastLogin:'',createdAt:new Date().toISOString()});}
-  catch(e){setErr(frErr(e.code));}
-};
-window.doLogout=()=>signOut(auth);
-window.switchAuthTab=(tab)=>{
-  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',['login','register'][i]===tab));
-  document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');
-  document.getElementById('registerForm').classList.toggle('hidden',tab!=='register');
-  setErr('');
-};
-function setErr(m){document.getElementById('authErr').textContent=m;}
-function frErr(c){return({'auth/user-not-found':'Email introuvable','auth/wrong-password':'Mot de passe incorrect','auth/email-already-in-use':'Email déjà utilisé','auth/weak-password':'Mot de passe trop court','auth/invalid-email':'Email invalide','auth/invalid-credential':'Email ou mot de passe incorrect'})[c]||'Erreur : '+c;}
-
-function showXPPopup(msg){const p=document.getElementById('xpPopup');p.textContent=msg;p.classList.add('show');clearTimeout(p._t);p._t=setTimeout(()=>p.classList.remove('show'),3000);}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
-// ── EDIT NAME ──
-window.openEditName=()=>{
-  document.getElementById('newNameInput').value=UD.name||'';
-  document.getElementById('editNameModal').classList.remove('hidden');
-  setTimeout(()=>document.getElementById('newNameInput').focus(),100);
-};
-
-window.saveName=async()=>{
-  const name=document.getElementById('newNameInput').value.trim();
-  if(!name){toast('Nom invalide');return;}
-  try{
-    await updateDoc(doc(db,'users',CU.uid),{name});
-    UD.name=name;updateUI();
-    document.getElementById('editNameModal').classList.add('hidden');
-    toast('Nom mis à jour ✓');
-  }catch(e){toast('Erreur: '+e.message);}
-};
-
-// ── ONLINE PRESENCE ──
-function startPresence(){
-  if(!CU)return;
-  const ref=doc(db,'users',CU.uid);
-  const setOnline=()=>updateDoc(ref,{lastSeen:Date.now()}).catch(()=>{});
-  const setOffline=()=>{
-    // Use sendBeacon for reliability on page close
-    const url=`https://firestore.googleapis.com/v1/projects/medx-d67fb/databases/(default)/documents/users/${CU.uid}?updateMask.fieldPaths=lastSeen`;
-    navigator.sendBeacon&&navigator.sendBeacon(url);
-    updateDoc(ref,{lastSeen:0}).catch(()=>{});
-  };
-  setOnline();
-  setInterval(setOnline,60000);
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden)setOffline();else setOnline();
-  });
-  window.addEventListener('beforeunload',setOffline);
-}
-
-const AGORA_APP_ID='f19452a586d7415f9205fdef9209d8f8';
-let agoraClient=null,localAudioTrack=null,currentRoomId=null,micOn=true;
-let roomsListener=null,chatListener=null;
-
-window.openCreateRoom=()=>document.getElementById('createRoomModal').classList.remove('hidden');
-window.closeCreateRoom=()=>document.getElementById('createRoomModal').classList.add('hidden');
-
-window.createRoom=async()=>{
-  const year=document.getElementById('roomYear').value;
-  const module=document.getElementById('roomModule').value.trim();
-  const name=document.getElementById('roomName').value.trim();
-  if(!module||!name){toast('Module et nom obligatoires');return;}
-  try{
-    const ref=await addDoc(collection(db,'rooms'),{
-      year:parseInt(year),module,name,
-      createdBy:CU.uid,creatorName:UD.name||'Anonyme',
-      members:{},createdAt:new Date().toISOString(),active:true
-    });
-    closeCreateRoom();
-    document.getElementById('roomModule').value='';document.getElementById('roomName').value='';
-    await joinRoom(ref.id,name,module,parseInt(year));
-    toast('Salle créée ✓');
-  }catch(e){toast('Erreur: '+e.message);}
-};
-
-window.joinRoom=async function(roomId,roomName,module,year){
-  if(currentRoomId)await leaveRoom();
-  currentRoomId=roomId;
-
-  // Load Agora SDK dynamically
-  if(!window.AgoraRTC){
-    await new Promise((res,rej)=>{
-      const s=document.createElement('script');
-      s.src='https://download.agora.io/sdk/release/AgoraRTC_N-4.20.0.js';
-      s.onload=res;s.onerror=rej;document.head.appendChild(s);
-    });
-  }
-
-  try{
-    agoraClient=window.AgoraRTC.createClient({mode:'rtc',codec:'vp8'});
-    await agoraClient.join(AGORA_APP_ID,roomId,null,CU.uid.substring(0,8));
-    localAudioTrack=await window.AgoraRTC.createMicrophoneAudioTrack();
-    await agoraClient.publish([localAudioTrack]);
-    micOn=true;
-
-    // Update Firestore members
-    await updateDoc(doc(db,'rooms',roomId),{
-      [`members.${CU.uid}`]:{name:UD.name||'Anonyme',photoURL:UD.photoURL||'',joinedAt:new Date().toISOString()}
-    });
-
-    // Remote users
-    agoraClient.on('user-published',async(user,mt)=>{
-      await agoraClient.subscribe(user,mt);
-      if(mt==='audio')user.audioTrack.play();
-      renderActiveRoom(roomId,roomName,module,year);
-    });
-    agoraClient.on('user-unpublished',()=>renderActiveRoom(roomId,roomName,module,year));
-
-    // Chat listener
-    if(chatListener)chatListener();
-    chatListener=onSnapshot(collection(db,'rooms',roomId,'messages'),snap=>{
-      const msgs=snap.docs.map(d=>d.data()).sort((a,b)=>a.ts-b.ts);
-      renderChat(msgs);
-    });
-
-    renderActiveRoom(roomId,roomName,module,year);
-    toast('Connecté à la salle 🎙️');
-  }catch(e){toast('Erreur micro: '+e.message);currentRoomId=null;}
-}
-
-async function leaveRoom(){
-  if(!currentRoomId)return;
-  const roomId=currentRoomId;
-  try{
-    if(localAudioTrack){localAudioTrack.stop();localAudioTrack.close();}
-    if(agoraClient){await agoraClient.leave();}
-  }catch(e){}
-  try{
-    await updateDoc(doc(db,'rooms',roomId),{[`members.${CU.uid}`]:deleteField()});
-    const snap=await getDoc(doc(db,'rooms',roomId));
-    if(snap.exists()){
-      const members=snap.data().members||{};
-      if(Object.keys(members).length===0) await deleteDoc(doc(db,'rooms',roomId));
-    }
-  }catch(e){}
-  if(chatListener){chatListener();chatListener=null;}
-  if(membersListener){membersListener();membersListener=null;}
-  localAudioTrack=null;agoraClient=null;currentRoomId=null;
-  document.getElementById('activeRoomBox').innerHTML='';
-  toast('Salle quittée');
-}
-window.leaveRoom=leaveRoom;
-
-let membersListener=null;
-
-function renderActiveRoom(roomId,roomName,module,year){
-  const box=document.getElementById('activeRoomBox');
-  if(!box)return;
-  box.innerHTML=`
-  <div class="active-room-box">
-    <div class="active-room-header">
-      <div class="active-room-title"><span class="room-live">EN DIRECT</span> ${roomName} · ${module}</div>
-      <div class="room-controls">
-        <button class="btn-mic ${micOn?'on':'off'}" id="micBtn" onclick="toggleMic()">
-          ${micOn?'🎙️ Micro ON':'🔇 Micro OFF'}
-        </button>
-        <button class="btn-leave" onclick="leaveRoom()">🚪 Quitter</button>
-      </div>
-    </div>
-    <div class="active-room-body">
-      <div class="members-panel">
-        <div class="members-title">👥 Membres</div>
-        <div id="membersList"><div class="lb-loading" style="padding:.5rem">...</div></div>
-      </div>
-      <div class="chat-panel">
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input-row">
-          <input class="chat-input" type="text" id="chatInput" placeholder="Message..." onkeydown="if(event.key==='Enter')sendChat()">
-          <button class="btn-send" onclick="sendChat()">➤</button>
-        </div>
-      </div>
-    </div>
-  </div>`;
-
-  // Realtime members listener
-  if(membersListener)membersListener();
-  membersListener=onSnapshot(doc(db,'rooms',roomId),snap=>{
-    if(!snap.exists())return;
-    const members=snap.data().members||{};
-    const ml=document.getElementById('membersList');
-    if(!ml)return;
-    ml.innerHTML='';
-    Object.entries(members).forEach(([uid,m])=>{
-      if(!m)return;
-      const isMe=uid===CU.uid;
-      const av=m.photoURL?`<img src="${m.photoURL}" alt="">`:(m.name||'?').charAt(0).toUpperCase();
-      const d=document.createElement('div');d.className='member-item'+(isMe?' member-speaking':'');
-      d.innerHTML=`<div class="member-avatar">${av}</div><div class="member-name">${m.name||'Anonyme'}${isMe?' (moi)':''}</div><div class="member-mic">🎙️</div>`;
-      ml.appendChild(d);
-    });
-  });
-}
-
-function renderChat(msgs){
-  const container=document.getElementById('chatMessages');
-  if(!container)return;
-  container.innerHTML='';
-  msgs.forEach(m=>{
-    const isMe=m.uid===CU.uid;
-    const d=document.createElement('div');d.className='chat-msg '+(isMe?'me':'other');
-    d.innerHTML=`${!isMe?`<div class="chat-msg-name">${m.name}</div>`:''}<div class="chat-msg-text">${m.text}</div>`;
-    container.appendChild(d);
-  });
-  container.scrollTop=container.scrollHeight;
-}
-
-window.sendChat=async()=>{
-  if(!currentRoomId)return;
-  const input=document.getElementById('chatInput');
-  const text=input.value.trim();
-  if(!text)return;
-  input.value='';
-  await addDoc(collection(db,'rooms',currentRoomId,'messages'),{
-    uid:CU.uid,name:UD.name||'Anonyme',text,ts:Date.now()
-  });
-};
-
-window.toggleMic=async()=>{
-  if(!localAudioTrack)return;
-  micOn=!micOn;
-  await localAudioTrack.setEnabled(micOn);
-  const btn=document.getElementById('micBtn');
-  if(btn){btn.className='btn-mic '+(micOn?'on':'off');btn.textContent=micOn?'🎙️ Micro ON':'🔇 Micro OFF';}
-};
-
-function startRoomsListener(){
-  if(roomsListener)roomsListener();
-  roomsListener=onSnapshot(query(collection(db,'rooms'),where('active','==',true),limit(20)),snap=>{
-    const rooms=snap.docs.map(d=>({id:d.id,...d.data()}));
-    rooms.sort((a,b)=>b.createdAt?.localeCompare(a.createdAt||'')||0);
-    renderRoomsGrid(rooms);
-  });
-}
-
-function renderRoomsGrid(rooms){
-  const grid=document.getElementById('roomsGrid');
-  if(!grid)return;
-  if(rooms.length===0){grid.innerHTML='<div class="lb-loading">Aucune salle active — crée la première ! 🎙️</div>';return;}
-  grid.innerHTML='';
-  rooms.forEach(r=>{
-    const members=Object.values(r.members||{}).filter(Boolean);
-    const isJoined=r.id===currentRoomId;
-    const card=document.createElement('div');card.className='room-card'+(isJoined?' active-room':'');
-    card.innerHTML=`
-      <div class="room-top">
-        <div class="room-name">${r.name}</div>
-        <div class="room-live">LIVE</div>
-      </div>
-      <div class="room-meta">${YL[r.year]||''} · ${r.module} · Par ${r.creatorName||'?'}</div>
-      <div class="room-footer">
-        <div class="room-members">👥 ${members.length} membre${members.length>1?'s':''}</div>
-        ${isJoined
-          ? `<button class="btn-leave" onclick="leaveRoom()">🚪 Quitter</button>`
-          : `<button class="btn-join" onclick="joinRoom('${r.id}','${r.name.replace(/'/g,"\\'")}','${r.module.replace(/'/g,"\\'")}',${r.year})">🎙️ Rejoindre</button>`
-        }
-      </div>`;
-    grid.appendChild(card);
-  });
-}
-
-// ── AVIS ──
-let selectedStars=5;
-
-window.setStars=(n)=>{
-  selectedStars=n;
-  document.querySelectorAll('.star-btn').forEach(b=>{
-    b.classList.toggle('active',parseInt(b.dataset.v)<=n);
-  });
-};
-// Init stars
-setTimeout(()=>setStars(5),100);
-
-function loadAvis(){
-  db.collection('avis').orderBy('ts','desc').limit(30).onSnapshot(snap=>{
-    const list=document.getElementById('avisList');
-    if(!list)return;
-    if(snap.empty){list.innerHTML='<div class="avis-empty">Sois le premier à donner ton avis ! 💬</div>';return;}
-    list.innerHTML='';
-    snap.forEach(d=>{
-      const a=d.data();
-      const stars='★'.repeat(a.stars||5)+'☆'.repeat(5-(a.stars||5));
-      const av=a.photoURL?`<img src="${a.photoURL}" alt="">`:(a.name||'?').charAt(0).toUpperCase();
-      const card=document.createElement('div');card.className='avis-card';
-      card.innerHTML=`
-        <p class="avis-text">${a.text}</p>
-        <div class="avis-author">
-          <div class="avis-avatar">${av}</div>
-          <div><div class="avis-name">${a.name||'Anonyme'}</div><div class="avis-year-tag">${a.yearLabel||''}</div></div>
-          <div class="avis-stars-display">${stars}</div>
-        </div>`;
-      list.appendChild(card);
-    });
-  });
-}
-
-window.submitAvis=async()=>{
-  if(!CU||!UD){toast('Connecte-toi pour laisser un avis');return;}
-  const input=document.getElementById('avisInput');
-  const text=input.value.trim();
-  if(text.length<10){toast('Écris au moins 10 caractères');return;}
-  // Check if user already posted
-  try{
-    const existing=await db.collection('avis').where('uid','==',CU.uid).limit(1).get();
-    if(!existing.empty){toast('Tu as déjà laissé un avis 😊');return;}
-    await db.collection('avis').add({
-      uid:CU.uid,
-      name:UD.name||'Anonyme',
-      photoURL:UD.photoURL||null,
-      yearLabel:({1:'1ère Année',2:'2ème Année',3:'3ème Année',4:'4ème Année',5:'5ème Année',6:'6ème Année'})[UD.year]||'',
-      text,
-      stars:selectedStars,
-      ts:Date.now()
-    });
-    input.value='';
-    setStars(5);
-    toast('Avis publié ✓ Merci ! 🎉');
-  }catch(e){toast('Erreur: '+e.message);}
-};
-
-// ── AVATAR UPLOAD ──
-const CLOUDINARY_CLOUD='dfbsprbwy';
-const CLOUDINARY_PRESET='medx_avatars';
-
+// ── AVATAR ──
+const CLOUDINARY_CLOUD='dfbsprbwy',CLOUDINARY_PRESET='medx_avatars';
 window.uploadAvatar=async(input)=>{
   if(!input.files||!input.files[0])return;
-  const file=input.files[0];
-  if(file.size>5*1024*1024){toast('Image trop grande (max 5MB)');return;}
-  const profAv=document.getElementById('profileAvatar');
-  profAv.classList.add('avatar-uploading');
-  toast('Envoi en cours...');
+  const file=input.files[0];if(file.size>5*1024*1024){toast('Max 5MB');return;}
+  toast('Envoi...');
   try{
-    const fd=new FormData();
-    fd.append('file',file);
-    fd.append('upload_preset',CLOUDINARY_PRESET);
-    fd.append('folder','medx_avatars');
+    const fd=new FormData();fd.append('file',file);fd.append('upload_preset',CLOUDINARY_PRESET);fd.append('folder','medx_avatars');
     const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,{method:'POST',body:fd});
     const data=await res.json();
-    if(data.secure_url){
-      await updateDoc(doc(db,'users',CU.uid),{photoURL:data.secure_url});
-      UD.photoURL=data.secure_url;
-      updateUI();
-      toast('Photo mise à jour ✓ 🎉');
-    } else {toast('Erreur upload: '+JSON.stringify(data));}
+    if(data.secure_url){await db.collection('users').doc(CU.uid).update({photoURL:data.secure_url});UD.photoURL=data.secure_url;updateUI();toast('Photo mise à jour ✓ 🎉');}
+    else toast('Erreur upload');
   }catch(e){toast('Erreur: '+e.message);}
-  finally{profAv.classList.remove('avatar-uploading');input.value='';}
+  finally{input.value='';}
 };
 </script>
 </body>
