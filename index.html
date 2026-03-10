@@ -844,16 +844,39 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.20.0.js"></script>
-<script>
+<script data-cfasync="false">
 // ── FIREBASE ──
 const app=firebase.initializeApp({apiKey:"AIzaSyB7p3phF_ex1EY5bj3Wu3R9-CtOJnqHieA",authDomain:"medx-d67fb.firebaseapp.com",projectId:"medx-d67fb",storageBucket:"medx-d67fb.firebasestorage.app",messagingSenderId:"698164411256",appId:"1:698164411256:web:091edcae6c58749688a68d"});
 const auth=firebase.auth(),db=firebase.firestore();
 const FV=firebase.firestore.FieldValue;
 
+// ── AUTH ACTIONS (déclarées tôt pour onclick HTML) ──
+function setErr(m){const el=document.getElementById('authErr');if(el)el.textContent=m;}
+function frErr(c){return({'auth/user-not-found':'Email introuvable','auth/wrong-password':'Mot de passe incorrect','auth/email-already-in-use':'Email déjà utilisé','auth/weak-password':'Mot de passe trop court','auth/invalid-email':'Email invalide','auth/invalid-credential':'Email ou mot de passe incorrect'})[c]||'Erreur: '+c;}
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPass').value;
+  setErr('');try{await auth.signInWithEmailAndPassword(email,pass);}catch(e){setErr(frErr(e.code));}
+}
+async function doRegister(){
+  const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim();
+  const year=parseInt(document.getElementById('regYear').value),pass=document.getElementById('regPass').value;
+  setErr('');if(!name||!email||!pass){setErr('Remplis tous les champs');return;}
+  try{
+    const cred=await auth.createUserWithEmailAndPassword(email,pass);
+    await db.collection('users').doc(cred.user.uid).set({name,email,year,xp:0,lastLogin:'',createdAt:new Date().toISOString()});
+  }catch(e){setErr(frErr(e.code));}
+}
+function doLogout(){auth.signOut();}
+function switchAuthTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',['login','register'][i]===tab));
+  document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');
+  document.getElementById('registerForm').classList.toggle('hidden',tab!=='register');
+  setErr('');
+}
+
 // ── CONSTANTS ──
 const LEVELS=[0,100,250,500,900,1500,2500,4000,6000,10000];
 const YL={1:"1ère Année",2:"2ème Année",3:"3ème Année",4:"4ème Année",5:"5ème Année",6:"6ème Année"};
-const AGORA_APP_ID='f19452a586d7415f9205fdef9209d8f8';
 
 // ── STATE ──
 let CU=null,UD=null,isAdmin=false,CY=null;
@@ -1172,7 +1195,6 @@ window.switchLB=(mode,btn)=>{document.querySelectorAll('.lb-tab').forEach(b=>b.c
 
 // ── ROOMS (Permanent per year + General chat) ──
 // Permanent room IDs: "year-1" through "year-6", general: "general"
-const ROOM_NAMES={1:'1ère Année',2:'2ème Année',3:'3ème Année',4:'4ème Année',5:'5ème Année',6:'6ème Année'};
 let currentRoomId=null,currentChatChannel=null;
 let chatListener=null,membersListener=null,roomsListener=null;
 let agoraClient=null,localAudioTrack=null,micOn=true;
@@ -1445,30 +1467,6 @@ window.saveName=async()=>{
   try{await db.collection('users').doc(CU.uid).update({name});UD.name=name;updateUI();document.getElementById('editNameModal').classList.add('hidden');toast('Nom mis à jour ✓');}
   catch(e){toast('Erreur: '+e.message);}
 };
-
-// ── AUTH ACTIONS ──
-window.doLogin=async()=>{
-  const email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPass').value;
-  setErr('');try{await auth.signInWithEmailAndPassword(email,pass);}catch(e){setErr(frErr(e.code));}
-};
-window.doRegister=async()=>{
-  const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim();
-  const year=parseInt(document.getElementById('regYear').value),pass=document.getElementById('regPass').value;
-  setErr('');if(!name||!email||!pass){setErr('Remplis tous les champs');return;}
-  try{
-    const cred=await auth.createUserWithEmailAndPassword(email,pass);
-    await db.collection('users').doc(cred.user.uid).set({name,email,year,xp:0,lastLogin:'',createdAt:new Date().toISOString()});
-  }catch(e){setErr(frErr(e.code));}
-};
-window.doLogout=()=>auth.signOut();
-window.switchAuthTab=(tab)=>{
-  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',['login','register'][i]===tab));
-  document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');
-  document.getElementById('registerForm').classList.toggle('hidden',tab!=='register');
-  setErr('');
-};
-function setErr(m){document.getElementById('authErr').textContent=m;}
-function frErr(c){return({'auth/user-not-found':'Email introuvable','auth/wrong-password':'Mot de passe incorrect','auth/email-already-in-use':'Email déjà utilisé','auth/weak-password':'Mot de passe trop court','auth/invalid-email':'Email invalide','auth/invalid-credential':'Email ou mot de passe incorrect'})[c]||'Erreur: '+c;}
 
 // ── ADMIN ──
 window.openAdmin=()=>{if(!isAdmin)return;document.getElementById('adminOverlay').classList.remove('hidden');renderAdminLessons();renderAdminQCM();renderAdminExams();renderAdminDrive();};
