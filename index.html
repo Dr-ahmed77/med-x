@@ -1120,6 +1120,9 @@ function applyQCMProgress(){
     card.classList.toggle('done',isDone);
   });
 }
+
+let _firstLoad=true;
+function startListeners(){
   db.collection('lessons').onSnapshot(snap=>{
     allLessons=snap.docs.map(d=>({id:d.id,...d.data()}));
     document.getElementById('statLessons').textContent=allLessons.length;
