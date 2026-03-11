@@ -106,9 +106,9 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .content-area{flex:1;padding:1.5rem}
 
 /* ── SMOOTH TRANSITIONS ── */
-.view{display:none;animation:none;}
-.view.active{display:block;animation:viewIn .25s cubic-bezier(.4,0,.2,1) both;}
-.view.active#view-rooms{display:flex;flex-direction:column;padding:0;margin:-1.5rem;height:calc(100vh - var(--topbar))}
+.view{display:none;}
+.view.active{display:block;}
+#view-rooms{flex-direction:column;}
 .view.leaving{animation:viewOut .2s cubic-bezier(.4,0,.2,1) both;}
 @keyframes viewIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
 @keyframes viewOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-18px)}}
@@ -753,7 +753,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
     <div class="main-content">
       <div class="content-area">
 
-        <div class="view active" id="view-home">
+        <div class="view" id="view-home" style="display:block">
           <div class="home-stats afu">
             <div class="stat-card">
               <div class="stat-icon" style="background:var(--blue-dim)">
@@ -862,8 +862,6 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
             </div>
           </div>
         </div>
-
-        <div class="view" id="view-classement">
           <div class="view-header">
             <div class="view-title">
                 <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="tk" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fcd34d"/></linearGradient></defs><path d="M16 8h20v16a10 10 0 01-20 0V8z" fill="url(#tk)" opacity=".18"/><path d="M16 8h20v16a10 10 0 01-20 0V8z" stroke="url(#tk)" stroke-width="2.2" fill="none"/><path d="M16 12H10a4 4 0 004 4h2" stroke="url(#tk)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M36 12h6a4 4 0 01-4 4h-2" stroke="url(#tk)" stroke-width="2" stroke-linecap="round" fill="none"/><line x1="26" y1="34" x2="26" y2="40" stroke="url(#tk)" stroke-width="2.2" stroke-linecap="round"/><rect x="18" y="40" width="16" height="4" rx="2" fill="url(#tk)" opacity=".4"/><rect x="18" y="40" width="16" height="4" rx="2" stroke="url(#tk)" stroke-width="2" fill="none"/><path d="M26 14l1.5 4h4l-3.2 2.4 1.2 4L26 22l-3.5 2.4 1.2-4L20.5 18h4z" fill="url(#tk)"/></svg>
@@ -901,10 +899,33 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <div class="avis-grid" id="avisList"><div class="avis-empty">Chargement...</div></div>
         </div>
 
+      </div><!-- end content-area -->
+
+      <div id="view-rooms" style="display:none;flex:1;overflow:hidden;flex-direction:column">
+        <div class="discord-layout">
+            <div class="discord-sidebar">
+              <div class="discord-server-header">
+                <div class="discord-server-name">
+                    <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="tr2" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="19" y="7" width="14" height="22" rx="7" fill="url(#tr2)" opacity=".15"/><rect x="19" y="7" width="14" height="22" rx="7" stroke="url(#tr2)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="url(#tr2)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="url(#tr2)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="url(#tr2)" stroke-width="2.2" stroke-linecap="round"/></svg>
+                    Salles MEDX
+                </div>
+              </div>
+              <div class="discord-channels" id="discordChannels"></div>
+            </div>
+            <div class="discord-main" id="discordContent">
+              <div class="dc-empty">
+                <div class="dc-empty-icon">
+                    <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="e3m2" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="19" y="7" width="14" height="22" rx="7" fill="url(#e3m2)" opacity=".15"/><rect x="19" y="7" width="14" height="22" rx="7" stroke="url(#e3m2)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="url(#e3m2)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="url(#e3m2)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="url(#e3m2)" stroke-width="2.2" stroke-linecap="round"/></svg>
+                </div>
+                <div class="dc-empty-text">Sélectionne une salle</div>
+              </div>
+            </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
+
+    </div><!-- end main-content -->
+  </div><!-- end app-body -->
+</div><!-- end mainApp -->
 
 <div id="renameModal" class="rename-modal hidden">
   <div class="rename-box">
@@ -1107,20 +1128,26 @@ async function addXP(amount,reason){
 }
 
 function navTo(view,el){
-  const current=document.querySelector('.view.active');
-  const next=document.getElementById('view-'+view);
-  if(!next||current===next)return;
-  if(current){
-    current.classList.add('leaving');
-    setTimeout(()=>{current.classList.remove('active','leaving');},180);
+  // hide all views
+  document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active','leaving');});
+  const roomsEl=document.getElementById('view-rooms');
+  
+  if(view==='rooms'){
+    // hide content-area views
+    document.querySelectorAll('.content-area .view').forEach(v=>v.style.display='none');
+    document.querySelector('.content-area').style.display='none';
+    roomsEl.style.display='flex';
+  } else {
+    roomsEl.style.display='none';
+    document.querySelector('.content-area').style.display='';
+    document.querySelectorAll('.content-area .view').forEach(v=>v.style.display='none');
+    const next=document.getElementById('view-'+view);
+    if(next)next.style.display='block';
   }
-  setTimeout(()=>{
-    document.querySelectorAll('.view').forEach(v=>{if(v!==next)v.classList.remove('active');});
-    next.classList.add('active');
-  },current?160:0);
+
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
   if(el)el.classList.add('active');
-  
+
   const titles={home:'Accueil',cours:'Cours',qcm:'QCM',examens:'Examens Passés',drive:'Drive Promo',rooms:'Salles d\'étude',classement:'Classement',avis:'Avis des Étudiants'};
   const titleEl=document.getElementById('topbarTitle');
   titleEl.style.opacity='0';
