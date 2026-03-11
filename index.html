@@ -1044,22 +1044,25 @@ function showXPPopup(msg){const p=document.getElementById('xpPopup');p.textConte
 auth.onAuthStateChanged(async user=>{
   if(user){
     CU=user;
-    const snap=await db.collection('users').doc(user.uid).get();
-    if(snap.exists){
-      UD=snap.data();isAdmin=UD.isAdmin===true;
-      const today=new Date().toDateString();
-      if(UD.lastLogin!==today){
-        await db.collection('users').doc(user.uid).update({xp:FV.increment(10),lastLogin:today});
-        UD.xp=(UD.xp||0)+10;showXPPopup('+10 XP — Connexion du jour ! 🎉');
+    try{
+      const snap=await db.collection('users').doc(user.uid).get();
+      if(snap.exists){
+        UD=snap.data();isAdmin=UD.isAdmin===true;
+        const today=new Date().toDateString();
+        if(UD.lastLogin!==today){
+          await db.collection('users').doc(user.uid).update({xp:FV.increment(10),lastLogin:today});
+          UD.xp=(UD.xp||0)+10;showXPPopup('+10 XP — Connexion du jour ! 🎉');
+        }
+      } else {
+        UD={name:'Étudiant',xp:0,year:1};
       }
-    }
+    }catch(e){console.error('user fetch:',e);UD={name:'Étudiant',xp:0,year:1};}
     document.getElementById('authOverlay').style.display='none';
     document.getElementById('mainApp').style.display='flex';
     if(isAdmin)document.getElementById('adminNavBtn').classList.remove('hidden');
-    await loadProgress();
-    updateUI();loadLB('global');loadStudentCount();
-    loadDriveLinks();startListeners();startPresence();loadAvis();
-    buildDiscordChannels();
+    try{await loadProgress();}catch(e){console.error('loadProgress:',e);}
+    try{updateUI();}catch(e){console.error('updateUI:',e);}
+    try{loadLB('global');loadStudentCount();loadDriveLinks();startListeners();startPresence();loadAvis();buildDiscordChannels();}catch(e){console.error('init:',e);}
   } else {
     document.getElementById('authOverlay').style.display='flex';
     document.getElementById('mainApp').style.display='none';
@@ -1484,7 +1487,7 @@ async function joinPermanentRoom(year){
     return;
   }
   if(currentRoomId)await leaveRoom(true);
-  const roomId=`year-${year}`;currentRoomId=roomId;window.currentRoomId=roomId;micOn=true;
+  currentRoomId=roomId;window.currentRoomId=roomId;micOn=true;
   document.querySelectorAll('.dc-channel').forEach(c=>c.classList.remove('active'));
   const chEl=document.getElementById('dc-room-'+year);if(chEl)chEl.classList.add('active');
   try{
