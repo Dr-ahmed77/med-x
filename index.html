@@ -1448,8 +1448,10 @@ function openRoomChat(channelId,title,year){
       <span class="dc-channel-header-desc">Discussion libre entre étudiants</span>
       ${backBtn}
     </div>
-    <div class="chat-messages" id="chatMessages" style="flex:1;overflow-y:auto;padding:.8rem;min-height:0"></div>
-    <div class="chat-input-row" style="flex-shrink:0">
+    <div style="flex:1;position:relative;min-height:0">
+      <div class="chat-messages" id="chatMessages" style="position:absolute;inset:0;overflow-y:auto;padding:.8rem"></div>
+    </div>
+    <div class="chat-input-row" style="flex-shrink:0;border-top:1px solid var(--border)">
       <input class="chat-input" type="text" id="chatInput" placeholder="Écrire un message..." onkeydown="if(event.key==='Enter')sendChat()">
       <button class="btn-send" onclick="sendChat()">➤</button>
     </div>`;
@@ -1519,13 +1521,13 @@ function renderVoiceRoomView(roomId,year){
         <div class="members-title">👥 Dans la salle</div>
         <div id="voiceMembers"></div>
       </div>
-      <div class="chat-panel" style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0">
-        <div class="chat-messages" id="chatMessages" style="flex:1;overflow-y:auto;padding:.8rem;min-height:0"></div>
-        <div class="chat-input-row" style="flex-shrink:0">
-          <input class="chat-input" type="text" id="chatInput" placeholder="Message dans la salle..." onkeydown="if(event.key==='Enter')sendChat()">
-          <button class="btn-send" onclick="sendChat()">➤</button>
-        </div>
-      </div>
+    <div style="flex:1;position:relative;min-height:0">
+      <div class="chat-messages" id="chatMessages" style="position:absolute;inset:0;overflow-y:auto;padding:.8rem"></div>
+    </div>
+    <div class="chat-input-row" style="flex-shrink:0;border-top:1px solid var(--border)">
+      <input class="chat-input" type="text" id="chatInput" placeholder="Message dans la salle..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="btn-send" onclick="sendChat()">➤</button>
+    </div>
     </div>`;
   currentChatChannel=roomId;
   if(membersListener){membersListener();membersListener=null;}
