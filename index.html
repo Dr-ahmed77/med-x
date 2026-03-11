@@ -942,11 +942,12 @@ let userProgress={lessons:{},qcm:{}}; // {lessons:{lessonId:true}, qcm:{qcmId:tr
 async function loadProgress(){
   if(!CU)return;
   try{
-    const snap=await db.collection('users').doc(CU.uid).collection('progress').doc('data').get();
+    // progress stored directly in user doc to avoid subcollection permission issues
+    const snap=await db.collection('users').doc(CU.uid).get();
     if(snap.exists){
       const data=snap.data();
-      userProgress.lessons=data.lessons||{};
-      userProgress.qcm=data.qcm||{};
+      userProgress.lessons=data.progress_lessons||{};
+      userProgress.qcm=data.progress_qcm||{};
     } else {
       userProgress={lessons:{},qcm:{}};
     }
@@ -955,21 +956,22 @@ async function loadProgress(){
 async function saveProgress(){
   if(!CU)return;
   try{
-    await db.collection('users').doc(CU.uid).collection('progress').doc('data').set({
-      lessons:userProgress.lessons,
-      qcm:userProgress.qcm
+    await db.collection('users').doc(CU.uid).update({
+      progress_lessons:userProgress.lessons,
+      progress_qcm:userProgress.qcm
     });
-  }catch(e){console.error('saveProgress:',e);}
+  }catch(e){console.error('saveProgress:',e);toast('❌ Erreur sauvegarde');}
 }
 window.toggleLessonCheck=async(e,lessonId,itemEl)=>{
   e.stopPropagation();
   const isDone=!!userProgress.lessons[lessonId];
   if(isDone){delete userProgress.lessons[lessonId];}
   else{userProgress.lessons[lessonId]=true;}
-  await saveProgress();
   const btn=itemEl.querySelector('.btn-check');
   if(btn){btn.classList.toggle('checked',!isDone);btn.textContent=!isDone?'✓':'';}
   itemEl.classList.toggle('done',!isDone);
+  await saveProgress();
+  toast(!isDone?'✅ Cours marqué comme lu':'↩️ Marquage retiré');
 };
 window.toggleQCMCheck=async(e,qcmId,btnEl,cardEl)=>{
   e.stopPropagation();
@@ -1187,12 +1189,11 @@ function openLessons(mod,lessons){
     const hasLink=l.link&&l.link!=='#';
     const isDone=!!userProgress.lessons[l.id];
     if(isDone)d.classList.add('done');
-    d.innerHTML=`<div class="lesson-num">${String(i+1).padStart(2,'0')}</div><div class="lesson-name">${l.name}</div>${hasLink?'<span class="lesson-open">📄 Ouvrir</span>':'<span class="lesson-soon">Bientôt</span>'}<button class="btn-check" data-lesson-id="${l.id}" title="Marquer comme lu" onclick="toggleLessonCheck(event,'${l.id}',this.closest('.lesson-item'))"></button>`;
+    d.innerHTML=`<div class="lesson-num">${String(i+1).padStart(2,'0')}</div><div class="lesson-name">${l.name}</div>${hasLink?'<span class="lesson-open">📄 Ouvrir</span>':'<span class="lesson-soon">Bientôt</span>'}<button class="btn-check${isDone?' checked':''}" data-lesson-id="${l.id}" title="Marquer comme lu" onclick="toggleLessonCheck(event,'${l.id}',this.closest('.lesson-item'))">${isDone?'✓':''}</button>`;
     if(hasLink)d.onclick=()=>{openPDF(l.name,l.link);addXP(5,'Cours ouvert 📖');};
     ll.appendChild(d);
   });
   const p=document.getElementById('lessonsPanel');p.classList.remove('hidden');
-  applyLessonProgress();
   setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
 }
 window.closePanel=()=>document.getElementById('lessonsPanel').classList.add('hidden');
