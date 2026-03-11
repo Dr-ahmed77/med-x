@@ -485,8 +485,8 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 }
 @media(max-width:480px){
   .home-profile{grid-template-columns:1fr}
-  #view-rooms{position:fixed!important;top:var(--topbar);left:0;right:0;bottom:0;z-index:50;margin:0!important;padding:0!important;background:var(--bg);display:flex!important;flex-direction:column}
-  .discord-layout{flex-direction:column!important;height:100%!important;flex:1;min-height:0}
+  #view-rooms.active{position:fixed!important;top:var(--topbar);left:0;right:0;bottom:0;z-index:50;margin:0!important;padding:0!important;background:var(--bg);display:flex!important;flex-direction:column}
+  #view-rooms.active .discord-layout{flex-direction:column!important;height:100%!important;flex:1;min-height:0}
   .discord-sidebar{width:100%;height:auto;flex-shrink:0;border-right:none;border-bottom:1px solid var(--border)}
   .discord-channels{display:flex;flex-direction:row;overflow-x:auto;padding:.3rem}
   .dc-category{display:none}
@@ -1446,8 +1446,8 @@ function renderVoiceRoomView(roomId,year){
         <button class="btn-leave" onclick="leaveRoom(false)">🚪 Quitter</button>
       </div>
     </div>
-    <div style="flex:1;display:grid;grid-template-columns:170px 1fr;overflow:hidden">
-      <div class="members-panel">
+    <div style="flex:1;display:grid;grid-template-columns:${window.innerWidth<=480?'1fr':'170px 1fr'};overflow:hidden">
+      <div class="members-panel" style="${window.innerWidth<=480?'display:none':''}">
         <div class="members-title">👥 Dans la salle</div>
         <div id="voiceMembers"></div>
       </div>
