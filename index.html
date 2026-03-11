@@ -186,13 +186,13 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .lesson-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .7rem;border-radius:var(--rs);cursor:pointer;transition:all var(--t)}
 .lesson-item:hover{background:var(--surface2)}
 .lesson-num{font-family:var(--ff);font-size:.65rem;font-weight:700;color:var(--muted);min-width:22px}
-.lesson-name{flex:1;font-size:.82rem;font-weight:500}
+.lesson-name{flex:1;font-size:.84rem;font-weight:500;color:var(--text)}
 .lesson-open{font-size:.7rem;color:var(--accent);font-weight:600}
 .lesson-soon{font-size:.68rem;color:var(--muted)}
-.btn-check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .2s;color:var(--muted);font-size:.7rem;margin-left:auto}
+.btn-check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .2s;color:var(--muted);font-size:.75rem;font-weight:700;margin-left:4px}
 .btn-check:hover{border-color:var(--green);color:var(--green);background:var(--green-dim)}
 .btn-check.checked{border-color:var(--green);background:var(--green-dim);color:var(--green)}
-.lesson-item.done .lesson-name{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(16,185,129,.4)}
+.lesson-item.done .lesson-name{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--green);text-decoration-thickness:2px;-webkit-text-decoration-color:var(--green)}
 .qcm-check-wrap{margin-left:auto;display:flex;align-items:center;gap:.4rem}
 .qcm-check-label{font-size:.68rem;color:var(--muted)}
 .btn-check-qcm{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .2s;color:var(--muted);font-size:.75rem}
@@ -943,13 +943,23 @@ async function loadProgress(){
   if(!CU)return;
   try{
     const snap=await db.collection('users').doc(CU.uid).collection('progress').doc('data').get();
-    if(snap.exists)userProgress=Object.assign({lessons:{},qcm:{}},snap.data());
-  }catch(e){}
+    if(snap.exists){
+      const data=snap.data();
+      userProgress.lessons=data.lessons||{};
+      userProgress.qcm=data.qcm||{};
+    } else {
+      userProgress={lessons:{},qcm:{}};
+    }
+  }catch(e){console.error('loadProgress:',e);}
 }
 async function saveProgress(){
   if(!CU)return;
-  try{await db.collection('users').doc(CU.uid).collection('progress').doc('data').set(userProgress);}
-  catch(e){}
+  try{
+    await db.collection('users').doc(CU.uid).collection('progress').doc('data').set({
+      lessons:userProgress.lessons,
+      qcm:userProgress.qcm
+    });
+  }catch(e){console.error('saveProgress:',e);}
 }
 window.toggleLessonCheck=async(e,lessonId,itemEl)=>{
   e.stopPropagation();
