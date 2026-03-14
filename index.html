@@ -1317,6 +1317,7 @@ function navTo(view,el){
   setTimeout(()=>{
     document.querySelectorAll('.view').forEach(v=>{if(v!==next)v.classList.remove('active');});
     next.classList.add('active');
+    if(view==='home'&&window._dnaInit)setTimeout(window._dnaInit,100);
   },current?160:0);
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
   if(el)el.classList.add('active');
@@ -2539,19 +2540,12 @@ window.uploadAvatar=async(input)=>{
       animId=requestAnimationFrame(draw);
     }
 
-    // Only animate when home is visible
-    const observer=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){draw();}
-        else{cancelAnimationFrame(animId);}
-      });
-    },{threshold:0.1});
-    observer.observe(canvas);
+      draw();
   }
 
-  // Init after DOM ready
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initDNA);
-  else setTimeout(initDNA,300);
+  // Init — wait for auth then start
+  window._dnaInit=initDNA;
+  setTimeout(initDNA,1500);
 })();
 
 /* ---- Legal Modals ---- */
