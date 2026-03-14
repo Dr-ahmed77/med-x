@@ -1479,27 +1479,25 @@ window.submitQCM=(qid,correct,total)=>{
 function renderExams(y){
   const container=document.getElementById('examsContainer');
   const yExams=allExams.filter(e=>parseInt(e.year)===y);
-  if(yExams.length===0){container.innerHTML='<div class="lb-loading" style="padding:2rem;text-align:center">Aucun examen encore 📄</div>';return;}
-  const promos={};
-  yExams.forEach(e=>{const p=e.promo||'Promo ?';if(!promos[p])promos[p]={};const u=e.unite||'__none__';if(!promos[p][u])promos[p][u]=[];promos[p][u].push(e);});
+  if(!yExams.length){container.innerHTML='<div class="lb-loading" style="padding:2rem;text-align:center">Aucun examen encore 📄</div>';return;}
   container.innerHTML='';
-  Object.entries(promos).sort((a,b)=>b[0].localeCompare(a[0])).forEach(([promo,unites])=>{
-    const pb=document.createElement('div');pb.className='promo-block';
-    pb.innerHTML=`<div class="promo-title"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="prg" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M26 10L6 20l20 10 20-10z" fill="url(#prg)" opacity=".15"/><path d="M26 10L6 20l20 10 20-10z" stroke="url(#prg)" stroke-width="2.2" stroke-linejoin="round" fill="none"/><path d="M14 25v10c0 4 5.4 7 12 7s12-3 12-7V25" stroke="url(#prg)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="46" y1="20" x2="46" y2="32" stroke="url(#prg)" stroke-width="2.2" stroke-linecap="round"/><circle cx="46" cy="33" r="2.5" fill="url(#prg)"/></svg> ${promo}</div>`;
-    Object.entries(unites).forEach(([unite,exams])=>{
-      const ub=document.createElement('div');ub.className='unite-exam-block';
-      if(unite!=='__none__')ub.innerHTML=`<div class="unite-exam-title">🔷 ${unite}</div>`;
-      exams.forEach(e=>{
-        const hasLink=e.link&&e.link!=='#';
-        const fileId=extractDriveId(e.link||'');
-        const dlUrl=fileId?`https://drive.google.com/uc?export=download&id=${fileId}`:e.link;
-        const item=document.createElement('div');item.className='exam-item';
-        item.innerHTML=`<div class="exam-module-name">${SVG_ICONS.module} ${e.module}</div>${hasLink?`<a class="exam-dl" href="${dlUrl}" target="_blank" onclick="addXP(15,'Examen téléchargé 📄')">⬇ Télécharger</a><button class="exam-dl" style="margin-left:.3rem" onclick="openPDF('${e.module}','${e.link}')">👁 Voir</button>`:'<span class="exam-dl disabled">Bientôt</span>'}`;
-        ub.appendChild(item);
-      });
-      pb.appendChild(ub);
-    });
-    container.appendChild(pb);
+  const sorted=[...yExams].sort((a,b)=>(b.promo||'').localeCompare(a.promo||''));
+  sorted.forEach(e=>{
+    const card=document.createElement('div');card.className='eb-card';
+    const qCount=e.questionCount||0;
+    const imgCount=e.imageCount||0;
+    card.innerHTML=`
+      <div class="eb-card-info">
+        <div class="eb-card-title">${e.module}</div>
+        <div class="eb-card-sub">${YL[e.year]}${e.unite?' · '+e.unite:''}</div>
+        <div class="eb-card-meta">
+          <span class="eb-tag">${e.promo||'—'}</span>
+          ${qCount?`<span class="eb-tag green">${qCount} question${qCount>1?'s':''}</span>`:''}
+          ${imgCount?`<span class="eb-tag">${imgCount} image${imgCount>1?'s':''}</span>`:''}
+        </div>
+      </div>
+      <button class="eb-start-btn" onclick="startExam('${e.id}')">Commencer →</button>`;
+    container.appendChild(card);
   });
 }
 
