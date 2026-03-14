@@ -595,15 +595,18 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .admin-img-preview{max-width:120px;max-height:80px;border-radius:6px;object-fit:cover;border:1px solid var(--border)}
 
 /* ---- Heart Hero ---- */
-.dna-hero{position:relative;width:100%;height:180px;border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;background:linear-gradient(135deg,rgba(15,23,42,1) 0%,rgba(30,41,59,.95) 60%,rgba(15,23,42,1) 100%);border:1px solid rgba(99,102,241,.2);display:flex;align-items:center;padding:0 1.5rem;gap:1rem}
-.dna-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(239,68,68,.08) 0%,transparent 70%)}
-#dnaCanvas{position:absolute;right:0;top:0;width:50%;height:100%;pointer-events:none}
-.dna-hero-text{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;gap:.3rem}
-.dna-hero-greeting{font-size:.75rem;font-weight:600;color:rgba(239,68,68,.8);letter-spacing:.08em;text-transform:uppercase}
-.dna-hero-title{font-family:var(--ff);font-size:1.25rem;font-weight:900;background:linear-gradient(135deg,#f1f5f9,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
-.dna-hero-sub{font-size:.75rem;color:var(--muted)}
-.dna-hero-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;font-weight:600;color:rgba(99,102,241,.9);background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;padding:2px 10px;width:fit-content;margin-top:.2rem}
-@media(max-width:480px){.dna-hero{height:150px;padding:0 1rem}.dna-hero-title{font-size:1rem}#dnaCanvas{width:45%}}
+.dna-hero{position:relative;width:100%;height:190px;border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;background:linear-gradient(135deg,#0f172a 0%,#1a1f35 60%,#0f172a 100%);border:1px solid rgba(99,102,241,.2);display:flex;align-items:center;padding:0 1.4rem;gap:.5rem}
+.dna-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 75% 50%,rgba(239,68,68,.07) 0%,transparent 65%)}
+.heart-anat-wrap{position:relative;width:180px;height:170px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.heart-anat-svg{width:160px;height:160px;animation:heartbeat .85s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(239,68,68,.35))}
+.heart-ecg-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.07)}30%{transform:scale(0.97)}45%{transform:scale(1.04)}60%{transform:scale(1)}}
+.dna-hero-text{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;gap:.35rem}
+.dna-hero-greeting{font-size:.7rem;font-weight:700;color:rgba(252,165,165,.85);letter-spacing:.1em;text-transform:uppercase}
+.dna-hero-title{font-family:var(--ff);font-size:1.2rem;font-weight:900;background:linear-gradient(135deg,#f1f5f9,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.25}
+.dna-hero-sub{font-size:.72rem;color:var(--muted)}
+.dna-hero-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.62rem;font-weight:600;color:rgba(99,102,241,.9);background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;padding:2px 9px;width:fit-content;margin-top:.15rem}
+@media(max-width:480px){.dna-hero{height:160px;padding:0 1rem}.dna-hero-title{font-size:.95rem}.heart-anat-wrap{width:140px;height:140px}.heart-anat-svg{width:130px;height:130px}}
 
 #cookieBanner{display:none}#cookieBanner.cookie-show{display:flex}
 </style>
@@ -944,7 +947,46 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
               <div class="dna-hero-sub">Votre plateforme médicale algérienne</div>
               <div class="dna-hero-badge">🇩🇿 Pour les étudiants algériens</div>
             </div>
-            <canvas id="dnaCanvas"></canvas>
+            <div class="heart-anat-wrap">
+              <svg class="heart-anat-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="hg1" cx="40%" cy="35%" r="60%">
+                    <stop offset="0%" stop-color="#fca5a5"/>
+                    <stop offset="40%" stop-color="#ef4444"/>
+                    <stop offset="100%" stop-color="#7f1d1d"/>
+                  </radialGradient>
+                  <radialGradient id="hg2" cx="60%" cy="40%" r="50%">
+                    <stop offset="0%" stop-color="#93c5fd"/>
+                    <stop offset="50%" stop-color="#3b82f6"/>
+                    <stop offset="100%" stop-color="#1e3a8a"/>
+                  </radialGradient>
+                  <filter id="hglow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                  <filter id="hsoft"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <!-- Right ventricle (blue - deoxygenated) -->
+                <path d="M60 85 C45 80 38 95 40 115 C42 130 52 145 68 152 C75 155 80 153 82 148 L85 120 C83 105 75 90 60 85Z" fill="url(#hg2)" opacity="0.9" filter="url(#hsoft)"/>
+                <!-- Left ventricle (red - oxygenated) -->
+                <path d="M95 80 C110 72 128 78 135 95 C142 112 138 135 125 150 C115 160 100 162 90 155 C82 148 80 135 82 120 L88 90 C90 83 93 80 95 80Z" fill="url(#hg1)" opacity="0.95" filter="url(#hsoft)"/>
+                <!-- Right atrium -->
+                <path d="M42 55 C35 48 38 38 48 35 C58 32 68 38 70 50 C72 60 65 72 55 75 C48 77 42 68 42 55Z" fill="url(#hg2)" opacity="0.85"/>
+                <!-- Left atrium -->
+                <path d="M110 48 C115 38 128 35 138 42 C148 49 148 62 140 70 C133 77 120 78 112 72 C105 66 106 55 110 48Z" fill="url(#hg1)" opacity="0.9"/>
+                <!-- Aorta -->
+                <path d="M125 50 C130 35 128 20 118 14 C110 9 102 12 98 20 C95 28 98 40 105 48" stroke="#ef4444" stroke-width="8" stroke-linecap="round" fill="none" filter="url(#hsoft)"/>
+                <path d="M118 14 C124 10 134 12 138 20 C144 30 140 45 132 50" stroke="#fca5a5" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+                <!-- Pulmonary artery -->
+                <path d="M80 55 C72 42 62 35 50 38 C40 40 36 50 40 60" stroke="#3b82f6" stroke-width="7" stroke-linecap="round" fill="none" filter="url(#hsoft)"/>
+                <!-- Superior vena cava -->
+                <path d="M55 35 C55 22 60 14 68 12 C76 10 82 16 82 26 L82 42" stroke="#93c5fd" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.8"/>
+                <!-- Coronary arteries -->
+                <path d="M108 72 C118 80 122 95 118 108 C114 120 106 128 98 130" stroke="#fca5a5" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+                <path d="M88 78 C78 88 75 105 80 118 C84 128 90 135 95 138" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+                <!-- Highlight shine -->
+                <ellipse cx="118" cy="92" rx="8" ry="12" fill="rgba(255,255,255,0.12)" transform="rotate(-20,118,92)"/>
+                <ellipse cx="52" cy="98" rx="5" ry="8" fill="rgba(255,255,255,0.1)" transform="rotate(10,52,98)"/>
+              </svg>
+              <canvas id="dnaCanvas" class="heart-ecg-canvas"></canvas>
+            </div>
           </div>
           <div class="home-stats afu">
             <div class="stat-card">
@@ -1269,6 +1311,8 @@ auth.onAuthStateChanged(async user=>{
     updateUI();loadLB('global');loadStudentCount();
     loadDriveLinks();startListeners();startPresence();loadAvis();
     buildDiscordChannels();
+    // Start heart after DOM is fully visible
+    setTimeout(()=>{if(window._dnaInit)window._dnaInit();},600);
   } else {
     document.getElementById('authOverlay').style.display='flex';
     document.getElementById('mainApp').style.display='none';
@@ -2454,7 +2498,7 @@ window.uploadAvatar=async(input)=>{
   }catch(e){toast('Erreur: '+e.message);}
   finally{input.value='';}
 };
-/* ---- Heart Animation ---- */
+/* ---- Heart ECG Animation ---- */
 (function(){
   function initHeart(){
     const canvas=document.getElementById('dnaCanvas');
@@ -2463,12 +2507,15 @@ window.uploadAvatar=async(input)=>{
     let W,H,animId,frame=0;
     function resize(){
       W=canvas.offsetWidth;H=canvas.offsetHeight;
-      canvas.width=W*window.devicePixelRatio;canvas.height=H*window.devicePixelRatio;
+      if(!W||!H)return;
+      canvas.width=W*window.devicePixelRatio;
+      canvas.height=H*window.devicePixelRatio;
       ctx.scale(window.devicePixelRatio,window.devicePixelRatio);
     }
-    resize();window.addEventListener('resize',resize);
-    function hx(t){return 16*Math.pow(Math.sin(t),3);}
-    function hy(t){return -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));}
+    resize();
+    if(!W||!H){setTimeout(initHeart,300);return;}
+    window.addEventListener('resize',()=>{resize();});
+
     function ecgVal(x){
       if(x<0.3)return 0;if(x<0.35)return(x-0.3)/0.05*0.3;
       if(x<0.42)return 0.3+(x-0.35)/0.07*(-0.2);
@@ -2479,71 +2526,51 @@ window.uploadAvatar=async(input)=>{
       if(x<0.68)return 0.7-(x-0.62)/0.06*0.7;
       return 0;
     }
-    const parts=Array.from({length:18},()=>({a:Math.random()*Math.PI*2,r:0.55+Math.random()*0.5,sp:0.007+Math.random()*0.01,sz:1+Math.random()*2}));
+
+    const LEN=100;
     function draw(){
-      ctx.clearRect(0,0,W,H);frame++;
-      const cx=W*0.5,cy=H*0.47;
-      const pulse=1+0.07*Math.max(0,Math.sin(frame*0.09));
-      const sc=Math.min(W,H)*0.027*pulse;
-      // Glow bg
-      const g=ctx.createRadialGradient(cx,cy,0,cx,cy,H*0.55);
-      g.addColorStop(0,'rgba(239,68,68,0.1)');g.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-      // Heart shape helper
-      function drawHeart(){
-        ctx.beginPath();
-        for(let i=0;i<=360;i++){const r=i*Math.PI/180;i===0?ctx.moveTo(hx(r),hy(r)):ctx.lineTo(hx(r),hy(r));}
-        ctx.closePath();
-      }
-      // Shadow
-      ctx.save();ctx.translate(cx,cy+5);ctx.scale(sc,sc);drawHeart();
-      ctx.fillStyle='rgba(239,68,68,0.12)';ctx.fill();ctx.restore();
-      // Main heart
-      ctx.save();ctx.translate(cx,cy);ctx.scale(sc,sc);drawHeart();
-      const hg=ctx.createLinearGradient(0,-14,0,10);
-      hg.addColorStop(0,'rgba(252,165,165,0.95)');
-      hg.addColorStop(0.45,'rgba(239,68,68,0.97)');
-      hg.addColorStop(1,'rgba(185,28,28,0.92)');
-      ctx.fillStyle=hg;ctx.fill();
-      // Shine
-      ctx.beginPath();ctx.ellipse(-3,-6,4,2.5,Math.PI*0.3,0,Math.PI*2);
-      ctx.fillStyle='rgba(255,255,255,0.22)';ctx.fill();
-      ctx.restore();
-      // Outer ring pulse
-      const ringAlpha=0.15+0.2*Math.abs(Math.sin(frame*0.09));
-      ctx.save();ctx.translate(cx,cy);ctx.scale(sc*1.12,sc*1.12);drawHeart();
-      ctx.strokeStyle=`rgba(252,165,165,${ringAlpha})`;ctx.lineWidth=0.5;ctx.stroke();ctx.restore();
-      // ECG
-      const ey=H*0.84,ew=W*0.82,ex0=W*0.09,LEN=100;
-      const off=(frame*1.8)%LEN;
+      ctx.clearRect(0,0,W,H);
+      frame++;
+      // ECG line across bottom
+      const ey=H*0.78,ew=W*0.9,ex0=W*0.05;
+      const off=(frame*1.6)%LEN;
       ctx.beginPath();
       for(let i=0;i<LEN;i++){
         const idx=((i+Math.floor(off))%LEN)/LEN;
         const v=ecgVal(idx);
-        const x=ex0+(i/LEN)*ew,y=ey-v*16;
+        const x=ex0+(i/LEN)*ew,y=ey-v*H*0.28;
         i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
       }
       const eg=ctx.createLinearGradient(ex0,0,ex0+ew,0);
-      eg.addColorStop(0,'rgba(239,68,68,0)');eg.addColorStop(0.25,'rgba(239,68,68,0.6)');
-      eg.addColorStop(0.75,'rgba(239,68,68,0.9)');eg.addColorStop(1,'rgba(239,68,68,0)');
-      ctx.strokeStyle=eg;ctx.lineWidth=1.6;
-      ctx.shadowBlur=8;ctx.shadowColor='rgba(239,68,68,0.7)';ctx.stroke();ctx.shadowBlur=0;
-      // Particles
-      parts.forEach(p=>{
-        p.a+=p.sp;
-        const px=cx+hx(p.a)*sc*p.r,py=cy+hy(p.a)*sc*p.r;
-        ctx.beginPath();ctx.arc(px,py,p.sz,0,Math.PI*2);
-        ctx.fillStyle=`rgba(252,165,165,${0.3+0.2*Math.sin(frame*0.06+p.a)})`;ctx.fill();
-      });
+      eg.addColorStop(0,'rgba(239,68,68,0)');
+      eg.addColorStop(0.2,'rgba(239,68,68,0.5)');
+      eg.addColorStop(0.8,'rgba(239,68,68,0.9)');
+      eg.addColorStop(1,'rgba(239,68,68,0)');
+      ctx.strokeStyle=eg;ctx.lineWidth=1.8;
+      ctx.shadowBlur=10;ctx.shadowColor='rgba(239,68,68,0.8)';
+      ctx.stroke();ctx.shadowBlur=0;
+
+      // Glowing dot at peak
+      const peakI=Math.floor((frame*1.6+LEN*0.48)%LEN);
+      const peakX=ex0+(peakI/LEN)*ew;
+      const peakV=ecgVal(peakI/LEN);
+      const peakY=ey-peakV*H*0.28;
+      if(peakV>1.5){
+        ctx.beginPath();ctx.arc(peakX,peakY,4,0,Math.PI*2);
+        ctx.fillStyle='rgba(252,165,165,0.9)';
+        ctx.shadowBlur=12;ctx.shadowColor='rgba(239,68,68,1)';
+        ctx.fill();ctx.shadowBlur=0;
+      }
+
       animId=requestAnimationFrame(draw);
     }
     cancelAnimationFrame(animId);draw();
+
     const h=new Date().getHours();
     const gr=h<12?'Bonjour ☀️':h<18?'Bon après-midi 🌤':'Bonsoir 🌙';
     const el=document.getElementById('heroGreeting');if(el)el.textContent=gr;
   }
   window._dnaInit=initHeart;
-  setTimeout(initHeart,800);
 })();
 
 /* ---- Legal Modals ---- */
