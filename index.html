@@ -594,6 +594,14 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .admin-exam-q-num{color:var(--accent);font-weight:700;min-width:24px}
 .admin-img-preview{max-width:120px;max-height:80px;border-radius:6px;object-fit:cover;border:1px solid var(--border)}
 
+/* ---- DNA Hero ---- */
+.dna-hero{position:relative;width:100%;height:200px;border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;background:linear-gradient(135deg,rgba(30,64,175,.15) 0%,rgba(99,102,241,.1) 50%,rgba(59,130,246,.05) 100%);border:1px solid rgba(99,102,241,.15)}
+#dnaCanvas{position:absolute;inset:0;width:100%;height:100%}
+.dna-hero-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+.dna-hero-title{font-family:var(--ff);font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,#93c5fd,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem}
+.dna-hero-sub{font-size:.78rem;color:var(--muted);letter-spacing:.05em}
+@media(max-width:480px){.dna-hero{height:150px}.dna-hero-title{font-size:1rem}}
+
 #cookieBanner{display:none}#cookieBanner.cookie-show{display:flex}
 </style>
 </head>
@@ -925,6 +933,14 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
       <div class="content-area">
 
         <div class="view active" id="view-home">
+          <!-- DNA Hero -->
+          <div class="dna-hero">
+            <canvas id="dnaCanvas"></canvas>
+            <div class="dna-hero-text">
+              <div class="dna-hero-title">Bienvenue sur MEDX</div>
+              <div class="dna-hero-sub">Votre plateforme médicale algérienne</div>
+            </div>
+          </div>
           <div class="home-stats afu">
             <div class="stat-card">
               <div class="stat-icon" style="background:var(--blue-dim)">
@@ -990,6 +1006,9 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
             </div>
           </div>
           <div id="qcmContainer"></div>
+          <div id="qcmRetryBar" style="display:none;justify-content:center;padding:1.5rem 0;gap:1rem">
+            <button class="btn-exam-submit" onclick="retryQCM()">🔄 Recommencer le QCM</button>
+          </div>
         </div>
 
         <div class="view" id="view-examens">
@@ -1018,7 +1037,10 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <div class="exam-results" id="examResults">
             <div class="exam-session-header">
               <div class="exam-session-title">Résultats</div>
-              <button class="btn-ghost" onclick="closeExamResults()">← Retour</button>
+              <div style="display:flex;gap:.5rem">
+                <button class="btn-ghost" style="color:var(--accent);border-color:var(--accent)" onclick="retryExam()">🔄 Recommencer</button>
+                <button class="btn-ghost" onclick="closeExamResults()">← Retour</button>
+              </div>
             </div>
             <div class="exam-score-card">
               <div class="exam-score-circle" id="scoreCircle">—</div>
@@ -1473,7 +1495,14 @@ window.submitQCM=(qid,correct,total)=>{
   if(fill)fill.style.width=pct+'%';
   if(lbl)lbl.textContent='Question '+(window._qcmAnswered)+' / '+t+' répondues';
   if(pctLbl)pctLbl.textContent=pct+'%';
-  if(window._qcmAnswered===t)setTimeout(()=>toast('🎉 QCM terminé ! '+pct+'% complété'),400);
+  if(window._qcmAnswered===t){
+    setTimeout(()=>{
+      toast('🎉 QCM terminé ! '+pct+'% complété');
+      // Show retry button
+      const retryBar=document.getElementById('qcmRetryBar');
+      if(retryBar)retryBar.style.display='flex';
+    },400);
+  }
 };
 
 function renderExams(y){
@@ -2197,7 +2226,13 @@ window.startExam=async(examId)=>{
   try{
     const snap=await db.collection('exams').doc(examId).collection('items').orderBy('order').get();
     const items=snap.docs.map(d=>({id:d.id,...d.data()}));
-    _examSession={examId,exam,items,answers:{},submitted:false};
+    // Load saved progress
+    let savedAnswers={};let savedSubmitted=false;
+    try{
+      const saved=await db.collection('users').doc(CU.uid).collection('examProgress').doc(examId).get();
+      if(saved.exists){savedAnswers=saved.data().answers||{};savedSubmitted=saved.data().submitted||false;}
+    }catch(e){}
+    _examSession={examId,exam,items,answers:savedAnswers,submitted:savedSubmitted};
     renderExamSession();
   }catch(e){toast('Erreur: '+e.message);}
 };
@@ -2264,6 +2299,8 @@ window.toggleExamChoice=function(qId,letter,correctStr){
     const el=document.getElementById('ch_'+qId+'_'+l);if(!el)return;
     el.classList.toggle('selected',ans.includes(l));
   });
+  // Auto-save to Firestore
+  if(CU)try{db.collection('users').doc(CU.uid).collection('examProgress').doc(_examSession.examId).set({answers:_examSession.answers,submitted:false,updatedAt:new Date().toISOString()});}catch(e){}
 };
 
 window.submitExam=function(){
@@ -2319,6 +2356,22 @@ window.submitExam=function(){
       <div class="exam-corr-detail">${choiceHtml}<br>Réponse : <span>${q.correct.join(', ')}</span>${!isOk&&!isSkip?` · Vous : ${(answers[q.id]||[]).join(', ')}`:''}</div>`;
     corrDiv.appendChild(block);
   });
+  // Save submitted state
+  if(CU)try{db.collection('users').doc(CU.uid).collection('examProgress').doc(_examSession.examId).set({answers,submitted:true,score:pct,updatedAt:new Date().toISOString()});}catch(e){}
+};
+
+window.retryQCM=function(){
+  document.getElementById('qcmRetryBar').style.display='none';
+  window._qcmAnswered=0;
+  if(CY)renderQCM(CY);
+};
+
+window.retryExam=function(){
+  const examId=_examSession.examId;
+  if(CU)try{db.collection('users').doc(CU.uid).collection('examProgress').doc(examId).delete();}catch(e){}
+  _examSession.answers={};_examSession.submitted=false;
+  document.getElementById('examResults').classList.remove('active');
+  renderExamSession();
 };
 
 window.closeExamSession=function(){
@@ -2395,6 +2448,112 @@ window.uploadAvatar=async(input)=>{
   }catch(e){toast('Erreur: '+e.message);}
   finally{input.value='';}
 };
+/* ---- DNA Helix Animation ---- */
+(function(){
+  function initDNA(){
+    const canvas=document.getElementById('dnaCanvas');
+    if(!canvas)return;
+    const ctx=canvas.getContext('2d');
+    let W,H,animId;
+
+    function resize(){
+      W=canvas.offsetWidth;H=canvas.offsetHeight;
+      canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;
+      ctx.scale(devicePixelRatio,devicePixelRatio);
+    }
+    resize();
+    window.addEventListener('resize',resize);
+
+    const PAIRS=28,SPEED=0.012;
+    let t=0;
+
+    // Base pair colors — medical palette
+    const COLORS=[
+      ['#3b82f6','#6366f1'],['#818cf8','#38bdf8'],
+      ['#6366f1','#3b82f6'],['#38bdf8','#818cf8']
+    ];
+
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      const cx=W/2,amp=W*0.28,yStep=H/(PAIRS-1);
+
+      // Draw backbones first (behind rungs)
+      ctx.lineWidth=2.5;
+      ctx.lineCap='round';
+
+      for(let side=0;side<2;side++){
+        ctx.beginPath();
+        for(let i=0;i<PAIRS;i++){
+          const angle=t+i*(Math.PI*2/PAIRS)+(side===1?Math.PI:0);
+          const x=cx+Math.cos(angle)*amp;
+          const y=i*yStep;
+          if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+        }
+        const grad=ctx.createLinearGradient(cx-amp,0,cx+amp,H);
+        grad.addColorStop(0,'rgba(59,130,246,0.6)');
+        grad.addColorStop(0.5,'rgba(99,102,241,0.8)');
+        grad.addColorStop(1,'rgba(56,189,248,0.6)');
+        ctx.strokeStyle=grad;
+        ctx.stroke();
+      }
+
+      // Draw rungs (base pairs)
+      for(let i=0;i<PAIRS;i++){
+        const angle=t+i*(Math.PI*2/PAIRS);
+        const x1=cx+Math.cos(angle)*amp;
+        const x2=cx+Math.cos(angle+Math.PI)*amp;
+        const y=i*yStep;
+        const depth=Math.sin(angle); // -1 to 1 for 3D feel
+        const alpha=0.3+Math.abs(depth)*0.6;
+        const col=COLORS[i%COLORS.length];
+
+        // Rung line
+        const rg=ctx.createLinearGradient(x1,y,x2,y);
+        rg.addColorStop(0,col[0]+'cc');
+        rg.addColorStop(0.5,'rgba(255,255,255,'+alpha*0.4+')');
+        rg.addColorStop(1,col[1]+'cc');
+        ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);
+        ctx.lineWidth=1.5+Math.abs(depth);
+        ctx.strokeStyle=rg;ctx.stroke();
+
+        // Node dots
+        const r=3+Math.abs(depth)*2;
+        [[x1,col[0]],[x2,col[1]]].forEach(([x,c])=>{
+          ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+          ctx.fillStyle=c;ctx.globalAlpha=0.5+Math.abs(depth)*0.5;
+          ctx.fill();ctx.globalAlpha=1;
+        });
+      }
+
+      // Floating particles
+      ctx.globalAlpha=0.15;
+      for(let p=0;p<12;p++){
+        const px=cx+Math.cos(t*0.7+p*0.9)*amp*1.4;
+        const py=(((t*20+p*37)%H)+H)%H;
+        ctx.beginPath();ctx.arc(px,py,1.5,0,Math.PI*2);
+        ctx.fillStyle='#818cf8';ctx.fill();
+      }
+      ctx.globalAlpha=1;
+
+      t+=SPEED;
+      animId=requestAnimationFrame(draw);
+    }
+
+    // Only animate when home is visible
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){draw();}
+        else{cancelAnimationFrame(animId);}
+      });
+    },{threshold:0.1});
+    observer.observe(canvas);
+  }
+
+  // Init after DOM ready
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initDNA);
+  else setTimeout(initDNA,300);
+})();
+
 /* ---- Legal Modals ---- */
 const LEGAL_CONTENT={
   ml:{title:'Mentions légales',body:`
