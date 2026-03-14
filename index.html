@@ -1991,7 +1991,8 @@ window.importExamCSV=function(){
   document.getElementById('examCsvStatus').textContent=file.name;
   const reader=new FileReader();
   reader.onload=e=>{
-    const lines=e.target.result.split('\n').map(l=>l.trim()).filter(l=>l);
+    const raw=e.target.result.replace(/^\uFEFF/,'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+    const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l);
     if(lines.length<2){toast('CSV vide ou invalide');return;}
     // Parse CSV respecting quoted fields
     function parseCSVLine(line){
@@ -2005,11 +2006,16 @@ window.importExamCSV=function(){
       result.push(cur.trim());
       return result;
     }
-    const headers=parseCSVLine(lines[0]).map(h=>h.toLowerCase().trim());
-    const qi=headers.indexOf('question');
-    const ai=headers.indexOf('a'),bi=headers.indexOf('b'),ci=headers.indexOf('c');
-    const di=headers.indexOf('d'),ei=headers.indexOf('e');
-    const corri=headers.indexOf('correct');
+    const headers=parseCSVLine(lines[0]).map(h=>h.toLowerCase().trim().replace(/[^a-z0-9]/g,''));
+    console.log('MEDX CSV headers:', headers);
+    const findCol=(...names)=>{for(const n of names){const i=headers.indexOf(n);if(i!==-1)return i;}return -1;};
+    const qi=findCol('question','questions');
+    const ai=findCol('a'),bi=findCol('b'),ci=findCol('c');
+    const di=findCol('d'),ei=findCol('e');
+    const corri=findCol('correct','reponse','reponses','reponsescorrectes','reponsecorrecte','answer','answers','correction');
+    console.log('MEDX CSV cols:', {qi,ai,bi,ci,di,ei,corri});
+    const testRow=parseCSVLine(lines[1]||'');
+    console.log('MEDX CSV row1:', testRow);
     if(qi===-1||ai===-1||corri===-1){toast('Colonnes manquantes: question, A, correct');return;}
     _examCsvData=[];
     const preview=document.getElementById('examCsvPreviewList');preview.innerHTML='';
