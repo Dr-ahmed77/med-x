@@ -2236,14 +2236,22 @@ window.startExam=async(examId)=>{
   try{
     const snap=await db.collection('exams').doc(examId).collection('items').orderBy('order').get();
     const items=snap.docs.map(d=>({id:d.id,...d.data()}));
-    // Load saved progress
-    let savedAnswers={};let savedSubmitted=false;
+    let savedAnswers={};let savedSubmitted=false;let savedScore=null;
     try{
       const saved=await db.collection('users').doc(CU.uid).collection('examProgress').doc(examId).get();
-      if(saved.exists){savedAnswers=saved.data().answers||{};savedSubmitted=saved.data().submitted||false;}
+      if(saved.exists){
+        savedAnswers=saved.data().answers||{};
+        savedSubmitted=saved.data().submitted||false;
+        savedScore=saved.data().score||null;
+      }
     }catch(e){}
     _examSession={examId,exam,items,answers:savedAnswers,submitted:savedSubmitted};
-    renderExamSession();
+    if(savedSubmitted){
+      // Show results directly
+      showExamResults();
+    } else {
+      renderExamSession();
+    }
   }catch(e){toast('Erreur: '+e.message);}
 };
 
@@ -2328,8 +2336,22 @@ window.submitExam=function(){
   const pct=Math.round(correct/total*100);
   const xp=Math.round(pct/100*50)+10;
   addXP(xp,'Examen '+exam.module+' 📝');
+  if(CU)try{db.collection('users').doc(CU.uid).collection('examProgress').doc(_examSession.examId).set({answers,submitted:true,score:pct,updatedAt:new Date().toISOString()});}catch(e){}
+  showExamResults();
+};
 
-  // Show results
+function showExamResults(){
+  const {items,answers,exam}=_examSession;
+  const questions=items.filter(i=>i.type==='question');
+  let correct=0;
+  questions.forEach(q=>{
+    const userAns=(answers[q.id]||[]).sort().join(',');
+    const rightAns=[...q.correct].sort().join(',');
+    if(userAns===rightAns)correct++;
+  });
+  const total=questions.length;
+  const pct=Math.round(correct/total*100);
+
   document.getElementById('examSession').classList.remove('active');
   document.getElementById('examResults').classList.add('active');
   document.getElementById('examListView').style.display='none';
@@ -2338,7 +2360,7 @@ window.submitExam=function(){
   document.getElementById('scoreCircle').style.color=pct>=50?'#10b981':'var(--red)';
   document.getElementById('scoreCircle').style.background=pct>=50?'rgba(16,185,129,.1)':'rgba(239,68,68,.08)';
   document.getElementById('scoreLabel').textContent=correct+'/'+total+' questions correctes';
-  document.getElementById('scoreSub').textContent='+'+xp+' XP gagnés';
+  document.getElementById('scoreSub').textContent=exam.module+' — '+exam.promo;
 
   const corrDiv=document.getElementById('examCorrection');corrDiv.innerHTML='';
   let qNum=0;
@@ -2353,22 +2375,26 @@ window.submitExam=function(){
     const choiceHtml=choices.map(l=>{
       const isRight=q.correct.includes(l);
       const userPicked=(answers[q.id]||[]).includes(l);
-      let style='';
-      if(isRight)style='color:#10b981;font-weight:600';
-      else if(userPicked&&!isRight)style='color:var(--red);text-decoration:line-through';
-      return `<span style="font-size:.72rem;${style}">${l}: ${q.choices[l]}</span>`;
-    }).join('<br>');
+      // أخضر = صحيح، أحمر = اخترها غلط، أبيض = لم يختارها وليست صحيحة
+      let bg='',color='rgba(255,255,255,0.6)',border='rgba(255,255,255,0.1)',fw='400';
+      if(isRight){bg='rgba(16,185,129,.12)';color='#10b981';border='rgba(16,185,129,.3)';fw='700';}
+      else if(userPicked&&!isRight){bg='rgba(239,68,68,.1)';color='#ef4444';border='rgba(239,68,68,.3)';fw='600';}
+      return `<div style="display:flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:6px;border:1px solid ${border};background:${bg};margin-bottom:3px">
+        <span style="width:18px;height:18px;border-radius:50%;background:${isRight?'#10b981':userPicked&&!isRight?'#ef4444':'rgba(255,255,255,0.1)'};display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff;flex-shrink:0">${l}</span>
+        <span style="font-size:.75rem;color:${color};font-weight:${fw};flex:1">${q.choices[l]}</span>
+        ${isRight?'<span style="font-size:.65rem;color:#10b981">✓</span>':''}
+        ${userPicked&&!isRight?'<span style="font-size:.65rem;color:#ef4444">✗</span>':''}
+      </div>`;
+    }).join('');
     block.innerHTML=`
-      <div class="exam-corr-q">
+      <div class="exam-corr-q" style="margin-bottom:.5rem">
         <span class="exam-corr-status ${isSkip?'skip':isOk?'ok':'ko'}">${isSkip?'—':isOk?'✓':'✗'}</span>
-        <span>Q${qNum}. ${q.question}</span>
+        <span style="font-size:.82rem;font-weight:600">Q${qNum}. ${q.question}</span>
       </div>
-      <div class="exam-corr-detail">${choiceHtml}<br>Réponse : <span>${q.correct.join(', ')}</span>${!isOk&&!isSkip?` · Vous : ${(answers[q.id]||[]).join(', ')}`:''}</div>`;
+      <div>${choiceHtml}</div>`;
     corrDiv.appendChild(block);
   });
-  // Save submitted state
-  if(CU)try{db.collection('users').doc(CU.uid).collection('examProgress').doc(_examSession.examId).set({answers,submitted:true,score:pct,updatedAt:new Date().toISOString()});}catch(e){}
-};
+}
 
 window.retryQCM=function(){
   document.getElementById('qcmRetryBar').style.display='none';
