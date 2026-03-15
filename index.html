@@ -712,8 +712,8 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <input class="admin-input" type="text" id="aLesson" placeholder="Nom du cours">
           <div style="display:flex;gap:.5rem;align-items:center">
             <input class="admin-input" type="url" id="aLink" placeholder="Lien PDF — ou utilise le bouton →" style="flex:1">
-            <input type="file" id="pdfUploadInput" accept="application/pdf" style="display:none" multiple onchange="uploadMultiplePDFs(this)">
-            <button class="btn-add" style="white-space:nowrap;padding:7px 12px;font-size:.72rem" onclick="document.getElementById('pdfUploadInput').click()" id="pdfUploadBtn">☁️ Uploader PDF</button>
+            <input type="file" id="pdfUploadInput" accept=".pdf,.doc,.docx,.ppt,.pptx" style="display:none" multiple onchange="uploadMultiplePDFs(this)">
+            <button class="btn-add" style="white-space:nowrap;padding:7px 12px;font-size:.72rem" onclick="document.getElementById('pdfUploadInput').click()" id="pdfUploadBtn">☁️ Uploader PDF/Word/PPT</button>
           </div>
           <div id="pdfUploadStatus" style="font-size:.68rem;color:var(--muted);display:none;margin-top:-.3rem">⏳ Upload en cours...</div>
           <div><button class="btn-add" onclick="addLesson()">➕ Ajouter</button></div>
@@ -1919,7 +1919,7 @@ async function uploadMultiplePDFs(input){
   let done=0;
   toast('Upload de '+files.length+' fichiers...');
   for(const file of files){
-    if(file.size>10*1024*1024){toast('❌ '+file.name+' trop grand');continue;}
+    if(file.size>50*1024*1024){toast('❌ '+file.name+' trop grand (max 50MB)');continue;}
     try{
       const fd=new FormData();
       fd.append('file',file);fd.append('upload_preset','medx_avatars');
@@ -1945,7 +1945,7 @@ async function uploadPDFToCloudinary(target='cours'){
 
   const file = document.getElementById(inputId).files[0];
   if(!file) return;
-  if(file.size > 10*1024*1024){ toast('❌ PDF trop grand (max 10MB)'); return; }
+  if(file.size > 50*1024*1024){ toast('❌ Fichier trop grand (max 50MB)'); return; }
 
   const btn  = document.getElementById(btnId);
   const stat = document.getElementById(statId);
