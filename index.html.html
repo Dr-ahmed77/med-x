@@ -2651,16 +2651,15 @@ window.sendAiMsg=async function(){
   const typing=aiShowTyping();
 
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`,{
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system_instruction:{parts:[{text:`Tu es Dr. MEDX, un assistant médical intelligent intégré dans la plateforme MEDX pour les étudiants en médecine algériens. 
-Tu réponds toujours dans la langue de la question (français, arabe dialectal algérien, ou anglais).
-Tu es spécialisé en médecine et tu aides les étudiants à comprendre l'anatomie, physiologie, pathologie, pharmacologie, biochimie et autres matières médicales.
-Tes réponses sont claires, structurées et pédagogiques. Tu utilises des exemples concrets.
-Tu rappelles toujours que tes réponses sont à des fins éducatives uniquement et ne remplacent pas un avis médical professionnel.`}]},
-        contents:_aiHistory
+        contents:[
+          {role:'user',parts:[{text:'Tu es Dr. MEDX, un assistant médical pour étudiants en médecine algériens. Réponds dans la langue de la question (français/arabe/anglais). Sois pédagogique et précis.'}]},
+          {role:'model',parts:[{text:'Compris ! Je suis Dr. MEDX, prêt à aider les étudiants en médecine.'}]},
+          ..._aiHistory
+        ]
       })
     });
     const data=await res.json();
