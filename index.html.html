@@ -610,6 +610,31 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .dna-hero-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.62rem;font-weight:600;color:rgba(99,102,241,.9);background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;padding:2px 9px;width:fit-content;margin-top:.15rem}
 @media(max-width:480px){.dna-hero{height:160px;padding:0 1rem}.dna-hero-title{font-size:.95rem}.heart-anat-wrap{width:140px;height:140px}.heart-anat-svg{width:130px;height:130px}}
 
+/* ---- Dr. MEDX AI ---- */
+.ai-chat-wrap{display:flex;flex-direction:column;height:calc(100vh - var(--topbar) - 120px);min-height:400px}
+.ai-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.8rem;padding:.5rem 0 1rem}
+.ai-msg{display:flex;gap:.7rem;align-items:flex-start}
+.ai-msg-user{flex-direction:row-reverse}
+.ai-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;background:var(--surface2);border:1px solid var(--border)}
+.ai-msg-user .ai-avatar{background:var(--accent-dim);border-color:rgba(99,102,241,.3)}
+.ai-bubble{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.7rem .9rem;font-size:.82rem;line-height:1.65;max-width:85%;color:var(--text)}
+.ai-msg-user .ai-bubble{background:var(--accent-dim);border-color:rgba(99,102,241,.25);color:var(--text)}
+.ai-bubble strong{color:var(--accent)}
+.ai-bubble p{margin:.4rem 0}
+.ai-bubble p:first-child{margin-top:0}
+.ai-bubble p:last-child{margin-bottom:0}
+.ai-typing{display:flex;gap:4px;align-items:center;padding:.4rem .2rem}
+.ai-typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:aiDot 1.2s infinite}
+.ai-typing span:nth-child(2){animation-delay:.2s}
+.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes aiDot{0%,80%,100%{transform:scale(0.8);opacity:.4}40%{transform:scale(1.1);opacity:1}}
+.ai-input-row{display:flex;gap:.5rem;padding:.8rem 0 0;border-top:1px solid var(--border);flex-shrink:0}
+.ai-input{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-family:var(--fb);font-size:.83rem;outline:none}
+.ai-input:focus{border-color:var(--accent)}
+.ai-send-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--rs);padding:9px 14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity var(--t);flex-shrink:0}
+.ai-send-btn:hover{opacity:.85}
+.ai-send-btn:disabled{opacity:.4;cursor:not-allowed}
+.ai-disclaimer{font-size:.62rem;color:var(--muted);text-align:center;padding:.4rem 0 0;opacity:.6}
 #cookieBanner{display:none}#cookieBanner.cookie-show{display:flex}
 </style>
 </head>
@@ -919,6 +944,11 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n8" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M8 10h36a4 4 0 014 4v18a4 4 0 01-4 4H28l-6 6v-6H8a4 4 0 01-4-4V14a4 4 0 014-4z" fill="url(#n8)" opacity=".12"/><path d="M8 10h36a4 4 0 014 4v18a4 4 0 01-4 4H28l-6 6v-6H8a4 4 0 01-4-4V14a4 4 0 014-4z" stroke="url(#n8)" stroke-width="2.2" fill="none" stroke-linejoin="round"/><path d="M17 24l1 3h3l-2.5 2 1 3L17 30l-2.5 2 1-3L13 27h3z" fill="url(#n8)"/><path d="M26 24l1 3h3l-2.5 2 1 3L26 30l-2.5 2 1-3L22 27h3z" fill="url(#n8)"/><path d="M35 24l1 3h3l-2.5 2 1 3L35 30l-2.5 2 1-3L31 27h3z" fill="url(#n8)" opacity=".4"/></svg></span> Avis
         </div>
 
+        <div class="nav-section" style="margin-top:.5rem">Intelligence Artificielle</div>
+        <div class="nav-item" data-view="ai" onclick="navTo('ai',this)">
+          <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="nai" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><circle cx="26" cy="20" r="10" fill="url(#nai)" opacity=".15"/><circle cx="26" cy="20" r="10" stroke="url(#nai)" stroke-width="2.2" fill="none"/><circle cx="22" cy="18" r="2" fill="url(#nai)"/><circle cx="30" cy="18" r="2" fill="url(#nai)"/><path d="M20 24c1.5 3 10.5 3 12 0" stroke="url(#nai)" stroke-width="2" stroke-linecap="round" fill="none"/><line x1="26" y1="10" x2="26" y2="7" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="12" x2="16" y2="10" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/><line x1="34" y1="12" x2="36" y2="10" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/><path d="M16 34h20a2 2 0 012 2v6H14v-6a2 2 0 012-2z" fill="url(#nai)" opacity=".15"/><path d="M16 34h20a2 2 0 012 2v6H14v-6a2 2 0 012-2z" stroke="url(#nai)" stroke-width="2" fill="none"/><line x1="20" y1="30" x2="18" y2="34" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/><line x1="32" y1="30" x2="34" y2="34" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/></svg></span> Dr. MEDX
+        </div>
+
       <div class="sidebar-footer">
         <div class="sidebar-legal-links">
           <button class="sidebar-legal-btn" onclick="openLegal('ml')">Mentions légales</button>
@@ -1124,6 +1154,30 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
             </div>
           </div>
           <div class="avis-grid" id="avisList"><div class="avis-empty">Chargement...</div></div>
+        </div>
+
+        <div class="view" id="view-ai">
+          <div class="view-header">
+            <div class="view-title">
+              <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="tai" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><circle cx="26" cy="20" r="10" fill="url(#tai)" opacity=".15"/><circle cx="26" cy="20" r="10" stroke="url(#tai)" stroke-width="2.2" fill="none"/><circle cx="22" cy="18" r="2" fill="url(#tai)"/><circle cx="30" cy="18" r="2" fill="url(#tai)"/><path d="M20 24c1.5 3 10.5 3 12 0" stroke="url(#tai)" stroke-width="2" stroke-linecap="round" fill="none"/><line x1="26" y1="10" x2="26" y2="7" stroke="url(#tai)" stroke-width="2" stroke-linecap="round"/></svg>
+              Dr. MEDX
+            </div>
+          </div>
+          <div class="ai-chat-wrap">
+            <div class="ai-messages" id="aiMessages">
+              <div class="ai-msg ai-msg-bot">
+                <div class="ai-avatar">🩺</div>
+                <div class="ai-bubble">Bonjour ! Je suis <strong>Dr. MEDX</strong>, votre assistant médical IA.<br><br>Posez-moi vos questions sur l'anatomie, la physiologie, la pharmacologie ou tout autre sujet médical. Je réponds en français, arabe ou anglais selon votre question.</div>
+              </div>
+            </div>
+            <div class="ai-input-row">
+              <input class="ai-input" id="aiInput" type="text" placeholder="Posez votre question médicale..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiMsg();}">
+              <button class="ai-send-btn" onclick="sendAiMsg()" id="aiSendBtn">
+                <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="ai-disclaimer">⚕️ Dr. MEDX est un outil éducatif — ne remplace pas un avis médical professionnel</div>
+          </div>
         </div>
 
       </div>
@@ -2559,7 +2613,81 @@ window.uploadAvatar=async(input)=>{
   window._dnaInit=initHeart;
 })();
 
-/* ---- Legal Modals ---- */
+/* ---- Dr. MEDX AI (Gemini) ---- */
+const GEMINI_KEY='AIzaSyDLCjSbAslUgsBC01VFpOpueI67d8z2Zu0'; // remplacer par ta clé Gemini
+let _aiHistory=[];
+let _aiLoading=false;
+
+function aiAddMsg(role,html,isHtml=false){
+  const wrap=document.getElementById('aiMessages');if(!wrap)return;
+  const div=document.createElement('div');
+  div.className='ai-msg '+(role==='user'?'ai-msg-user':'ai-msg-bot');
+  const avatar=role==='user'?(document.getElementById('sidebarAvatar')?.style.backgroundImage?`<div class="ai-avatar" style="${document.getElementById('sidebarAvatar').style.cssText}"></div>`:'<div class="ai-avatar">👤</div>'):'<div class="ai-avatar">🩺</div>';
+  div.innerHTML=avatar+`<div class="ai-bubble">${isHtml?html:html.replace(/\n/g,'<br>')}</div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop=wrap.scrollHeight;
+  return div;
+}
+
+function aiShowTyping(){
+  const wrap=document.getElementById('aiMessages');if(!wrap)return null;
+  const div=document.createElement('div');div.className='ai-msg ai-msg-bot';div.id='aiTyping';
+  div.innerHTML='<div class="ai-avatar">🩺</div><div class="ai-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
+  wrap.appendChild(div);wrap.scrollTop=wrap.scrollHeight;
+  return div;
+}
+
+window.sendAiMsg=async function(){
+  if(_aiLoading)return;
+  const input=document.getElementById('aiInput');
+  const text=input.value.trim();if(!text)return;
+  input.value='';
+  _aiLoading=true;
+  document.getElementById('aiSendBtn').disabled=true;
+
+  aiAddMsg('user',text);
+  _aiHistory.push({role:'user',parts:[{text}]});
+
+  const typing=aiShowTyping();
+
+  try{
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system_instruction:{parts:[{text:`Tu es Dr. MEDX, un assistant médical intelligent intégré dans la plateforme MEDX pour les étudiants en médecine algériens. 
+Tu réponds toujours dans la langue de la question (français, arabe dialectal algérien, ou anglais).
+Tu es spécialisé en médecine et tu aides les étudiants à comprendre l'anatomie, physiologie, pathologie, pharmacologie, biochimie et autres matières médicales.
+Tes réponses sont claires, structurées et pédagogiques. Tu utilises des exemples concrets.
+Tu rappelles toujours que tes réponses sont à des fins éducatives uniquement et ne remplacent pas un avis médical professionnel.`}]},
+        contents:_aiHistory
+      })
+    });
+    const data=await res.json();
+    if(typing)typing.remove();
+    if(data.candidates?.[0]?.content?.parts?.[0]?.text){
+      const reply=data.candidates[0].content.parts[0].text;
+      // Format markdown-like
+      const formatted=reply
+        .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g,'<em>$1</em>')
+        .replace(/\n\n/g,'</p><p>')
+        .replace(/\n/g,'<br>');
+      aiAddMsg('bot','<p>'+formatted+'</p>',true);
+      _aiHistory.push({role:'model',parts:[{text:reply}]});
+      // Keep history max 20 messages
+      if(_aiHistory.length>20)_aiHistory=_aiHistory.slice(-20);
+    } else {
+      aiAddMsg('bot','Désolé, une erreur est survenue. Réessayez.');
+    }
+  }catch(e){
+    if(typing)typing.remove();
+    aiAddMsg('bot','Erreur de connexion. Vérifiez votre connexion internet.');
+  }
+  _aiLoading=false;
+  document.getElementById('aiSendBtn').disabled=false;
+  document.getElementById('aiInput').focus();
+};
 const LEGAL_CONTENT={
   ml:{title:'Mentions légales',body:`
     <h3>Éditeur du site</h3>
