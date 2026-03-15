@@ -2614,7 +2614,7 @@ window.uploadAvatar=async(input)=>{
 })();
 
 /* ---- Dr. MEDX AI (Gemini) ---- */
-const GEMINI_KEY='AIzaSyDSmZvsdn22lsnywiMWytStwMMHO8I_qWQ';
+const GROQ_KEY='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';
 let _aiHistory=[];
 let _aiLoading=false;
 
@@ -2651,22 +2651,23 @@ window.sendAiMsg=async function(){
   const typing=aiShowTyping();
 
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
+    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
       body:JSON.stringify({
-        contents:[
-          {role:'user',parts:[{text:'Tu es Dr. MEDX, un assistant médical pour étudiants en médecine algériens. Réponds dans la langue de la question (français/arabe/anglais). Sois pédagogique et précis.'}]},
-          {role:'model',parts:[{text:'Compris ! Je suis Dr. MEDX, prêt à aider les étudiants en médecine.'}]},
-          ..._aiHistory
-        ]
+        model:'llama-3.3-70b-versatile',
+        messages:[
+          {role:'system',content:'Tu es Dr. MEDX, un assistant médical pour étudiants en médecine algériens. Réponds dans la langue de la question (français, arabe dialectal, ou anglais). Sois pédagogique, précis et structuré. Rappelle que tes réponses sont éducatives et ne remplacent pas un avis médical.'},
+          ..._aiHistory.map(m=>({role:m.role==='model'?'assistant':m.role, content:m.parts[0].text}))
+        ],
+        max_tokens:1024,
+        temperature:0.7
       })
     });
     const data=await res.json();
-    console.log('Gemini response:', JSON.stringify(data).substring(0,300));
     if(typing)typing.remove();
-    if(data.candidates?.[0]?.content?.parts?.[0]?.text){
-      const reply=data.candidates[0].content.parts[0].text;
+    if(data.choices?.[0]?.message?.content){
+      const reply=data.choices[0].message.content;
       // Format markdown-like
       const formatted=reply
         .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
