@@ -1452,6 +1452,7 @@ async function loadDriveLinks(){try{const s=await db.collection('config').doc('d
 
 function renderCours(y){
   const yLessons=allLessons.filter(l=>parseInt(l.year)===y);
+  console.log('renderCours y='+y+' allLessons='+allLessons.length+' filtered='+yLessons.length, allLessons.slice(0,3).map(l=>({year:l.year,name:l.name})));
   const container=document.getElementById('coursContainer');
   if(yLessons.length===0){container.innerHTML='<div class="lb-loading">Aucun cours pour cette année encore 📚</div>';return;}
   const groups={};
