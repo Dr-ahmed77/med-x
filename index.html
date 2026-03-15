@@ -712,7 +712,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <input class="admin-input" type="text" id="aLesson" placeholder="Nom du cours">
           <div style="display:flex;gap:.5rem;align-items:center">
             <input class="admin-input" type="url" id="aLink" placeholder="Lien PDF — ou utilise le bouton →" style="flex:1">
-            <input type="file" id="pdfUploadInput" accept="application/pdf" style="display:none" onchange="uploadPDFToCloudinary()">
+            <input type="file" id="pdfUploadInput" accept="application/pdf" style="display:none" multiple onchange="uploadMultiplePDFs(this)">
             <button class="btn-add" style="white-space:nowrap;padding:7px 12px;font-size:.72rem" onclick="document.getElementById('pdfUploadInput').click()" id="pdfUploadBtn">☁️ Uploader PDF</button>
           </div>
           <div id="pdfUploadStatus" style="font-size:.68rem;color:var(--muted);display:none;margin-top:-.3rem">⏳ Upload en cours...</div>
@@ -1907,6 +1907,36 @@ window.submitAvis=async()=>{
   }catch(e){toast('Erreur: '+e.message);}
 };
 
+async function uploadMultiplePDFs(input){
+  const files=[...input.files];
+  if(!files.length)return;
+  if(files.length===1){uploadPDFToCloudinary('cours');return;}
+  // Multiple files — upload and add each automatically
+  const year=document.getElementById('aYear').value;
+  const semUnite=document.getElementById('aSemUnite').value||'Module seul';
+  const module=document.getElementById('aModule').value.trim();
+  if(!module){toast('Indique le module dabord');return;}
+  let done=0;
+  toast('Upload de '+files.length+' fichiers...');
+  for(const file of files){
+    if(file.size>10*1024*1024){toast('❌ '+file.name+' trop grand');continue;}
+    try{
+      const fd=new FormData();
+      fd.append('file',file);fd.append('upload_preset','medx_avatars');
+      fd.append('resource_type','raw');fd.append('folder','medx_pdfs');
+      const res=await fetch('https://api.cloudinary.com/v1_1/dfbsprbwy/raw/upload',{method:'POST',body:fd});
+      const data=await res.json();
+      if(data.secure_url){
+        const name=file.name.replace(/\.[^/.]+$/,'').replace(/[-_]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+        await db.collection('lessons').add({year:parseInt(year),semUnite,module,name,link:data.secure_url,createdAt:new Date().toISOString()});
+        done++;
+      }
+    }catch(e){toast('❌ Erreur: '+file.name);}
+  }
+  toast('✅ '+done+'/'+files.length+' cours ajoutés !');
+  input.value='';
+}
+
 async function uploadPDFToCloudinary(target='cours'){
   const inputId = target==='exam' ? 'pdfUploadInputExam' : 'pdfUploadInput';
   const btnId   = target==='exam' ? 'pdfUploadBtnExam'   : 'pdfUploadBtn';
@@ -1940,6 +1970,13 @@ async function uploadPDFToCloudinary(target='cours'){
 
     if(data.secure_url){
       document.getElementById(linkId).value = data.secure_url;
+      // Auto-fill lesson name from filename (remove extension)
+      if(target==='cours'){
+        const nameField=document.getElementById('aLesson');
+        if(nameField&&!nameField.value.trim()){
+          nameField.value=file.name.replace(/\.[^/.]+$/,'').replace(/[-_]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+        }
+      }
       stat.style.color = 'var(--green)';
       stat.textContent = '✅ '+file.name+' uploadé !';
       btn.textContent = '✅ Uploadé';
