@@ -1615,9 +1615,22 @@ function renderDrive(y){
 
 function openPDF(name,link){
   const fileId=extractDriveId(link);
+  const ext=(link.split('?')[0].split('.').pop()||'').toLowerCase();
+  const isOffice=['doc','docx','ppt','pptx'].includes(ext);
+  
   document.getElementById('pdfTitle').textContent=name;
-  document.getElementById('pdfFrame').src=fileId?`https://drive.google.com/file/d/${fileId}/preview`:link;
   document.getElementById('pdfDlBtn').href=fileId?`https://drive.google.com/uc?export=download&id=${fileId}`:link;
+  
+  let src;
+  if(fileId){
+    src=`https://drive.google.com/file/d/${fileId}/preview`;
+  } else if(isOffice){
+    // Use Microsoft Office viewer for Word/PowerPoint
+    src=`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(link)}`;
+  } else {
+    src=link;
+  }
+  document.getElementById('pdfFrame').src=src;
   document.getElementById('pdfOverlay').classList.remove('hidden');
 }
 window.openPDF=openPDF;
