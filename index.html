@@ -632,7 +632,66 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .msn-send-btn:active{transform:scale(.82)!important;box-shadow:none}
 .msn-send-btn:disabled{opacity:.3;cursor:not-allowed;transform:none!important;box-shadow:none}
 
-/* ── TELEGRAM ANIMATIONS ── */
+/* ── TELEGRAM MESSAGE CONTEXT MENU ── */
+.msg-ctx-overlay{
+  position:fixed;inset:0;z-index:800;
+  background:rgba(0,0,0,.4);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  animation:ctx-bg-in .15s ease both;
+}
+@keyframes ctx-bg-in{from{opacity:0}to{opacity:1}}
+
+.msg-ctx-bubble-preview{
+  position:absolute;
+  background:#2b5278;color:#fff;
+  border-radius:17px;padding:.5rem .85rem;
+  font-size:.82rem;line-height:1.5;
+  max-width:65%;
+  box-shadow:0 4px 20px rgba(0,0,0,.5);
+  animation:ctx-bubble-in .18s cubic-bezier(.34,1.3,.64,1) both;
+  pointer-events:none;
+}
+.msg-ctx-bubble-preview.other-preview{background:#1e2738}
+@keyframes ctx-bubble-in{
+  from{opacity:0;transform:scale(.9)}
+  to{opacity:1;transform:scale(1)}
+}
+
+.msg-ctx-menu{
+  background:#1e2738;
+  border-radius:12px;
+  overflow:hidden;
+  min-width:180px;
+  box-shadow:0 8px 32px rgba(0,0,0,.6);
+  animation:ctx-menu-in .18s cubic-bezier(.34,1.2,.64,1) both;
+  border:1px solid rgba(255,255,255,.07);
+  position:absolute;
+}
+@keyframes ctx-menu-in{
+  from{opacity:0;transform:scale(.85)}
+  to{opacity:1;transform:scale(1)}
+}
+.msg-ctx-item{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.65rem .9rem;
+  font-size:.82rem;color:rgba(255,255,255,.85);
+  cursor:pointer;transition:background .12s;
+  font-weight:500;
+}
+.msg-ctx-item:hover{background:rgba(255,255,255,.07)}
+.msg-ctx-item:active{background:rgba(255,255,255,.12)}
+.msg-ctx-item.danger{color:#ff6b6b}
+.msg-ctx-item svg{width:16px;height:16px;flex-shrink:0;opacity:.8}
+.msg-ctx-sep{height:1px;background:rgba(255,255,255,.06);margin:2px 0}
+
+/* Bubble press effect */
+.msn-bubble.pressed{
+  transform:scale(.96);
+  filter:brightness(1.15);
+  transition:transform .1s,filter .1s;
+}
 @keyframes tg-in-me{
   0%  {opacity:0;transform:translateX(20px) scaleX(.84);transform-origin:right bottom}
   55% {transform:translateX(-2px) scaleX(1.02);transform-origin:right bottom}
@@ -659,8 +718,9 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .msn-bubble-in-other .msn-bubble-wrap:last-child .msn-bubble::after{
   animation:tg-tail .18s .12s cubic-bezier(.34,1.56,.64,1) both;
 }
-.msn-bubble{transition:filter .1s}
+.msn-bubble{transition:filter .1s,transform .1s}
 .msn-bubble-wrap:hover .msn-bubble{filter:brightness(1.08)}
+.msn-pressed{transform:scale(.97)!important;filter:brightness(1.15)!important;transition:transform .1s,filter .1s}
 .dc-voice-ch.active .dc-channel-icon svg{
   filter:drop-shadow(0 0 4px rgba(67,181,129,.7));
 }
@@ -674,6 +734,70 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .btn-send:hover{background:#4f8ef7}
 /* Keep old voice btn classes for compat */
 .btn-mic,.btn-mic.on,.btn-mic.off,.btn-voice-leave{display:none}
+
+/* ── MESSAGE CONTEXT MENU — Telegram style ── */
+.msg-ctx-overlay{
+  position:fixed;inset:0;z-index:800;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  display:flex;align-items:flex-end;justify-content:center;
+  animation:ctx-bg-in .15s ease both;
+}
+@keyframes ctx-bg-in{from{opacity:0}to{opacity:1}}
+.msg-ctx-bubble{
+  position:absolute;
+  max-width:75%;
+  pointer-events:none;
+}
+.msg-ctx-bubble .msn-bubble{
+  pointer-events:none;
+  transform:scale(1.04);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.msg-ctx-menu{
+  background:#1e2738;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:.35rem;
+  min-width:160px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  position:absolute;
+  animation:ctx-menu-in .18s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes ctx-menu-in{
+  from{opacity:0;transform:scale(.85) translateY(6px)}
+  to{opacity:1;transform:none}
+}
+.ctx-item{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.52rem .8rem;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:.82rem;color:#e8edf5;
+  transition:background .12s;
+  user-select:none;
+}
+.ctx-item:hover{background:rgba(255,255,255,.08)}
+.ctx-item:active{background:rgba(255,255,255,.12)}
+.ctx-item svg{width:16px;height:16px;flex-shrink:0;opacity:.75}
+.ctx-item.danger{color:#ff6b6b}
+.ctx-item.danger svg{opacity:.85}
+.ctx-divider{height:1px;background:rgba(255,255,255,.07);margin:.3rem .5rem}
+
+/* Emoji reactions row */
+.ctx-reactions{
+  display:flex;align-items:center;justify-content:space-around;
+  padding:.4rem .5rem .25rem;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  margin-bottom:.25rem;
+}
+.ctx-emoji{
+  font-size:1.4rem;cursor:pointer;padding:.2rem .3rem;
+  border-radius:8px;transition:transform .15s cubic-bezier(.34,1.56,.64,1),background .12s;
+  user-select:none;
+}
+.ctx-emoji:hover{transform:scale(1.35);background:rgba(255,255,255,.08)}
 
 /* ── LEADERBOARD VIEW ── */
 .lb-tabs{display:flex;gap:3px;background:var(--surface2);border-radius:var(--r);padding:3px;width:fit-content;margin-bottom:1rem}
@@ -845,8 +969,24 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
   .dc-category{padding:.38rem .55rem .15rem;font-size:.52rem}
   .discord-main{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
   #discordContent{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
-  /* VOICE BAR — completely hidden on mobile chat view */
-  .voice-bar{display:none!important}
+/* VOICE BAR — ultra compact on mobile, ABOVE INPUT */
+  .voice-bar{
+    order:2; /* push below messages, above input via flex order */
+    padding:.25rem .5rem;gap:.3rem;
+    background:rgba(67,181,129,.08);
+    border-top:1px solid rgba(67,181,129,.15);
+    border-bottom:none;
+  }
+  .voice-bar::before{display:none}
+  .voice-bar-info{display:none}
+  .vb-avatars{display:none}
+  .btn-mic-icon{width:24px;height:24px}
+  .btn-mic-icon svg{width:11px;height:11px}
+  .btn-leave-icon{width:24px;height:24px}
+  .btn-leave-icon svg{width:10px;height:10px}
+  .voice-bar-controls{gap:.25rem;margin-left:auto}
+  .msn-messages{order:1}
+  .msn-input-wrap{order:3}
   /* Bubbles */
   .msn-msg-group.me{padding-left:8%}
   .msn-msg-group.other{padding-right:8%}
@@ -1490,8 +1630,8 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
             </div>
           </div>
           <div class="lb-tabs">
-            <div class="lb-tab active" onclick="switchLB('global',this)"><svg viewBox="0 0 20 20" fill="none" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M2 10h16M10 2c-2 2-3 5-3 8s1 6 3 8M10 2c2 2 3 5 3 8s-1 6-3 8" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>Global</div>
-            <div class="lb-tab" onclick="switchLB('year',this)"><svg viewBox="0 0 20 20" fill="none" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"><path d="M10 4L3 8l7 4 7-4-7-4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M5 10v5c0 0 2 3 5 3s5-3 5-3v-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><line x1="17" y1="8" x2="17" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Ma Promotion</div>
+            <div class="lb-tab active" onclick="switchLB('global',this)"><svg viewBox="0 0 20 20" fill="none" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M2 10h16M10 2c-2 2-3 5-3 8s1 6 3 8M10 2c2 2 3 5 3 8s-1 6-3 8" stroke="currentColor" stroke-width="1.4" fill="none"/></svg data-i18n="lb_tab_global">Global</div>
+            <div class="lb-tab" onclick="switchLB('year',this)"><svg viewBox="0 0 20 20" fill="none" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"><path d="M10 4L3 8l7 4 7-4-7-4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M5 10v5c0 0 2 3 5 3s5-3 5-3v-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><line x1="17" y1="8" x2="17" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg data-i18n="lb_tab_year">Ma Promotion</div>
           </div>
           <div class="lb-list" id="lbList"><div class="lb-loading">Chargement...</div></div>
         </div>
@@ -1719,6 +1859,48 @@ const T = {
     toast_relogin:'Reconnecte-toi puis réessaie.',
     // Level
     level_label:'Niv.',
+    // Message actions
+    msg_copy:'Copier',
+    msg_delete:'Supprimer',
+    msg_reply:'Répondre',
+    // Rooms extra
+    rooms_members:(n)=>`${n} membre${n!==1?'s':''}`,
+    rooms_online:(n)=>`${n} en ligne`,
+    rooms_no_msgs:'Aucun message. Sois le premier ! 👋',
+    // QCM extra
+    qcm_progress:(d,t2)=>`${d}/${t2} faits`,
+    qcm_filter_all:'Tous',
+    // Exam extra
+    exam_loading:'Chargement...',
+    exam_q_label:(n)=>`Question ${n}`,
+    // General
+    toast_copied:'Copié !',
+    toast_cant_delete:'Tu ne peux supprimer que tes messages',
+    // Avis extra
+    avis_title:'Avis des Étudiants',
+    avis_share_title:'Partager ton avis',
+    // Drive extra
+    drive_title:(y)=>`Drive — ${y}`,
+    // Sidebar year
+    sidebar_year_label:(y)=>`Année ${y}`,
+    // Home
+    home_hero_badge:'Faculté de Médecine · Oran',
+    btn_send:'➤ Envoyer',
+    btn_cancel:'Annuler',
+    btn_save:'Enregistrer',
+    btn_cancel_exam:'✕ Annuler',
+    greet_morning:'Bonjour ☀️',
+    greet_afternoon:'Bon après-midi 🌤',
+    greet_evening:'Bonsoir 🌙',
+    lb_tab_global:'Global',
+    lb_tab_year:'Ma Promotion',
+    chat_no_msgs:'Aucun message. Sois le premier ! 👋',
+    qcm_filter:'Tous',
+    exam_answered:(n,total)=>`${n}/${total} répondues`,
+    xp_action_cours:'Ouvrir un cours',
+    xp_action_qcm:'Compléter un QCM',
+    xp_action_daily:'Connexion quotidienne',
+    xp_action_exam:'Télécharger un examen',
   },
   en: {
     // Auth
@@ -1851,6 +2033,55 @@ const T = {
     toast_relogin:'Please log in again and retry.',
     // Level
     level_label:'Lvl.',
+    // Message actions
+    msg_copy:'Copy',
+    msg_delete:'Delete',
+    msg_reply:'Reply',
+    // Rooms extra
+    rooms_members:(n)=>`${n} member${n!==1?'s':''}`,
+    rooms_online:(n)=>`${n} online`,
+    rooms_no_msgs:'No messages yet. Say hello! 👋',
+    // QCM extra
+    qcm_progress:(d,t2)=>`${d}/${t2} done`,
+    qcm_filter_all:'All',
+    // Exam extra
+    exam_loading:'Loading...',
+    exam_q_label:(n)=>`Question ${n}`,
+    // General
+    toast_copied:'Copied!',
+    toast_cant_delete:'You can only delete your own messages',
+    // Avis extra
+    avis_title:'Student Reviews',
+    avis_share_title:'Share your review',
+    // Drive extra
+    drive_title:(y)=>`Drive — ${y}`,
+    // Sidebar year
+    sidebar_year_label:(y)=>`Year ${y}`,
+    // Home
+    home_hero_badge:'Faculty of Medicine · Oran',
+    // Missing keys audit
+    btn_send:'➤ Send',
+    btn_cancel:'Cancel',
+    btn_save:'Save',
+    btn_cancel_exam:'✕ Cancel',
+    // Greeting
+    greet_morning:'Good morning ☀️',
+    greet_afternoon:'Good afternoon 🌤',
+    greet_evening:'Good evening 🌙',
+    // Classement tabs
+    lb_tab_global:'Global',
+    lb_tab_year:'My Year',
+    // Chat no messages
+    chat_no_msgs:'No messages yet. Say hello! 👋',
+    // QCM filter all
+    qcm_filter:'All',
+    // Exam session
+    exam_answered:(n,total)=>`${n}/${total} answered`,
+    // XP actions tooltip
+    xp_action_cours:'Open a course',
+    xp_action_qcm:'Complete a QCM',
+    xp_action_daily:'Daily login',
+    xp_action_exam:'Download an exam',
   }
 };
 
@@ -1943,10 +2174,20 @@ window.setLang=function(lang){
   LANG=lang;
   try{localStorage.setItem('medx_lang',lang);}catch(e){}
   applyLang();
-  // Re-render dynamic content if data is loaded
   if(CY){renderCours(CY);renderQCM(CY);renderExams(CY);renderDrive(CY);}
-  if(typeof loadLB==='function'){const activeTab=document.querySelector('.lb-tab.active');loadLB(activeTab?.textContent?.includes(t('lb_year').substring(0,4))?'year':'global');}
+  if(typeof loadLB==='function')loadLB('global');
   buildDiscordChannels();
+  if(currentChatChannel){
+    const chTitle=currentChatChannel==='general'
+      ?t('rooms_general')
+      :YL(parseInt(currentChatChannel.replace('chat-year-','')));
+    openRoomChat(currentChatChannel,chTitle);
+  }
+  if(UD){
+    const h=new Date().getHours();
+    const gel=document.getElementById('heroGreeting');
+    if(gel)gel.textContent=t(h<12?'greet_morning':h<18?'greet_afternoon':'greet_evening');
+  }
 };
 
 // ── FIREBASE ──
@@ -1963,7 +2204,7 @@ async function doLogin(){
 async function doRegister(){
   const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim();
   const year=parseInt(document.getElementById('regYear').value),pass=document.getElementById('regPass').value;
-  setErr('');if(!name||!email||!pass){setErr('Remplis tous champs');return;}
+  setErr('');if(!name||!email||!pass){setErr(t('toast_fill_all'));return;}
   try{
     const cred=await auth.createUserWithEmailAndPassword(email,pass);
     await db.collection('users').doc(cred.user.uid).set({name,email,year,xp:0,lastLogin:'',createdAt:new Date().toISOString()});
@@ -2061,7 +2302,7 @@ auth.onAuthStateChanged(async user=>{
     await loadProgress();
     applyLang();
     const _h=new Date().getHours();
-    const _gr=_h<12?(LANG==='en'?'Good morning ☀️':'Bonjour ☀️'):_h<18?(LANG==='en'?'Good afternoon 🌤':'Bon après-midi 🌤'):(LANG==='en'?'Good evening 🌙':'Bonsoir 🌙');
+    const _gr=_h<12?t('greet_morning'):_h<18?t('greet_afternoon'):t('greet_evening');
     const _gel=document.getElementById('heroGreeting');if(_gel)_gel.textContent=_gr;
     updateUI();loadLB('global');loadStudentCount();
     loadDriveLinks();startListeners();startPresence();loadAvis();
@@ -2488,9 +2729,33 @@ function renderMsnMessages(snap,channelId){
   if(wasAtBottom||msgs.length===0)box.scrollTop=box.scrollHeight;
 }
 
+// ── Message Context Menu (Telegram style) ──
+function showMsgContext(e,m,channelId){
+  e.preventDefault();e.stopPropagation();
+  const existing=document.getElementById('msgCtxOverlay');if(existing)existing.remove();
+  const isMe=m.uid===CU.uid;
+  const overlay=document.createElement('div');overlay.id='msgCtxOverlay';overlay.className='msg-ctx-overlay';
+  overlay.onclick=(ev)=>{if(ev.target===overlay)overlay.remove();};
+  const vw=window.innerWidth,vh=window.innerHeight;
+  const cx=e.clientX||vw/2,cy=e.clientY||vh/2;
+  const menu=document.createElement('div');menu.className='msg-ctx-menu';
+  menu.style.cssText=`position:absolute;left:${Math.min(cx,vw-195)}px;top:${Math.min(cy,vh-200)}px`;
+  const items=[
+    {icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>',label:t('msg_copy'),action:()=>{try{navigator.clipboard.writeText(m.text);}catch(e2){const ta=document.createElement('textarea');ta.value=m.text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}overlay.remove();toast(t('toast_copied'));}},
+  ];
+  if(isMe||isAdmin){items.push({sep:true});items.push({icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>',label:t('msg_delete'),danger:true,action:()=>{deleteMsg(channelId,m.id);overlay.remove();}});}
+  items.forEach(item=>{
+    if(item.sep){const sep=document.createElement('div');sep.className='msg-ctx-sep';menu.appendChild(sep);return;}
+    const el=document.createElement('div');el.className='msg-ctx-item'+(item.danger?' danger':'');
+    el.innerHTML=`${item.icon}<span>${item.label}</span>`;el.onclick=item.action;menu.appendChild(el);
+  });
+  overlay.appendChild(menu);document.body.appendChild(overlay);
+  requestAnimationFrame(()=>{const r=menu.getBoundingClientRect();if(r.right>vw)menu.style.left=Math.max(10,vw-r.width-10)+'px';if(r.bottom>vh)menu.style.top=Math.max(10,vh-r.height-10)+'px';});
+}
+
 function appendMsnMessage(m,channelId,box,animate){
   const isMe=m.uid===CU.uid;
-  const sameUser=m.uid===_lastMsgUid&&m.ts-_lastMsgTime<5*60*1000;
+  const sameUser=m.uid===_lastMsgUid&&m.ts-_lastMsgTime<5*60*1000&&!m.replyTo;
   let group=null;
   if(sameUser){const last=box.lastElementChild;if(last&&last.classList.contains('msn-msg-group')&&last.classList.contains(isMe?'me':'other'))group=last;}
   if(!group){
@@ -2504,19 +2769,41 @@ function appendMsnMessage(m,channelId,box,animate){
     authorSpan.textContent=isMe?(LANG==='en'?'You':'Moi'):escHtml(m.name||'Anonyme');
     if(isMe){header.appendChild(authorSpan);header.appendChild(av);}
     else{header.appendChild(av);header.appendChild(authorSpan);}
-    if(isAdmin&&!isMe){const mb=document.createElement('button');mb.className='btn-mod-tiny';mb.textContent='⚙';mb.onclick=()=>openModMenu(m.uid,(m.name||'').replace(/'/g,"\'"));header.appendChild(mb);}
+    if(isAdmin&&!isMe){const mb=document.createElement('button');mb.className='btn-mod-tiny';mb.textContent='⚙';mb.onclick=()=>openModMenu(m.uid,(m.name||'').replace(/'/g,"'"));header.appendChild(mb);}
     group.appendChild(header);box.appendChild(group);
   }
   const wrap=document.createElement('div');wrap.className='msn-bubble-wrap';
   if(animate)wrap.classList.add(isMe?'msn-bubble-in-me':'msn-bubble-in-other');
   const bubble=document.createElement('div');bubble.className='msn-bubble';
-  // Text content
+
+  // Reply preview inside bubble
+  if(m.replyTo){
+    const rq=document.createElement('div');
+    rq.style.cssText=`border-left:3px solid ${isMe?'rgba(255,255,255,.4)':'var(--blue)'};padding:.2rem .4rem .2rem .6rem;margin-bottom:.3rem;border-radius:0 4px 4px 0;background:rgba(0,0,0,.15)`;
+    rq.innerHTML=`<div style="font-size:.62rem;font-weight:700;color:${isMe?'rgba(255,255,255,.7)':'var(--accent)'}">${escHtml(m.replyTo.name||'?')}</div><div style="font-size:.72rem;opacity:.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(m.replyTo.text)}</div>`;
+    bubble.appendChild(rq);
+  }
+
   bubble.appendChild(document.createTextNode(m.text));
-  // Invisible spacer + time inside bubble (Telegram style)
   const sp=document.createElement('span');sp.style.cssText='display:inline-block;width:3.2em;height:.1em';bubble.appendChild(sp);
   const tEl=document.createElement('span');tEl.className='msn-bubble-time';tEl.textContent=fmtTime(m.ts);bubble.appendChild(tEl);
-  if(isAdmin){const del=document.createElement('button');del.className='msn-del-btn';del.innerHTML='🗑';del.onclick=(e)=>{e.stopPropagation();deleteMsg(channelId,m.id);};if(isMe){wrap.appendChild(bubble);wrap.appendChild(del);}else{wrap.appendChild(del);wrap.appendChild(bubble);}}
-  else wrap.appendChild(bubble);
+
+  // Long press (mobile) + right click (desktop) → context menu
+  let pressTimer=null;
+  const trigCtx=(e)=>{
+    clearTimeout(pressTimer);
+    bubble.classList.remove('msn-pressed');
+    showMsgCtx(e,{...m,id:m.id},channelId,bubble);
+  };
+  bubble.addEventListener('touchstart',(e)=>{
+    bubble.classList.add('msn-pressed');
+    pressTimer=setTimeout(()=>trigCtx(e.touches[0]),480);
+  },{passive:true});
+  bubble.addEventListener('touchend',()=>{bubble.classList.remove('msn-pressed');clearTimeout(pressTimer);});
+  bubble.addEventListener('touchmove',()=>{bubble.classList.remove('msn-pressed');clearTimeout(pressTimer);},{passive:true});
+  bubble.addEventListener('contextmenu',(e)=>{e.preventDefault();trigCtx(e);});
+
+  wrap.appendChild(bubble);
   group.appendChild(wrap);
   _lastMsgUid=m.uid;_lastMsgTime=m.ts;
 }
@@ -2596,16 +2883,133 @@ function openRoomChat(channelId,title){
     .onSnapshot(snap=>renderMsnMessages(snap,channelId));
 }
 
+// ── MESSAGE CONTEXT MENU ──
+let _ctxTimer=null,_ctxOpen=false;
+
+function showMsgCtx(e,msgData,channelId,bubbleEl){
+  e.preventDefault();e.stopPropagation();
+  if(_ctxOpen)return;_ctxOpen=true;
+  const isMe=msgData.uid===CU?.uid;
+
+  // Build overlay
+  const overlay=document.createElement('div');
+  overlay.className='msg-ctx-overlay';
+  overlay.onclick=(ev)=>{if(ev.target===overlay)closeMsgCtx(overlay);};
+
+  // Clone bubble for display
+  const bubbleClone=bubbleEl.cloneNode(true);
+  bubbleClone.style.cssText='';
+  const bubbleWrap=document.createElement('div');
+  bubbleWrap.className='msg-ctx-bubble';
+
+  // Menu
+  const menu=document.createElement('div');
+  menu.className='msg-ctx-menu';
+
+  // Emoji reactions
+  const reactions=document.createElement('div');
+  reactions.className='ctx-reactions';
+  ['❤️','😂','👍','🔥','😮','🎉'].forEach(emoji=>{
+    const btn=document.createElement('span');btn.className='ctx-emoji';
+    btn.textContent=emoji;
+    btn.onclick=()=>{closeMsgCtx(overlay);toast(emoji+' Reaction (bientôt)');};
+    reactions.appendChild(btn);
+  });
+  menu.appendChild(reactions);
+
+  // Copy
+  const copyItem=makeCtxItem(
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>`,
+    t('msg_copy'),
+    ()=>{
+      navigator.clipboard?.writeText(msgData.text).catch(()=>{});
+      closeMsgCtx(overlay);toast(t('toast_copied'));
+    }
+  );
+  menu.appendChild(copyItem);
+
+  // Reply
+  const replyItem=makeCtxItem(
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>`,
+    t('msg_reply'),
+    ()=>{closeMsgCtx(overlay);setReplyTo(msgData);}
+  );
+  menu.appendChild(replyItem);
+
+  // Delete (own messages or admin)
+  if(isMe||isAdmin){
+    const div=document.createElement('div');div.className='ctx-divider';menu.appendChild(div);
+    const delItem=makeCtxItem(
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>`,
+      t('msg_delete'),
+      ()=>{closeMsgCtx(overlay);deleteMsg(channelId,msgData.id);}
+    );
+    delItem.classList.add('danger');
+    menu.appendChild(delItem);
+  }
+
+  // Position menu relative to bubble
+  const rect=bubbleEl.getBoundingClientRect();
+  const menuW=180,menuH=isMe||isAdmin?200:160;
+  const viewW=window.innerWidth,viewH=window.innerHeight;
+
+  // Position bubble clone
+  bubbleWrap.style.cssText=`left:${Math.max(8,Math.min(rect.left,viewW-rect.width-8))}px;top:${Math.max(8,rect.top-8)}px;width:${rect.width}px`;
+  bubbleWrap.appendChild(bubbleClone);
+  overlay.appendChild(bubbleWrap);
+
+  // Position menu near bubble
+  let mx=isMe?rect.right-menuW:rect.left;
+  let my=rect.bottom+8;
+  if(mx<8)mx=8;if(mx+menuW>viewW-8)mx=viewW-menuW-8;
+  if(my+menuH>viewH-8)my=rect.top-menuH-8;
+  menu.style.cssText=`left:${mx}px;top:${Math.max(8,my)}px;width:${menuW}px`;
+
+  overlay.appendChild(menu);
+  document.body.appendChild(overlay);
+
+  // Haptic if available
+  try{navigator.vibrate&&navigator.vibrate(30);}catch(e){}
+}
+
+function makeCtxItem(icon,label,fn){
+  const d=document.createElement('div');d.className='ctx-item';
+  d.innerHTML=icon+'<span>'+label+'</span>';
+  d.onclick=fn;return d;
+}
+
+function closeMsgCtx(overlay){
+  _ctxOpen=false;
+  overlay.style.animation='ctx-bg-in .12s ease reverse';
+  setTimeout(()=>overlay.remove(),120);
+}
+
+// Reply state
+let _replyTo=null;
+function setReplyTo(msg){
+  _replyTo=msg;
+  // Show reply bar above input
+  const inputWrap=document.querySelector('.msn-input-wrap');
+  if(!inputWrap)return;
+  const existing=document.getElementById('replyBar');
+  if(existing)existing.remove();
+  const bar=document.createElement('div');bar.id='replyBar';
+  bar.style.cssText='padding:.3rem .75rem;background:#1a2538;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.5rem';
+  bar.innerHTML=`<div style="width:3px;height:28px;background:var(--blue);border-radius:2px;flex-shrink:0"></div><div style="flex:1;min-width:0"><div style="font-size:.62rem;color:var(--blue);font-weight:600">${escHtml(msg.name||'?')}</div><div style="font-size:.75rem;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(msg.text)}</div></div><button onclick="clearReply()" style="background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:.9rem;padding:2px 4px">✕</button>`;
+  inputWrap.insertBefore(bar,inputWrap.firstChild);
+  document.getElementById('chatInput')?.focus();
+}
+window.clearReply=function(){_replyTo=null;document.getElementById('replyBar')?.remove();};
+
 window.sendChat=function(){
   const input=document.getElementById('chatInput');if(!input)return;
   const text=input.value.trim();if(!text||!currentChatChannel)return;
   input.value='';
-  // Send button animation
   const btn=document.getElementById('chatSendBtn');
   if(btn){btn.style.transform='scale(.82)';setTimeout(()=>{btn.style.transform='';},150);}
-  db.collection('channels').doc(currentChatChannel).collection('messages').add({
-    uid:CU.uid,name:UD.name||'Anonyme',photoURL:UD.photoURL||null,text,ts:Date.now()
-  });
+  const msgData={uid:CU.uid,name:UD.name||'Anonyme',photoURL:UD.photoURL||null,text,ts:Date.now()};
+  if(_replyTo){msgData.replyTo={id:_replyTo.id,name:_replyTo.name,text:_replyTo.text.substring(0,80)};clearReply();}
+  db.collection('channels').doc(currentChatChannel).collection('messages').add(msgData);
 };
 
 async function joinPermanentRoom(year){
