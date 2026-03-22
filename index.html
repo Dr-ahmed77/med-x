@@ -518,6 +518,9 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .sidebar-legal-btn{background:none;border:none;color:var(--muted);font-size:.65rem;cursor:pointer;padding:2px 4px;border-radius:4px;transition:color var(--t);text-decoration:underline;text-underline-offset:2px}
 .sidebar-legal-btn:hover{color:var(--accent)}
 .sidebar-version{font-size:.6rem;color:var(--muted);opacity:.5;padding:0 4px}
+.lang-toggle{display:flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border2);border-radius:100px;padding:3px;margin-bottom:4px}
+.lang-btn{flex:1;padding:3px 10px;border-radius:100px;font-size:.68rem;font-weight:700;color:var(--muted);transition:all var(--t);cursor:pointer;border:none;background:none;font-family:var(--fb)}
+.lang-btn.active{background:var(--blue);color:#fff}
 .btn-delete-account{width:100%;background:none;border:1px solid rgba(239,68,68,.25);color:rgba(239,68,68,.6);border-radius:var(--rs);padding:5px 8px;font-size:.68rem;cursor:pointer;transition:all var(--t);margin-top:2px}
 .btn-delete-account:hover{background:rgba(239,68,68,.08);border-color:var(--red);color:var(--red)}
 .delete-confirm-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:var(--rs);padding:.8rem;margin-top:.5rem;display:none;flex-direction:column;gap:.5rem}
@@ -647,27 +650,27 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 <div id="authOverlay">
   <div class="auth-box">
     <div class="auth-logo">MED<span class="x">X</span></div>
-    <div class="auth-sub">Faculté de Médecine · Oran</div>
+    <div class="auth-sub" data-i18n="auth_sub">Faculté de Médecine · Oran</div>
     <div class="auth-tabs">
-      <div class="auth-tab active" onclick="switchAuthTab('login')">Connexion</div>
-      <div class="auth-tab" onclick="switchAuthTab('register')">Inscription</div>
+      <div class="auth-tab active" onclick="switchAuthTab('login')" data-i18n="auth_login">Connexion</div>
+      <div class="auth-tab" onclick="switchAuthTab('register')" data-i18n="auth_register">Inscription</div>
     </div>
     <div id="loginForm">
-      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="loginEmail" placeholder="ton@email.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <div class="form-group"><label>Mot de passe</label><input class="form-input" type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <button class="btn-auth" onclick="doLogin()">Se connecter</button>
+      <div class="form-group"><label data-i18n="field_email">Email</label><input class="form-input" type="email" id="loginEmail" placeholder="ton@email.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="form-group"><label data-i18n="field_password">Mot de passe</label><input class="form-input" type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn-auth" onclick="doLogin()" data-i18n="btn_login">Se connecter</button>
     </div>
     <div id="registerForm" class="hidden">
-      <div class="form-group"><label>Prénom & Nom</label><input class="form-input" type="text" id="regName" placeholder="Ahmed Benali"></div>
-      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="regEmail" placeholder="ton@email.com"></div>
-      <div class="form-group"><label>Année d'études</label>
+      <div class="form-group"><label data-i18n="field_name">Prénom & Nom</label><input class="form-input" type="text" id="regName" placeholder="Ahmed Benali"></div>
+      <div class="form-group"><label data-i18n="field_email">Email</label><input class="form-input" type="email" id="regEmail" placeholder="ton@email.com"></div>
+      <div class="form-group"><label data-i18n="field_year">Année d'études</label>
         <select class="form-select" id="regYear">
           <option value="1">1ère Année</option><option value="2">2ème Année</option><option value="3">3ème Année</option>
           <option value="4">4ème Année</option><option value="5">5ème Année</option><option value="6">6ème Année</option>
         </select>
       </div>
-      <div class="form-group"><label>Mot de passe</label><input class="form-input" type="password" id="regPass" placeholder="Min. 6 caractères"></div>
-      <button class="btn-auth" onclick="doRegister()">Créer mon compte</button>
+      <div class="form-group"><label data-i18n="field_password">Mot de passe</label><input class="form-input" type="password" id="regPass" placeholder="Min. 6 caractères"></div>
+      <button class="btn-auth" onclick="doRegister()" data-i18n="btn_register">Créer mon compte</button>
     </div>
     <div class="auth-err" id="authErr"></div>
   </div>
@@ -915,56 +918,60 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
         <div class="sidebar-bar"><div class="sidebar-bar-fill" id="sidebarBarFill" style="width:0%"></div></div>
       </div>
       <div class="sidebar-nav">
-        <div class="nav-section">Menu</div>
+        <div class="nav-section" data-i18n="nav_menu">Menu</div>
         <div class="nav-item active" data-view="home" onclick="navTo('home',this)">
-          <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n1" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M8 22L26 6L44 22V44H33V32H19V44H8V22Z" fill="url(#n1)" opacity=".15"/><path d="M8 22L26 6L44 22V44H33V32H19V44H8V22Z" stroke="url(#n1)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" fill="none"/><circle cx="26" cy="24" r="3.5" fill="url(#n1)"/></svg></span> Accueil
+          <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n1" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M8 22L26 6L44 22V44H33V32H19V44H8V22Z" fill="url(#n1)" opacity=".15"/><path d="M8 22L26 6L44 22V44H33V32H19V44H8V22Z" stroke="url(#n1)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" fill="none"/><circle cx="26" cy="24" r="3.5" fill="url(#n1)"/></svg></span> <span data-i18n="nav_home">Accueil</span>
         </div>
 
-        <div class="nav-section" style="margin-top:.5rem">Mon Contenu</div>
+        <div class="nav-section" style="margin-top:.5rem" data-i18n="nav_content">Mon Contenu</div>
         <div style="margin:2px .4rem 6px;padding:4px 8px;background:var(--accent-dim);border:1px solid rgba(99,102,241,.2);border-radius:var(--rs);font-size:.7rem;color:var(--accent);font-weight:600" id="sidebarYearLabel">...</div>
         <div id="yearSubNav">
           <div class="nav-item" data-view="cours" onclick="navTo('cours',this)">
-            <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="gc1" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M26 10L6 20l20 10 20-10-20-10z" fill="url(#gc1)" opacity=".2"/><path d="M26 10L6 20l20 10 20-10-20-10z" stroke="url(#gc1)" stroke-width="2.2" stroke-linejoin="round" fill="none"/><path d="M14 25v10c0 0 4 6 12 6s12-6 12-6V25" stroke="url(#gc1)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="42" y1="20" x2="42" y2="32" stroke="url(#gc1)" stroke-width="2.2" stroke-linecap="round"/><circle cx="42" cy="33" r="2" fill="url(#gc1)"/></svg></span> Cours
+            <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="gc1" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M26 10L6 20l20 10 20-10-20-10z" fill="url(#gc1)" opacity=".2"/><path d="M26 10L6 20l20 10 20-10-20-10z" stroke="url(#gc1)" stroke-width="2.2" stroke-linejoin="round" fill="none"/><path d="M14 25v10c0 0 4 6 12 6s12-6 12-6V25" stroke="url(#gc1)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="42" y1="20" x2="42" y2="32" stroke="url(#gc1)" stroke-width="2.2" stroke-linecap="round"/><circle cx="42" cy="33" r="2" fill="url(#gc1)"/></svg></span> <span data-i18n="nav_cours">Cours</span>
           </div>
           <div class="nav-item" data-view="qcm" onclick="navTo('qcm',this)">
             <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n3" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="8" y="8" width="36" height="36" rx="8" fill="url(#n3)" opacity=".12"/><rect x="8" y="8" width="36" height="36" rx="8" stroke="url(#n3)" stroke-width="2.2" fill="none"/><rect x="14" y="16" width="6" height="6" rx="1.5" stroke="url(#n3)" stroke-width="1.8" fill="none"/><path d="M15.5 19l1.5 1.5 2.5-3" stroke="url(#n3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="24" y1="19" x2="36" y2="19" stroke="url(#n3)" stroke-width="2" stroke-linecap="round"/><rect x="14" y="26" width="6" height="6" rx="1.5" stroke="url(#n3)" stroke-width="1.8" fill="none"/><line x1="24" y1="29" x2="36" y2="29" stroke="url(#n3)" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="19" r="2.5" fill="url(#n3)"/></svg></span> QCM
           </div>
           <div class="nav-item" data-view="examens" onclick="navTo('examens',this)">
-            <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n4" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="11" y="6" width="24" height="30" rx="3" fill="url(#n4)" opacity=".12"/><rect x="11" y="6" width="24" height="30" rx="3" stroke="url(#n4)" stroke-width="2.2" fill="none"/><line x1="16" y1="14" x2="30" y2="14" stroke="url(#n4)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="20" x2="30" y2="20" stroke="url(#n4)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="26" x2="24" y2="26" stroke="url(#n4)" stroke-width="2" stroke-linecap="round"/><path d="M30 34l8-8 4 4-8 8-4-4z" stroke="url(#n4)" stroke-width="2" stroke-linejoin="round" fill="none"/><path d="M30 34l-2 6 6-2" stroke="url(#n4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="34" y1="28" x2="38" y2="32" stroke="url(#n4)" stroke-width="1.5" stroke-linecap="round"/></svg></span> Examens passés
+            <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n4" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="11" y="6" width="24" height="30" rx="3" fill="url(#n4)" opacity=".12"/><rect x="11" y="6" width="24" height="30" rx="3" stroke="url(#n4)" stroke-width="2.2" fill="none"/><line x1="16" y1="14" x2="30" y2="14" stroke="url(#n4)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="20" x2="30" y2="20" stroke="url(#n4)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="26" x2="24" y2="26" stroke="url(#n4)" stroke-width="2" stroke-linecap="round"/><path d="M30 34l8-8 4 4-8 8-4-4z" stroke="url(#n4)" stroke-width="2" stroke-linejoin="round" fill="none"/><path d="M30 34l-2 6 6-2" stroke="url(#n4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="34" y1="28" x2="38" y2="32" stroke="url(#n4)" stroke-width="1.5" stroke-linecap="round"/></svg></span> <span data-i18n="nav_examens">Examens passés</span>
           </div>
           <div class="nav-item" data-view="drive" onclick="navTo('drive',this)">
-            <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n5" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M36 32H16a8 8 0 010-16 7.97 7.97 0 017.4 4.98A7 7 0 1136 32z" fill="url(#n5)" opacity=".12"/><path d="M36 32H16a8 8 0 010-16 7.97 7.97 0 017.4 4.98A7 7 0 1136 32z" stroke="url(#n5)" stroke-width="2.2" fill="none"/><line x1="26" y1="39" x2="26" y2="25" stroke="url(#n5)" stroke-width="2.2" stroke-linecap="round"/><path d="M21 30l5-5 5 5" stroke="url(#n5)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="20" y1="39" x2="32" y2="39" stroke="url(#n5)" stroke-width="2.2" stroke-linecap="round"/></svg></span> Drive Promo
+            <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n5" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M36 32H16a8 8 0 010-16 7.97 7.97 0 017.4 4.98A7 7 0 1136 32z" fill="url(#n5)" opacity=".12"/><path d="M36 32H16a8 8 0 010-16 7.97 7.97 0 017.4 4.98A7 7 0 1136 32z" stroke="url(#n5)" stroke-width="2.2" fill="none"/><line x1="26" y1="39" x2="26" y2="25" stroke="url(#n5)" stroke-width="2.2" stroke-linecap="round"/><path d="M21 30l5-5 5 5" stroke="url(#n5)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="20" y1="39" x2="32" y2="39" stroke="url(#n5)" stroke-width="2.2" stroke-linecap="round"/></svg></span> <span data-i18n="nav_drive">Drive Promo</span>
           </div>
           <div class="nav-item" data-view="rooms" onclick="navTo('rooms',this)">
-            <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n6" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="19" y="7" width="14" height="22" rx="7" fill="url(#n6)" opacity=".15"/><rect x="19" y="7" width="14" height="22" rx="7" stroke="url(#n6)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="url(#n6)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="url(#n6)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="url(#n6)" stroke-width="2.2" stroke-linecap="round"/><path d="M10 24a18 18 0 000 8" stroke="url(#n6)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".5"/><path d="M42 24a18 18 0 010 8" stroke="url(#n6)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".5"/></svg></span> Salles d'étude
+            <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n6" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="19" y="7" width="14" height="22" rx="7" fill="url(#n6)" opacity=".15"/><rect x="19" y="7" width="14" height="22" rx="7" stroke="url(#n6)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="url(#n6)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="url(#n6)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="url(#n6)" stroke-width="2.2" stroke-linecap="round"/><path d="M10 24a18 18 0 000 8" stroke="url(#n6)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".5"/><path d="M42 24a18 18 0 010 8" stroke="url(#n6)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".5"/></svg></span> <span data-i18n="nav_rooms">Salles d'étude</span>
           </div>
         </div>
 
-        <div class="nav-section" style="margin-top:.5rem">Communauté</div>
+        <div class="nav-section" style="margin-top:.5rem" data-i18n="nav_community">Communauté</div>
         <div class="nav-item" data-view="classement" onclick="navTo('classement',this)">
-          <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n7" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fcd34d"/></linearGradient></defs><path d="M16 8h20v16a10 10 0 01-20 0V8z" fill="url(#n7)" opacity=".18"/><path d="M16 8h20v16a10 10 0 01-20 0V8z" stroke="url(#n7)" stroke-width="2.2" fill="none"/><path d="M16 12H10a4 4 0 004 4h2" stroke="url(#n7)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M36 12h6a4 4 0 01-4 4h-2" stroke="url(#n7)" stroke-width="2" stroke-linecap="round" fill="none"/><line x1="26" y1="34" x2="26" y2="40" stroke="url(#n7)" stroke-width="2.2" stroke-linecap="round"/><rect x="18" y="40" width="16" height="4" rx="2" fill="url(#n7)" opacity=".4"/><rect x="18" y="40" width="16" height="4" rx="2" stroke="url(#n7)" stroke-width="2" fill="none"/><path d="M26 14l1.5 4h4l-3.2 2.4 1.2 4L26 22l-3.5 2.4 1.2-4L20.5 18h4z" fill="url(#n7)"/></svg></span> Classement
+          <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n7" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fcd34d"/></linearGradient></defs><path d="M16 8h20v16a10 10 0 01-20 0V8z" fill="url(#n7)" opacity=".18"/><path d="M16 8h20v16a10 10 0 01-20 0V8z" stroke="url(#n7)" stroke-width="2.2" fill="none"/><path d="M16 12H10a4 4 0 004 4h2" stroke="url(#n7)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M36 12h6a4 4 0 01-4 4h-2" stroke="url(#n7)" stroke-width="2" stroke-linecap="round" fill="none"/><line x1="26" y1="34" x2="26" y2="40" stroke="url(#n7)" stroke-width="2.2" stroke-linecap="round"/><rect x="18" y="40" width="16" height="4" rx="2" fill="url(#n7)" opacity=".4"/><rect x="18" y="40" width="16" height="4" rx="2" stroke="url(#n7)" stroke-width="2" fill="none"/><path d="M26 14l1.5 4h4l-3.2 2.4 1.2 4L26 22l-3.5 2.4 1.2-4L20.5 18h4z" fill="url(#n7)"/></svg></span> <span data-i18n="nav_classement">Classement</span>
         </div>
         <div class="nav-item" data-view="avis" onclick="navTo('avis',this)">
-          <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n8" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M8 10h36a4 4 0 014 4v18a4 4 0 01-4 4H28l-6 6v-6H8a4 4 0 01-4-4V14a4 4 0 014-4z" fill="url(#n8)" opacity=".12"/><path d="M8 10h36a4 4 0 014 4v18a4 4 0 01-4 4H28l-6 6v-6H8a4 4 0 01-4-4V14a4 4 0 014-4z" stroke="url(#n8)" stroke-width="2.2" fill="none" stroke-linejoin="round"/><path d="M17 24l1 3h3l-2.5 2 1 3L17 30l-2.5 2 1-3L13 27h3z" fill="url(#n8)"/><path d="M26 24l1 3h3l-2.5 2 1 3L26 30l-2.5 2 1-3L22 27h3z" fill="url(#n8)"/><path d="M35 24l1 3h3l-2.5 2 1 3L35 30l-2.5 2 1-3L31 27h3z" fill="url(#n8)" opacity=".4"/></svg></span> Avis
+          <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n8" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M8 10h36a4 4 0 014 4v18a4 4 0 01-4 4H28l-6 6v-6H8a4 4 0 01-4-4V14a4 4 0 014-4z" fill="url(#n8)" opacity=".12"/><path d="M8 10h36a4 4 0 014 4v18a4 4 0 01-4 4H28l-6 6v-6H8a4 4 0 01-4-4V14a4 4 0 014-4z" stroke="url(#n8)" stroke-width="2.2" fill="none" stroke-linejoin="round"/><path d="M17 24l1 3h3l-2.5 2 1 3L17 30l-2.5 2 1-3L13 27h3z" fill="url(#n8)"/><path d="M26 24l1 3h3l-2.5 2 1 3L26 30l-2.5 2 1-3L22 27h3z" fill="url(#n8)"/><path d="M35 24l1 3h3l-2.5 2 1 3L35 30l-2.5 2 1-3L31 27h3z" fill="url(#n8)" opacity=".4"/></svg></span> <span data-i18n="nav_avis">Avis</span>
         </div>
 
-        <div class="nav-section" style="margin-top:.5rem">Intelligence Artificielle</div>
+        <div class="nav-section" style="margin-top:.5rem" data-i18n="nav_ai_section">Intelligence Artificielle</div>
         <div class="nav-item" data-view="ai" onclick="navTo('ai',this)">
           <span class="nav-item-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="nai" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><circle cx="26" cy="20" r="10" fill="url(#nai)" opacity=".15"/><circle cx="26" cy="20" r="10" stroke="url(#nai)" stroke-width="2.2" fill="none"/><circle cx="22" cy="18" r="2" fill="url(#nai)"/><circle cx="30" cy="18" r="2" fill="url(#nai)"/><path d="M20 24c1.5 3 10.5 3 12 0" stroke="url(#nai)" stroke-width="2" stroke-linecap="round" fill="none"/><line x1="26" y1="10" x2="26" y2="7" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="12" x2="16" y2="10" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/><line x1="34" y1="12" x2="36" y2="10" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/><path d="M16 34h20a2 2 0 012 2v6H14v-6a2 2 0 012-2z" fill="url(#nai)" opacity=".15"/><path d="M16 34h20a2 2 0 012 2v6H14v-6a2 2 0 012-2z" stroke="url(#nai)" stroke-width="2" fill="none"/><line x1="20" y1="30" x2="18" y2="34" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/><line x1="32" y1="30" x2="34" y2="34" stroke="url(#nai)" stroke-width="2" stroke-linecap="round"/></svg></span> Dr. MEDX
         </div>
 
       <div class="sidebar-footer">
-        <div class="sidebar-legal-links">
-          <button class="sidebar-legal-btn" onclick="openLegal('ml')">Mentions légales</button>
-          <button class="sidebar-legal-btn" onclick="openLegal('pc')">Confidentialité</button>
-          <button class="sidebar-legal-btn" onclick="openLegal('cgu')">CGU</button>
+        <div class="lang-toggle">
+          <button class="lang-btn active" id="langBtnFR" onclick="setLang('fr')">🇫🇷 FR</button>
+          <button class="lang-btn" id="langBtnEN" onclick="setLang('en')">🇬🇧 EN</button>
         </div>
-        <button class="btn-delete-account" onclick="toggleDeleteConfirm()">🗑 Supprimer mon compte</button>
+        <div class="sidebar-legal-links">
+          <button class="sidebar-legal-btn" onclick="openLegal('ml')" data-i18n="legal_ml">Mentions légales</button>
+          <button class="sidebar-legal-btn" onclick="openLegal('pc')" data-i18n="legal_pc">Confidentialité</button>
+          <button class="sidebar-legal-btn" onclick="openLegal('cgu')" data-i18n="legal_cgu">CGU</button>
+        </div>
+        <button class="btn-delete-account" onclick="toggleDeleteConfirm()" data-i18n="btn_delete_account">🗑 Supprimer mon compte</button>
         <div class="delete-confirm-box" id="deleteConfirmBox">
-          <div style="font-size:.75rem;color:var(--red);font-weight:600">Cette action est irréversible.</div>
-          <div style="font-size:.72rem;color:var(--muted)">Tape <strong style="color:var(--text)">SUPPRIMER</strong> pour confirmer :</div>
+          <div style="font-size:.75rem;color:var(--red);font-weight:600" data-i18n="delete_irreversible">Cette action est irréversible.</div>
+          <div style="font-size:.72rem;color:var(--muted)" id="deleteConfirmText">Tape <strong style="color:var(--text)">SUPPRIMER</strong> pour confirmer :</div>
           <input class="delete-confirm-input" id="deleteConfirmInput" type="text" placeholder="SUPPRIMER">
-          <button class="btn-delete-final" onclick="confirmDeleteAccount()">Supprimer définitivement</button>
+          <button class="btn-delete-final" onclick="confirmDeleteAccount()" data-i18n="btn_delete_final">Supprimer définitivement</button>
         </div>
         <div class="sidebar-version">MEDX © 2025 · Ahmed Khadar</div>
       </div>
@@ -977,15 +984,15 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
         <div class="view active" id="view-home">
           <div style="text-align:center;padding:1.2rem 0 1.5rem">
             <div style="font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem" id="heroGreeting">Bonjour ☀️</div>
-            <div style="font-family:var(--ff);font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,#f1f5f9,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem">Bienvenue sur MEDX</div>
-            <div style="font-size:.75rem;color:var(--muted)">Votre plateforme médicale algérienne 🇩🇿</div>
+            <div style="font-family:var(--ff);font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,#f1f5f9,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem" data-i18n="home_welcome">Bienvenue sur MEDX</div>
+            <div style="font-size:.75rem;color:var(--muted)" data-i18n="home_sub">Votre plateforme médicale algérienne 🇩🇿</div>
           </div>
           <div class="home-stats afu">
             <div class="stat-card">
               <div class="stat-icon" style="background:var(--blue-dim)">
                 <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="s2a" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="6" y="10" width="14" height="32" rx="3" fill="url(#s2a)" opacity=".2"/><rect x="6" y="10" width="14" height="32" rx="3" stroke="url(#s2a)" stroke-width="2" fill="none"/><rect x="22" y="18" width="14" height="24" rx="3" fill="url(#s2a)" opacity=".15"/><rect x="22" y="18" width="14" height="24" rx="3" stroke="url(#s2a)" stroke-width="2" fill="none"/><rect x="38" y="26" width="8" height="16" rx="2" fill="url(#s2a)" opacity=".1"/><rect x="38" y="26" width="8" height="16" rx="2" stroke="url(#s2a)" stroke-width="2" fill="none"/></svg>
               </div>
-              <div><div class="stat-val" style="color:var(--blue)" id="statLessons">0</div><div class="stat-lbl">Cours</div></div>
+              <div><div class="stat-val" style="color:var(--blue)" id="statLessons">0</div><div class="stat-lbl" data-i18n="stat_cours">Cours</div></div>
             </div>
             <div class="stat-card">
               <div class="stat-icon" style="background:var(--gold-dim)">
@@ -997,24 +1004,24 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
               <div class="stat-icon" style="background:var(--green-dim)">
                 <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="s1b" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><circle cx="26" cy="18" r="8" fill="url(#s1b)" opacity=".15"/><circle cx="26" cy="18" r="8" stroke="url(#s1b)" stroke-width="2.2" fill="none"/><path d="M10 44c0-8.8 7.2-16 16-16s16 7.2 16 16" stroke="url(#s1b)" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 12l6 2 6-2" stroke="url(#s1b)" stroke-width="1.5" stroke-linecap="round" opacity=".5"/></svg>
               </div>
-              <div><div class="stat-val" style="color:var(--green)" id="statStudents">0</div><div class="stat-lbl">Étudiants</div></div>
+              <div><div class="stat-val" style="color:var(--green)" id="statStudents">0</div><div class="stat-lbl" data-i18n="stat_students">Étudiants</div></div>
             </div>
             <div class="stat-card">
               <div class="stat-icon" style="background:var(--accent-dim)">
                 <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="gc2" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M26 10L6 20l20 10 20-10-20-10z" fill="url(#gc2)" opacity=".2"/><path d="M26 10L6 20l20 10 20-10-20-10z" stroke="url(#gc2)" stroke-width="2.2" stroke-linejoin="round" fill="none"/><path d="M14 25v10c0 0 4 6 12 6s12-6 12-6V25" stroke="url(#gc2)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="42" y1="20" x2="42" y2="32" stroke="url(#gc2)" stroke-width="2.2" stroke-linecap="round"/><circle cx="42" cy="33" r="2" fill="url(#gc2)"/></svg>
               </div>
-              <div><div class="stat-val" style="color:var(--accent)">6</div><div class="stat-lbl">Années</div></div>
+              <div><div class="stat-val" style="color:var(--accent)">6</div><div class="stat-lbl" data-i18n="stat_years">Années</div></div>
             </div>
           </div>
 
           <div class="home-profile afu d2">
             <div class="profile-card">
-              <div class="profile-card-title">Comment gagner des XP</div>
+              <div class="profile-card-title" data-i18n="xp_how_to">Comment gagner des XP</div>
               <div class="xp-actions">
-                <div class="xp-action-item"><span><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n2a" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="10" y="7" width="27" height="36" rx="3" fill="url(#n2a)" opacity=".12"/><rect x="10" y="7" width="27" height="36" rx="3" stroke="url(#n2a)" stroke-width="2.2" fill="none"/><path d="M10 7C10 7 14 9 14 43" stroke="url(#n2a)" stroke-width="2.2" stroke-linecap="round"/><rect x="6" y="9" width="4" height="32" rx="2" fill="url(#n2a)" opacity=".4"/><line x1="18" y1="17" x2="33" y2="17" stroke="url(#n2a)" stroke-width="2" stroke-linecap="round"/></svg> Ouvrir un cours</span><span class="xp-pill">+5 XP</span></div>
-                <div class="xp-action-item"><span><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="q1x" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient></defs><circle cx="26" cy="26" r="20" fill="url(#q1x)" opacity=".15"/><circle cx="26" cy="26" r="20" stroke="url(#q1x)" stroke-width="2.5" fill="none"/><path d="M16 26l7 7 14-14" stroke="url(#q1x)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Compléter un QCM</span><span class="xp-pill">+30 XP</span></div>
-                <div class="xp-action-item"><span><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="x6x" x1="0" y1="52" x2="52" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient></defs><path d="M26 8c0 0-14 12-14 24a14 14 0 0028 0c0-6-4-10-4-10s-1 6-6 8c-2-4 2-14-4-22z" fill="url(#x6x)" opacity=".25"/><path d="M26 8c0 0-14 12-14 24a14 14 0 0028 0c0-6-4-10-4-10s-1 6-6 8c-2-4 2-14-4-22z" stroke="url(#x6x)" stroke-width="2" stroke-linejoin="round" fill="none"/><circle cx="26" cy="36" r="4" fill="url(#x6x)"/></svg> Connexion quotidienne</span><span class="xp-pill">+10 XP</span></div>
-                <div class="xp-action-item"><span><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="c2x" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="8" y="8" width="36" height="36" rx="8" fill="url(#c2x)" opacity=".1"/><rect x="8" y="8" width="36" height="36" rx="8" stroke="url(#c2x)" stroke-width="2" fill="none"/><line x1="26" y1="14" x2="26" y2="30" stroke="url(#c2x)" stroke-width="2.5" stroke-linecap="round"/><path d="M18 24l8 8 8-8" stroke="url(#c2x)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="16" y1="38" x2="36" y2="38" stroke="url(#c2x)" stroke-width="2.5" stroke-linecap="round"/></svg> Télécharger un examen</span><span class="xp-pill">+15 XP</span></div>
+                <div class="xp-action-item"><span><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n2a" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="10" y="7" width="27" height="36" rx="3" fill="url(#n2a)" opacity=".12"/><rect x="10" y="7" width="27" height="36" rx="3" stroke="url(#n2a)" stroke-width="2.2" fill="none"/><path d="M10 7C10 7 14 9 14 43" stroke="url(#n2a)" stroke-width="2.2" stroke-linecap="round"/><rect x="6" y="9" width="4" height="32" rx="2" fill="url(#n2a)" opacity=".4"/><line x1="18" y1="17" x2="33" y2="17" stroke="url(#n2a)" stroke-width="2" stroke-linecap="round"/></svg> <span data-i18n="xp_open_cours">Ouvrir un cours</span></span><span class="xp-pill">+5 XP</span></div>
+                <div class="xp-action-item"><span><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="q1x" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient></defs><circle cx="26" cy="26" r="20" fill="url(#q1x)" opacity=".15"/><circle cx="26" cy="26" r="20" stroke="url(#q1x)" stroke-width="2.5" fill="none"/><path d="M16 26l7 7 14-14" stroke="url(#q1x)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> <span data-i18n="xp_complete_qcm">Compléter un QCM</span></span><span class="xp-pill">+30 XP</span></div>
+                <div class="xp-action-item"><span><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="x6x" x1="0" y1="52" x2="52" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient></defs><path d="M26 8c0 0-14 12-14 24a14 14 0 0028 0c0-6-4-10-4-10s-1 6-6 8c-2-4 2-14-4-22z" fill="url(#x6x)" opacity=".25"/><path d="M26 8c0 0-14 12-14 24a14 14 0 0028 0c0-6-4-10-4-10s-1 6-6 8c-2-4 2-14-4-22z" stroke="url(#x6x)" stroke-width="2" stroke-linejoin="round" fill="none"/><circle cx="26" cy="36" r="4" fill="url(#x6x)"/></svg> <span data-i18n="xp_daily_login">Connexion quotidienne</span></span><span class="xp-pill">+10 XP</span></div>
+                <div class="xp-action-item"><span><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="c2x" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="8" y="8" width="36" height="36" rx="8" fill="url(#c2x)" opacity=".1"/><rect x="8" y="8" width="36" height="36" rx="8" stroke="url(#c2x)" stroke-width="2" fill="none"/><line x1="26" y1="14" x2="26" y2="30" stroke="url(#c2x)" stroke-width="2.5" stroke-linecap="round"/><path d="M18 24l8 8 8-8" stroke="url(#c2x)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="16" y1="38" x2="36" y2="38" stroke="url(#c2x)" stroke-width="2.5" stroke-linecap="round"/></svg> <span data-i18n="xp_dl_exam">Télécharger un examen</span></span><span class="xp-pill">+15 XP</span></div>
               </div>
             </div>
           </div>
@@ -1031,7 +1038,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <div class="panel hidden" id="lessonsPanel">
             <div class="panel-header">
               <div class="panel-title" id="lessonsPanelTitle">📖 Cours</div>
-              <button class="btn-ghost" onclick="closePanel()">← Retour</button>
+              <button class="btn-ghost" onclick="closePanel()" data-i18n-onclick="cours_back">← Retour</button>
             </div>
             <div class="panel-body" id="lessonsList"></div>
           </div>
@@ -1046,7 +1053,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           </div>
           <div id="qcmContainer"></div>
           <div id="qcmRetryBar" style="display:none;justify-content:center;padding:1.5rem 0;gap:1rem">
-            <button class="btn-exam-submit" onclick="retryQCM()">🔄 Recommencer le QCM</button>
+            <button class="btn-exam-submit" onclick="retryQCM()">${t('qcm_restart').replace('🔄 ','')}</button>
           </div>
         </div>
 
@@ -1075,7 +1082,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <!-- Résultats -->
           <div class="exam-results" id="examResults">
             <div class="exam-session-header">
-              <div class="exam-session-title">Résultats</div>
+              <div class="exam-session-title" data-i18n="exam_results">Résultats</div>
               <div style="display:flex;gap:.5rem">
                 <button class="btn-ghost" style="color:var(--accent);border-color:var(--accent)" onclick="retryExam()">🔄 Recommencer</button>
                 <button class="btn-ghost" onclick="closeExamResults()">← Retour</button>
@@ -1116,7 +1123,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
                 <div class="dc-empty-icon">
                     <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="e3m" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="19" y="7" width="14" height="22" rx="7" fill="url(#e3m)" opacity=".15"/><rect x="19" y="7" width="14" height="22" rx="7" stroke="url(#e3m)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="url(#e3m)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="url(#e3m)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="url(#e3m)" stroke-width="2.2" stroke-linecap="round"/></svg>
                 </div>
-                <div class="dc-empty-text">Sélectionne une salle</div>
+                <div class="dc-empty-text" data-i18n="rooms_select">Sélectionne une salle</div>
               </div>
             </div>
           </div>
@@ -1126,7 +1133,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <div class="view-header">
             <div class="view-title">
                 <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="tk" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fcd34d"/></linearGradient></defs><path d="M16 8h20v16a10 10 0 01-20 0V8z" fill="url(#tk)" opacity=".18"/><path d="M16 8h20v16a10 10 0 01-20 0V8z" stroke="url(#tk)" stroke-width="2.2" fill="none"/><path d="M16 12H10a4 4 0 004 4h2" stroke="url(#tk)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M36 12h6a4 4 0 01-4 4h-2" stroke="url(#tk)" stroke-width="2" stroke-linecap="round" fill="none"/><line x1="26" y1="34" x2="26" y2="40" stroke="url(#tk)" stroke-width="2.2" stroke-linecap="round"/><rect x="18" y="40" width="16" height="4" rx="2" fill="url(#tk)" opacity=".4"/><rect x="18" y="40" width="16" height="4" rx="2" stroke="url(#tk)" stroke-width="2" fill="none"/><path d="M26 14l1.5 4h4l-3.2 2.4 1.2 4L26 22l-3.5 2.4 1.2-4L20.5 18h4z" fill="url(#tk)"/></svg>
-                Classement MEDX
+                <span data-i18n="view_classement">Classement MEDX</span>
             </div>
           </div>
           <div class="lb-tabs">
@@ -1153,8 +1160,8 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
               <button class="star-btn active" data-v="5" onclick="setStars(5)">★</button>
             </div>
             <div class="avis-add-row">
-              <textarea class="avis-textarea" id="avisInput" placeholder="Partage ton expérience avec MEDX..."></textarea>
-              <button class="btn-avis" onclick="submitAvis()">➤ Envoyer</button>
+              <textarea class="avis-textarea" id="avisInput" data-i18n-placeholder="avis_placeholder" placeholder="Partage ton expérience avec MEDX..."></textarea>
+              <button class="btn-avis" onclick="submitAvis()" data-i18n="btn_send">➤ Envoyer</button>
             </div>
           </div>
           <div class="avis-grid" id="avisList"><div class="avis-empty">Chargement...</div></div>
@@ -1184,13 +1191,13 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
                   <span id="aiFilePreviewName">—</span>
                   <button onclick="clearAiFile()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem">✕</button>
                 </div>
-                <input class="ai-input" id="aiInput" type="text" placeholder="Posez votre question médicale..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiMsg();}">
+                <input class="ai-input" id="aiInput" type="text" data-i18n-placeholder="ai_placeholder" placeholder="Posez votre question médicale..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiMsg();}">
               </div>
               <button class="ai-send-btn" onclick="sendAiMsg()" id="aiSendBtn">
                 <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>
-            <div class="ai-disclaimer">⚕️ Dr. MEDX est un outil éducatif — ne remplace pas un avis médical professionnel</div>
+            <div class="ai-disclaimer" data-i18n="ai_disclaimer">⚕️ Dr. MEDX est un outil éducatif — ne remplace pas un avis médical professionnel</div>
           </div>
         </div>
 
@@ -1201,11 +1208,11 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 
 <div id="renameModal" class="rename-modal hidden">
   <div class="rename-box">
-    <div class="rename-title">✏️ Modifier mon nom</div>
-    <div class="form-group"><label>Nouveau nom</label><input class="form-input" type="text" id="renameInput" placeholder="Prénom Nom" onkeydown="if(event.key==='Enter')saveRename()"></div>
+    <div class="rename-title" data-i18n="rename_title">✏️ Modifier mon nom</div>
+    <div class="form-group"><label data-i18n="rename_label">Nouveau nom</label><input class="form-input" type="text" id="renameInput" placeholder="Prénom Nom" onkeydown="if(event.key==='Enter')saveRename()"></div>
     <div class="rename-actions">
-      <button class="btn-rename-cancel" onclick="document.getElementById('renameModal').classList.add('hidden')">Annuler</button>
-      <button class="btn-rename-save" onclick="saveRename()">Enregistrer</button>
+      <button class="btn-rename-cancel" onclick="document.getElementById('renameModal').classList.add('hidden')" data-i18n="btn_cancel">Annuler</button>
+      <button class="btn-rename-save" onclick="saveRename()" data-i18n="btn_save">Enregistrer</button>
     </div>
   </div>
 </div>
@@ -1226,13 +1233,361 @@ const SVG_ICONS = {
   micOn: `<svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="m3z" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="19" y="7" width="14" height="22" rx="7" fill="url(#m3z)" opacity=".2"/><rect x="19" y="7" width="14" height="22" rx="7" stroke="url(#m3z)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="url(#m3z)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="url(#m3z)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="url(#m3z)" stroke-width="2.2" stroke-linecap="round"/></svg>`,
 };
 
+// ── i18n SYSTEM ──
+const T = {
+  fr: {
+    // Auth
+    auth_sub:'Faculté de Médecine · Oran',
+    auth_login:'Connexion', auth_register:'Inscription',
+    field_email:'Email', field_password:'Mot de passe',
+    field_name:'Prénom & Nom', field_year:"Année d'études",
+    btn_login:'Se connecter', btn_register:'Créer mon compte',
+    // Nav
+    nav_menu:'Menu', nav_home:'Accueil', nav_content:'Mon Contenu',
+    nav_cours:'Cours', nav_examens:'Examens passés', nav_drive:'Drive Promo',
+    nav_rooms:"Salles d'étude", nav_community:'Communauté',
+    nav_classement:'Classement', nav_avis:'Avis',
+    nav_ai_section:'Intelligence Artificielle',
+    // Legal
+    legal_ml:'Mentions légales', legal_pc:'Confidentialité', legal_cgu:'CGU',
+    // Sidebar
+    btn_delete_account:'🗑 Supprimer mon compte',
+    delete_irreversible:'Cette action est irréversible.',
+    delete_confirm_text:'Tape <strong style="color:var(--text)">SUPPRIMER</strong> pour confirmer :',
+    delete_placeholder:'SUPPRIMER',
+    btn_delete_final:'Supprimer définitivement',
+    // Home
+    home_welcome:'Bienvenue sur MEDX',
+    home_sub:'Votre plateforme médicale algérienne 🇩🇿',
+    stat_cours:'Cours', stat_students:'Étudiants', stat_years:'Années',
+    xp_how_to:'Comment gagner des XP',
+    xp_open_cours:'Ouvrir un cours', xp_complete_qcm:'Compléter un QCM',
+    xp_daily_login:'Connexion quotidienne', xp_dl_exam:'Télécharger un examen',
+    // Views titles (topbar + view headers)
+    title_home:'Accueil', title_cours:'Cours', title_qcm:'QCM',
+    title_examens:'Examens Passés', title_drive:'Drive Promo',
+    title_rooms:"Salles d'étude", title_classement:'Classement',
+    title_avis:'Avis des Étudiants',
+    view_classement:'Classement MEDX', view_avis:'Avis des Étudiants',
+    view_drive:'Drive Promo',
+    // Leaderboard
+    lb_global:'Global', lb_year:'Ma Promotion',
+    lb_loading:'Chargement...', lb_empty:'Aucun étudiant encore 🎓',
+    lb_me:'(moi)',
+    // Rooms
+    rooms_server:'Salles MEDX', rooms_select:'Sélectionne une salle',
+    rooms_general:'Général', rooms_cat_chat:'Chat Général',
+    rooms_cat_voice:'Salles Vocales',
+    rooms_live:'EN DIRECT', rooms_in_room:'👥 Dans la salle',
+    rooms_write:'Écrire un message...', rooms_leave:'🚪 Quitter',
+    rooms_mic_on:'🎙️ ON', rooms_mic_off:'🔇 OFF',
+    rooms_free_chat:'Discussion libre',
+    rooms_back_room:'🎙️ Ma salle',
+    rooms_left:'Salle quittée',
+    // Avis
+    avis_share:'Partager ton avis',
+    avis_placeholder:"Partage ton expérience avec MEDX...",
+    avis_send:'➤ Envoyer',
+    avis_empty:'Sois le premier à donner ton avis ! 💬',
+    avis_loading:'Chargement...',
+    avis_min_chars:'Écris au moins 10 caractères',
+    avis_already:'Tu as déjà laissé un avis 😊',
+    avis_published:'Avis publié ✓ Merci ! 🎉',
+    // AI
+    ai_title:'Dr. MEDX',
+    ai_welcome:'Bonjour ! Je suis <strong>Dr. MEDX</strong>, votre assistant médical IA.<br><br>Posez-moi vos questions sur l\'anatomie, la physiologie, la pharmacologie ou tout autre sujet médical. Je réponds en français, arabe ou anglais selon votre question.',
+    ai_placeholder:'Posez votre question médicale...',
+    ai_disclaimer:'⚕️ Dr. MEDX est un outil éducatif — ne remplace pas un avis médical professionnel',
+    // Cours
+    cours_soon:'Bientôt', cours_open:'📄 Ouvrir',
+    cours_back:'← Retour', cours_no_cours:'Aucun cours pour cette année encore 📚',
+    // QCM
+    qcm_no:'Aucun QCM pour cette année encore 🧩',
+    qcm_all:'Tous', qcm_mastered:'✓ Maîtrisé', qcm_not_mastered:'Maîtrisé ?',
+    qcm_done_toast:'QCM terminé !', qcm_restart:'🔄 Recommencer le QCM',
+    qcm_correct:'✓ Bonne réponse', qcm_wrong:'✗ Mauvaise réponse',
+    qcm_mark_read:'✅ Cours marqué comme lu', qcm_unmark:'↩️ Marquage retiré',
+    // Examens
+    exam_no:'Aucun examen encore 📄',
+    exam_start:'Commencer →', exam_results:'Résultats',
+    exam_retry:'🔄 Recommencer', exam_back:'← Retour',
+    exam_submit:'Soumettre l\'examen ✓', exam_cancel:'← Annuler',
+    exam_confirm_submit:"Soumettre l'examen ?",
+    exam_question:'Question', exam_docs:"📷 Documents fournis avec l'examen",
+    exam_correct_label:'questions correctes',
+    // Drive
+    drive_desc:'Tous les fichiers partagés : cours PDF, fiches, vidéos, examens corrigés.',
+    drive_open:'📂 Ouvrir le Drive',
+    drive_soon:'🔒 Bientôt disponible',
+    drive_coming_text:'Le lien sera ajouté prochainement',
+    // Rename modal
+    rename_title:'✏️ Modifier mon nom',
+    rename_label:'Nouveau nom',
+    rename_placeholder:'Prénom Nom',
+    rename_cancel:'Annuler', rename_save:'Enregistrer',
+    rename_saved:'✅ Nom mis à jour',
+    rename_invalid:'❌ Nom invalide',
+    // Topbar
+    btn_logout_title:'Déconnexion',
+    // XP popup
+    xp_daily_pop:'+10 XP — Connexion du jour ! 🎉',
+    xp_lesson_pop:'Cours ouvert 📖',
+    // YL
+    year1:'1ère Année', year2:'2ème Année', year3:'3ème Année',
+    year4:'4ème Année', year5:'5ème Année', year6:'6ème Année',
+    // Cookie
+    cookie_text:'MEDX utilise Firebase (Google) pour l\'authentification et le stockage des données. En continuant, vous acceptez notre',
+    cookie_privacy:'politique de confidentialité',
+    cookie_accept:'Accepter',
+    // Legal content
+    legal_ml_title:'Mentions légales',
+    legal_pc_title:'Politique de confidentialité',
+    legal_cgu_title:"Conditions Générales d'Utilisation",
+    // Mod
+    mod_kick:'🚪 Kick (expulser de la salle)',
+    mod_mute:'🔇 Mute (retirer micro)',
+    mod_ban:'🚫 Ban (bannir définitif)',
+    mod_cancel:'Annuler',
+    // Errors / toasts
+    err_login:{
+      'auth/user-not-found':'Email introuvable',
+      'auth/wrong-password':'Mot de passe incorrect',
+      'auth/email-already-in-use':'Email déjà utilisé',
+      'auth/weak-password':'Mot de passe trop court',
+      'auth/invalid-email':'Email invalide',
+      'auth/invalid-credential':'Email ou mot de passe incorrect'
+    },
+    toast_fill_all:'Remplis tous champs',
+    toast_delete_type:'Tape exactement SUPPRIMER',
+    toast_relogin:'Reconnecte-toi puis réessaie.',
+    // Level
+    level_label:'Niv.',
+  },
+  en: {
+    // Auth
+    auth_sub:'Faculty of Medicine · Oran',
+    auth_login:'Login', auth_register:'Sign up',
+    field_email:'Email', field_password:'Password',
+    field_name:'First & Last Name', field_year:'Year of study',
+    btn_login:'Log in', btn_register:'Create account',
+    // Nav
+    nav_menu:'Menu', nav_home:'Home', nav_content:'My Content',
+    nav_cours:'Courses', nav_examens:'Past Exams', nav_drive:'Promo Drive',
+    nav_rooms:'Study Rooms', nav_community:'Community',
+    nav_classement:'Leaderboard', nav_avis:'Reviews',
+    nav_ai_section:'Artificial Intelligence',
+    // Legal
+    legal_ml:'Legal Notice', legal_pc:'Privacy', legal_cgu:'Terms',
+    // Sidebar
+    btn_delete_account:'🗑 Delete my account',
+    delete_irreversible:'This action is irreversible.',
+    delete_confirm_text:'Type <strong style="color:var(--text)">DELETE</strong> to confirm:',
+    delete_placeholder:'DELETE',
+    btn_delete_final:'Delete permanently',
+    // Home
+    home_welcome:'Welcome to MEDX',
+    home_sub:'Your Algerian medical platform 🇩🇿',
+    stat_cours:'Courses', stat_students:'Students', stat_years:'Years',
+    xp_how_to:'How to earn XP',
+    xp_open_cours:'Open a course', xp_complete_qcm:'Complete a QCM',
+    xp_daily_login:'Daily login', xp_dl_exam:'Download an exam',
+    // Views titles
+    title_home:'Home', title_cours:'Courses', title_qcm:'QCM',
+    title_examens:'Past Exams', title_drive:'Promo Drive',
+    title_rooms:'Study Rooms', title_classement:'Leaderboard',
+    title_avis:'Student Reviews',
+    view_classement:'MEDX Leaderboard', view_avis:'Student Reviews',
+    view_drive:'Promo Drive',
+    // Leaderboard
+    lb_global:'Global', lb_year:'My Year',
+    lb_loading:'Loading...', lb_empty:'No students yet 🎓',
+    lb_me:'(me)',
+    // Rooms
+    rooms_server:'MEDX Rooms', rooms_select:'Select a room',
+    rooms_general:'General', rooms_cat_chat:'General Chat',
+    rooms_cat_voice:'Voice Rooms',
+    rooms_live:'LIVE', rooms_in_room:'👥 In the room',
+    rooms_write:'Write a message...', rooms_leave:'🚪 Leave',
+    rooms_mic_on:'🎙️ ON', rooms_mic_off:'🔇 OFF',
+    rooms_free_chat:'Open discussion',
+    rooms_back_room:'🎙️ My room',
+    rooms_left:'Room left',
+    // Avis
+    avis_share:'Share your review',
+    avis_placeholder:'Share your experience with MEDX...',
+    avis_send:'➤ Send',
+    avis_empty:'Be the first to leave a review! 💬',
+    avis_loading:'Loading...',
+    avis_min_chars:'Write at least 10 characters',
+    avis_already:'You already left a review 😊',
+    avis_published:'Review published ✓ Thank you! 🎉',
+    // AI
+    ai_title:'Dr. MEDX',
+    ai_welcome:'Hello! I am <strong>Dr. MEDX</strong>, your AI medical assistant.<br><br>Ask me questions about anatomy, physiology, pharmacology or any other medical topic. I answer in French, Arabic or English depending on your question.',
+    ai_placeholder:'Ask your medical question...',
+    ai_disclaimer:'⚕️ Dr. MEDX is an educational tool — not a substitute for professional medical advice',
+    // Cours
+    cours_soon:'Coming soon', cours_open:'📄 Open',
+    cours_back:'← Back', cours_no_cours:'No courses for this year yet 📚',
+    // QCM
+    qcm_no:'No QCM for this year yet 🧩',
+    qcm_all:'All', qcm_mastered:'✓ Mastered', qcm_not_mastered:'Mastered?',
+    qcm_done_toast:'QCM completed!', qcm_restart:'🔄 Restart QCM',
+    qcm_correct:'✓ Correct', qcm_wrong:'✗ Incorrect',
+    qcm_mark_read:'✅ Course marked as read', qcm_unmark:'↩️ Mark removed',
+    // Examens
+    exam_no:'No exams yet 📄',
+    exam_start:'Start →', exam_results:'Results',
+    exam_retry:'🔄 Retry', exam_back:'← Back',
+    exam_submit:'Submit exam ✓', exam_cancel:'← Cancel',
+    exam_confirm_submit:'Submit the exam?',
+    exam_question:'Question', exam_docs:'📷 Documents provided with the exam',
+    exam_correct_label:'correct questions',
+    // Drive
+    drive_desc:'All shared files: PDF courses, notes, videos, corrected exams.',
+    drive_open:'📂 Open Drive',
+    drive_soon:'🔒 Coming soon',
+    drive_coming_text:'Link will be added soon',
+    // Rename modal
+    rename_title:'✏️ Edit my name',
+    rename_label:'New name',
+    rename_placeholder:'First Last',
+    rename_cancel:'Cancel', rename_save:'Save',
+    rename_saved:'✅ Name updated',
+    rename_invalid:'❌ Invalid name',
+    // Topbar
+    btn_logout_title:'Logout',
+    // XP popup
+    xp_daily_pop:'+10 XP — Daily login! 🎉',
+    xp_lesson_pop:'Course opened 📖',
+    // YL
+    year1:'1st Year', year2:'2nd Year', year3:'3rd Year',
+    year4:'4th Year', year5:'5th Year', year6:'6th Year',
+    // Cookie
+    cookie_text:'MEDX uses Firebase (Google) for authentication and data storage. By continuing, you accept our',
+    cookie_privacy:'privacy policy',
+    cookie_accept:'Accept',
+    // Legal content
+    legal_ml_title:'Legal Notice',
+    legal_pc_title:'Privacy Policy',
+    legal_cgu_title:'Terms of Use',
+    // Mod
+    mod_kick:'🚪 Kick (remove from room)',
+    mod_mute:'🔇 Mute (remove mic)',
+    mod_ban:'🚫 Ban (permanent)',
+    mod_cancel:'Cancel',
+    // Errors / toasts
+    err_login:{
+      'auth/user-not-found':'Email not found',
+      'auth/wrong-password':'Incorrect password',
+      'auth/email-already-in-use':'Email already in use',
+      'auth/weak-password':'Password too short',
+      'auth/invalid-email':'Invalid email',
+      'auth/invalid-credential':'Incorrect email or password'
+    },
+    toast_fill_all:'Fill all fields',
+    toast_delete_type:'Type exactly DELETE',
+    toast_relogin:'Please log in again and retry.',
+    // Level
+    level_label:'Lvl.',
+  }
+};
+
+let LANG = 'fr';
+try { LANG = localStorage.getItem('medx_lang') || 'fr'; } catch(e){}
+
+function t(key){ return (T[LANG]||T.fr)[key] || (T.fr[key]) || key; }
+
+function applyLang(){
+  // Update data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    const val=t(key);
+    if(val) el.innerHTML=val;
+  });
+  // Delete confirm placeholder & text
+  const dci=document.getElementById('deleteConfirmInput');
+  if(dci) dci.placeholder=t('delete_placeholder');
+  const dct=document.getElementById('deleteConfirmText');
+  if(dct) dct.innerHTML=t('delete_confirm_text');
+  // AI input placeholder
+  const aiInp=document.getElementById('aiInput');
+  if(aiInp) aiInp.placeholder=t('ai_placeholder');
+  // AI greeting bubble (only if no user messages yet)
+  const aiMsgs=document.getElementById('aiMessages');
+  if(aiMsgs&&aiMsgs.children.length===1){
+    const bubble=aiMsgs.querySelector('.ai-bubble');
+    if(bubble) bubble.innerHTML=t('ai_welcome');
+  }
+  // AI disclaimer
+  const aiDisc=document.querySelector('.ai-disclaimer');
+  if(aiDisc) aiDisc.textContent=t('ai_disclaimer');
+  // Avis textarea
+  const avisInp=document.getElementById('avisInput');
+  if(avisInp) avisInp.placeholder=t('avis_placeholder');
+  // Avis send btn
+  const avisSendBtn=document.querySelector('.btn-avis');
+  if(avisSendBtn) avisSendBtn.textContent=t('avis_send');
+  // Avis share title
+  const avisTit=document.querySelector('.avis-add-title');
+  if(avisTit) avisTit.innerHTML=avisTit.innerHTML.replace(/>.*$/,'>'+t('avis_share'));
+  // Rename modal
+  const renameTitle=document.querySelector('.rename-title');
+  if(renameTitle) renameTitle.textContent=t('rename_title');
+  const renameLabel=document.querySelector('#renameModal label');
+  if(renameLabel) renameLabel.textContent=t('rename_label');
+  const renameInp=document.getElementById('renameInput');
+  if(renameInp) renameInp.placeholder=t('rename_placeholder');
+  const renameCancelBtn=document.querySelector('.btn-rename-cancel');
+  if(renameCancelBtn) renameCancelBtn.textContent=t('rename_cancel');
+  const renameSaveBtn=document.querySelector('.btn-rename-save');
+  if(renameSaveBtn) renameSaveBtn.textContent=t('rename_save');
+  // Cookie banner
+  const cookieBannerText=document.getElementById('cookieBannerText');
+  if(cookieBannerText) cookieBannerText.innerHTML=t('cookie_text')+' <button onclick="openLegal(\'pc\')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:.78rem;text-decoration:underline">'+t('cookie_privacy')+'</button>.';
+  const cookieAcceptBtn=document.getElementById('cookieAcceptBtn');
+  if(cookieAcceptBtn) cookieAcceptBtn.textContent=t('cookie_accept');
+  // Lang buttons
+  document.getElementById('langBtnFR')?.classList.toggle('active',LANG==='fr');
+  document.getElementById('langBtnEN')?.classList.toggle('active',LANG==='en');
+  // Leaderboard tabs
+  const lbTabs=document.querySelectorAll('.lb-tab');
+  if(lbTabs.length>=2){
+    lbTabs[0].innerHTML=`<svg viewBox="0 0 20 20" fill="none" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M2 10h16M10 2c-2 2-3 5-3 8s1 6 3 8M10 2c2 2 3 5 3 8s-1 6-3 8" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>`+t('lb_global');
+    lbTabs[1].innerHTML=`<svg viewBox="0 0 20 20" fill="none" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"><path d="M10 4L3 8l7 4 7-4-7-4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M5 10v5c0 0 2 3 5 3s5-3 5-3v-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><line x1="17" y1="8" x2="17" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`+t('lb_year');
+  }
+  // Topbar page title
+  const currentView=document.querySelector('.view.active')?.id?.replace('view-','');
+  if(currentView){const titleEl=document.getElementById('topbarTitle');if(titleEl) titleEl.textContent=t('title_'+currentView)||currentView;}
+  // Sidebar year label
+  if(UD){
+    const yrEl=document.getElementById('sidebarYear');
+    if(yrEl) yrEl.textContent=YL(parseInt(UD.year)||1);
+    const xp=UD.xp||0,lvl=getLevel(xp);
+    const lvlEl=document.getElementById('sidebarLvlLabel');
+    if(lvlEl) lvlEl.textContent=t('level_label')+lvl+' → '+t('level_label')+(lvl+1);
+    const yrLbl=document.getElementById('sidebarYearLabel');
+    if(yrLbl&&CY) yrLbl.innerHTML=`<svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px;vertical-align:-1px;margin-right:4px"><rect x="1" y="2" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"/><line x1="1" y1="6" x2="15" y2="6" stroke="currentColor" stroke-width="1.4"/><line x1="5" y1="1" x2="5" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="11" y1="1" x2="11" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`+YL(CY);
+  }
+}
+
+window.setLang=function(lang){
+  LANG=lang;
+  try{localStorage.setItem('medx_lang',lang);}catch(e){}
+  applyLang();
+  // Re-render dynamic content if data is loaded
+  if(CY){renderCours(CY);renderQCM(CY);renderExams(CY);renderDrive(CY);}
+  if(typeof loadLB==='function'){const activeTab=document.querySelector('.lb-tab.active');loadLB(activeTab?.textContent?.includes(t('lb_year').substring(0,4))?'year':'global');}
+  buildDiscordChannels();
+};
+
 // ── FIREBASE ──
 const app=firebase.initializeApp({apiKey:"AIzaSyB7p3phF_ex1EY5bj3Wu3R9-CtOJnqHieA",authDomain:"medx-d67fb.firebaseapp.com",projectId:"medx-d67fb",storageBucket:"medx-d67fb.firebasestorage.app",messagingSenderId:"698164411256",appId:"1:698164411256:web:091edcae6c58749688a68d"});
 const auth=firebase.auth(),db=firebase.firestore();
 const FV=firebase.firestore.FieldValue;
 
 function setErr(m){const el=document.getElementById('authErr');if(el)el.textContent=m;}
-function frErr(c){return({'auth/user-not-found':'Email introuvable','auth/wrong-password':'Mot de passe incorrect','auth/email-already-in-use':'Email déjà utilisé','auth/weak-password':'Mot de passe trop court','auth/invalid-email':'Email invalide','auth/invalid-credential':'Email ou mot de passe incorrect'})[c]||'Erreur: '+c;}
+function frErr(c){return(t('err_login')||{})[c]||'Error: '+c;}
 async function doLogin(){
   const email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPass').value;
   setErr('');try{await auth.signInWithEmailAndPassword(email,pass);}catch(e){setErr(frErr(e.code));}
@@ -1273,7 +1628,9 @@ function switchAuthTab(tab){
 }
 
 const LEVELS=[0,100,250,500,900,1500,2500,4000,6000,10000];
-const YL={1:"1ère Année",2:"2ème Année",3:"3ème Année",4:"4ème Année",5:"5ème Année",6:"6ème Année"};
+const YL_FR={1:"1ère Année",2:"2ème Année",3:"3ème Année",4:"4ème Année",5:"5ème Année",6:"6ème Année"};
+const YL_EN={1:"1st Year",2:"2nd Year",3:"3rd Year",4:"4th Year",5:"5th Year",6:"6th Year"};
+function YL(y){ return (LANG==='en'?YL_EN:YL_FR)[y]||''; }
 let CU=null,UD=null,isAdmin=false,CY=null;
 let userProgress={lessons:{},qcm:{}};
 let allLessons=[],allQCM=[],allExams=[];
@@ -1298,14 +1655,14 @@ window.toggleLessonCheck=async(e,lessonId,itemEl)=>{
   if(btn){btn.classList.toggle('checked',!isDone);btn.textContent=!isDone?'✓':'';}
   itemEl.classList.toggle('done',!isDone);
   await saveProgress();
-  toast(!isDone?'✅ Cours marqué comme lu':'↩️ Marquage retiré');
+  toast(!isDone?t('toast_lesson_read'):t('toast_lesson_unread'));
 };
 window.toggleQCMCheck=async(e,qcmId,btnEl)=>{
   e.stopPropagation();
   const isDone=!!userProgress.qcm[qcmId];
   if(isDone)delete userProgress.qcm[qcmId]; else userProgress.qcm[qcmId]=true;
   btnEl.classList.toggle('checked',!isDone);
-  btnEl.textContent=!isDone?'✓ Maîtrisé':'Maîtrisé ?';
+  btnEl.textContent=!isDone?t('qcm_mastered'):t('qcm_master_q');
   btnEl.closest('.qcm-card')?.classList.toggle('done',!isDone);
   await saveProgress();
 };
@@ -1327,16 +1684,16 @@ auth.onAuthStateChanged(async user=>{
       const today=new Date().toDateString();
       if(UD.lastLogin!==today){
         await db.collection('users').doc(user.uid).update({xp:FV.increment(10),lastLogin:today});
-        UD.xp=(UD.xp||0)+10;showXPPopup('+10 XP — Connexion du jour ! 🎉');
+        UD.xp=(UD.xp||0)+10;showXPPopup(t('xp_daily_pop'));
       }
     }
     document.getElementById('authOverlay').style.display='none';
     document.getElementById('mainApp').style.display='flex';
     if(isAdmin)document.getElementById('adminNavBtn').classList.remove('hidden');
     await loadProgress();
-    // Start heart after DOM is fully visible
+    applyLang();
     const _h=new Date().getHours();
-    const _gr=_h<12?'Bonjour ☀️':_h<18?'Bon après-midi 🌤':'Bonsoir 🌙';
+    const _gr=_h<12?(LANG==='en'?'Good morning ☀️':'Bonjour ☀️'):_h<18?(LANG==='en'?'Good afternoon 🌤':'Bon après-midi 🌤'):(LANG==='en'?'Good evening 🌙':'Bonsoir 🌙');
     const _gel=document.getElementById('heroGreeting');if(_gel)_gel.textContent=_gr;
     updateUI();loadLB('global');loadStudentCount();
     loadDriveLinks();startListeners();startPresence();loadAvis();
@@ -1367,8 +1724,8 @@ function updateUI(){
   else sbAv.textContent=init;
   
   setText('sidebarName', name);
-  setText('sidebarYear', YL[y]||'');
-  setText('sidebarLvlLabel', 'Niv. '+lvl+' → Niv. '+(lvl+1));
+  setText('sidebarYear', YL(y)||'');
+  setText('sidebarLvlLabel', t('level_label')+lvl);
   setText('sidebarXpVal', xp+' XP');
   const sbFill=byId('sidebarBarFill');
   if(sbFill){
@@ -1399,10 +1756,9 @@ function navTo(view,el){
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
   if(el)el.classList.add('active');
   
-  const titles={home:'Accueil',cours:'Cours',qcm:'QCM',examens:'Examens Passés',drive:'Drive Promo',rooms:'Salles d\'étude',classement:'Classement',avis:'Avis des Étudiants'};
   const titleEl=document.getElementById('topbarTitle');
   titleEl.style.opacity='0';
-  setTimeout(()=>{titleEl.textContent=titles[view]||view;titleEl.style.opacity='1';},120);
+  setTimeout(()=>{titleEl.textContent=t('title_'+view)||view;titleEl.style.opacity='1';},120);
 
   if(view==='rooms')buildDiscordChannels();
   if(window.innerWidth<=768)closeSidebar();
@@ -1422,9 +1778,9 @@ window.closeSidebar=()=>{
 function selectYear(y, silent=false){
   CY=y;
   const lbl=document.getElementById('sidebarYearLabel');
-  if(lbl)lbl.innerHTML=`<svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px;vertical-align:-1px;margin-right:4px"><rect x="1" y="2" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"/><line x1="1" y1="6" x2="15" y2="6" stroke="currentColor" stroke-width="1.4"/><line x1="5" y1="1" x2="5" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="11" y1="1" x2="11" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`+YL[y];
+  if(lbl)lbl.innerHTML=`<svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px;vertical-align:-1px;margin-right:4px"><rect x="1" y="2" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"/><line x1="1" y1="6" x2="15" y2="6" stroke="currentColor" stroke-width="1.4"/><line x1="5" y1="1" x2="5" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="11" y1="1" x2="11" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`+YL(y);
   renderCours(y);renderQCM(y);renderExams(y);renderDrive(y);buildDiscordChannels();
-  if(!silent){navTo('cours',document.querySelector('.nav-item[data-view="cours"]')); toast(YL[y]+' ✓');}
+  if(!silent){navTo('cours',document.querySelector('.nav-item[data-view="cours"]')); toast(YL(y)+' ✓');}
 }
 
 let _firstLoad=true;
@@ -1454,7 +1810,7 @@ function renderCours(y){
   const yLessons=allLessons.filter(l=>parseInt(l.year)===y);
   console.log('renderCours y='+y+' allLessons='+allLessons.length+' filtered='+yLessons.length, allLessons.slice(0,3).map(l=>({year:l.year,name:l.name})));
   const container=document.getElementById('coursContainer');
-  if(yLessons.length===0){container.innerHTML='<div class="lb-loading">Aucun cours pour cette année encore 📚</div>';return;}
+  if(yLessons.length===0){container.innerHTML=`<div class="lb-loading">${t('cours_none')}</div>`;return;}
   const groups={};
   yLessons.forEach(l=>{const su=l.semUnite||'Module seul';if(!groups[su])groups[su]={};if(!groups[su][l.module])groups[su][l.module]=[];groups[su][l.module].push(l);});
   container.innerHTML='';
@@ -1482,7 +1838,7 @@ function renderCours(y){
 
 function makeModuleCard(mod,lessons){
   const c=document.createElement('div');c.className='module-card';
-  c.innerHTML=`<div class="module-emoji">${SVG_ICONS.module}</div><div class="module-info"><h3>${mod}</h3><span>${lessons.length} cours</span></div>`;
+  c.innerHTML=`<div class="module-emoji">${SVG_ICONS.module}</div><div class="module-info"><h3>${mod}</h3><span>${t('cours_count',lessons.length)}</span></div>`;
   c.onclick=()=>openLessons(mod,lessons);return c;
 }
 
@@ -1494,8 +1850,8 @@ function openLessons(mod,lessons){
     const hasLink=l.link&&l.link!=='#';
     const isDone=!!userProgress.lessons[l.id];
     if(isDone)d.classList.add('done');
-    d.innerHTML=`<div class="lesson-num">${String(i+1).padStart(2,'0')}</div><div class="lesson-name">${l.name}</div>${hasLink?'<span class="lesson-open">📄 Ouvrir</span>':'<span class="lesson-soon">Bientôt</span>'}<button class="btn-check${isDone?' checked':''}" onclick="toggleLessonCheck(event,'${l.id}',this.closest('.lesson-item'))" title="Marquer comme lu">${isDone?'✓':''}</button>`;
-    if(hasLink)d.onclick=()=>{openPDF(l.name,l.link);addXP(5,'Cours ouvert 📖');};
+    d.innerHTML=`<div class="lesson-num">${String(i+1).padStart(2,'0')}</div><div class="lesson-name">${l.name}</div>${hasLink?`<span class="lesson-open">${t('cours_open')}</span>`:`<span class="lesson-soon">${t('cours_soon')}</span>`}<button class="btn-check${isDone?' checked':''}" onclick="toggleLessonCheck(event,'${l.id}',this.closest('.lesson-item'))" title="Marquer comme lu">${isDone?'✓':''}</button>`;
+    if(hasLink)d.onclick=()=>{openPDF(l.name,l.link);addXP(5,t('xp_lesson_pop'));};
     ll.appendChild(d);
   });
   const p=document.getElementById('lessonsPanel');p.classList.remove('hidden');
@@ -1506,9 +1862,9 @@ window.closePanel=()=>document.getElementById('lessonsPanel').classList.add('hid
 function renderQCM(y){
   const container=document.getElementById('qcmContainer');
   const yQCM=allQCM.filter(q=>parseInt(q.year)===y);
-  if(yQCM.length===0){container.innerHTML='<div class="lb-loading" style="padding:2rem;text-align:center">Aucun QCM pour cette année encore 🧩</div>';return;}
+  if(yQCM.length===0){container.innerHTML=`<div class="lb-loading" style="padding:2rem;text-align:center">${t('qcm_none')}</div>`;return;}
   const modules=[...new Set(yQCM.map(q=>q.module))];
-  container.innerHTML=`<div class="qcm-filter" id="qcmFilter"><div class="qcm-filter-btn active" onclick="filterQCM('all',this)">Tous (${yQCM.length})</div>${modules.map(m=>`<div class="qcm-filter-btn" onclick="filterQCM('${m}',this)">${m}</div>`).join('')}</div><div class="qcm-container" id="qcmList"></div>`;
+  container.innerHTML=`<div class="qcm-filter" id="qcmFilter"><div class="qcm-filter-btn active" onclick="filterQCM('all',this)">${t('qcm_all',yQCM.length)}</div>${modules.map(m=>`<div class="qcm-filter-btn" onclick="filterQCM('${m}',this)">${m}</div>`).join('')}</div><div class="qcm-container" id="qcmList"></div>`;
   renderQCMList(yQCM);
   window.filterQCM=(mod,btn)=>{document.querySelectorAll('.qcm-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderQCMList(mod==='all'?yQCM:yQCM.filter(q=>q.module===mod));};
 }
@@ -1587,7 +1943,7 @@ window.submitQCM=(qid,correct,total)=>{
 function renderExams(y){
   const container=document.getElementById('examsContainer');
   const yExams=allExams.filter(e=>parseInt(e.year)===y);
-  if(!yExams.length){container.innerHTML='<div class="lb-loading" style="padding:2rem;text-align:center">Aucun examen encore 📄</div>';return;}
+  if(!yExams.length){container.innerHTML=t('exam_no');return;}
   container.innerHTML='';
   const sorted=[...yExams].sort((a,b)=>(b.promo||'').localeCompare(a.promo||''));
   sorted.forEach(e=>{
@@ -1597,21 +1953,21 @@ function renderExams(y){
     card.innerHTML=`
       <div class="eb-card-info">
         <div class="eb-card-title">${e.module}</div>
-        <div class="eb-card-sub">${YL[e.year]}${e.unite?' · '+e.unite:''}</div>
+        <div class="eb-card-sub">${YL(e.year)}${e.unite?' · '+e.unite:''}</div>
         <div class="eb-card-meta">
           <span class="eb-tag">${e.promo||'—'}</span>
           ${qCount?`<span class="eb-tag green">${qCount} question${qCount>1?'s':''}</span>`:''}
           ${imgCount?`<span class="eb-tag">${imgCount} image${imgCount>1?'s':''}</span>`:''}
         </div>
       </div>
-      <button class="eb-start-btn" onclick="startExam('${e.id}')">Commencer →</button>`;
+      <button class="eb-start-btn" onclick="startExam('${e.id}')">${t('exam_start')}</button>`;
     container.appendChild(card);
   });
 }
 
 function renderDrive(y){
   const link=driveLinks[y]||'#',has=link&&link!=='#';
-  document.getElementById('driveGrid').innerHTML=`<div class="drive-box"><div class="drive-big-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n5z" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M36 32H16a8 8 0 010-16 7.97 7.97 0 017.4 4.98A7 7 0 1136 32z" fill="url(#n5z)" opacity=".12"/><path d="M36 32H16a8 8 0 010-16 7.97 7.97 0 017.4 4.98A7 7 0 1136 32z" stroke="url(#n5z)" stroke-width="2.2" fill="none"/><line x1="26" y1="39" x2="26" y2="25" stroke="url(#n5z)" stroke-width="2.2" stroke-linecap="round"/><path d="M21 30l5-5 5 5" stroke="url(#n5z)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="20" y1="39" x2="32" y2="39" stroke="url(#n5z)" stroke-width="2.2" stroke-linecap="round"/></svg></div><h3>Drive — ${YL[y]}</h3><p>Tous les fichiers partagés : cours PDF, fiches, vidéos, examens corrigés.</p>${has?`<a class="drive-btn" href="${link}" target="_blank">📂 Ouvrir le Drive</a>`:`<div class="drive-btn disabled">🔒 Bientôt disponible</div><div class="drive-coming">Le lien sera ajouté prochainement</div>`}</div>`;
+  document.getElementById('driveGrid').innerHTML=`<div class="drive-box"><div class="drive-big-icon"><svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="n5z" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><path d="M36 32H16a8 8 0 010-16 7.97 7.97 0 017.4 4.98A7 7 0 1136 32z" fill="url(#n5z)" opacity=".12"/><path d="M36 32H16a8 8 0 010-16 7.97 7.97 0 017.4 4.98A7 7 0 1136 32z" stroke="url(#n5z)" stroke-width="2.2" fill="none"/><line x1="26" y1="39" x2="26" y2="25" stroke="url(#n5z)" stroke-width="2.2" stroke-linecap="round"/><path d="M21 30l5-5 5 5" stroke="url(#n5z)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="20" y1="39" x2="32" y2="39" stroke="url(#n5z)" stroke-width="2.2" stroke-linecap="round"/></svg></div><h3>Drive — ${YL(y)}</h3><p>${t('drive_desc')}</p>${has?`<a class="drive-btn" href="${link}" target="_blank">${t('drive_open')}</a>`:`<div class="drive-btn disabled">${t('drive_soon')}</div><div class="drive-coming">${t('drive_coming_text')}</div>`}</div>`;
 }
 
 function openPDF(name,link){
@@ -1639,7 +1995,7 @@ window.closePDF=()=>{document.getElementById('pdfOverlay').classList.add('hidden
 
 async function loadLB(mode){
   const list=document.getElementById('lbList');
-  list.innerHTML='<div class="lb-loading">Chargement...</div>';
+  list.innerHTML='<div class="lb-loading">'+t('lb_loading')+'</div>';
   try{
     let snap;
     if(mode==='year'&&UD)snap=await db.collection('users').where('year','==',UD.year).limit(50).get();
@@ -1647,7 +2003,7 @@ async function loadLB(mode){
     let users=[];snap.forEach(d=>users.push({id:d.id,...d.data()}));
     users.sort((a,b)=>(b.xp||0)-(a.xp||0));users=users.slice(0,20);
     list.innerHTML='';
-    if(!users.length){list.innerHTML='<div class="lb-loading">Aucun étudiant encore 🎓</div>';return;}
+    if(!users.length){list.innerHTML='<div class="lb-loading">'+t('lb_empty')+'</div>';return;}
     users.forEach((u,i)=>{
       const isMe=CU&&u.id===CU.uid;
       const rCls=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
@@ -1655,7 +2011,7 @@ async function loadLB(mode){
       const el=document.createElement('div');el.className='lb-item'+(isMe?' me':'');
       const avHtml=u.photoURL?`<img src="${u.photoURL}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:(u.name||'?').charAt(0).toUpperCase();
       const isOnline=u.lastSeen&&(Date.now()-u.lastSeen)<5*60*1000;
-      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div><div class="lb-avatar-wrap"><div class="lb-avatar">${avHtml}</div><div class="lb-online-dot ${isOnline?'online':'offline'}"></div></div><div class="lb-info"><div class="lb-name">${u.name||'Anonyme'}${isMe?' <span style="font-size:.65rem;color:var(--gold)">(moi)</span>':''}</div><div class="lb-year-s">${YL[u.year]||''} · Niv. ${getLevel(u.xp||0)}</div></div><div class="lb-xp">${u.xp||0} XP</div>`;
+      el.innerHTML=`<div class="lb-rank ${rCls}">${rIcon}</div><div class="lb-avatar-wrap"><div class="lb-avatar">${avHtml}</div><div class="lb-online-dot ${isOnline?'online':'offline'}"></div></div><div class="lb-info"><div class="lb-name">${u.name||'Anonyme'}${isMe?' <span style="font-size:.65rem;color:var(--gold)">'+t('lb_me')+'</span>':''}</div><div class="lb-year-s">${YL(u.year)||''} · '+t('level_label')+' ${getLevel(u.xp||0)}</div></div><div class="lb-xp">${u.xp||0} XP</div>`;
       list.appendChild(el);
     });
   }catch(e){list.innerHTML='<div class="lb-loading">Erreur: '+e.message+'</div>';}
@@ -1672,13 +2028,13 @@ function buildDiscordChannels(){
   const channels=document.getElementById('discordChannels');
   if(!channels)return;channels.innerHTML='';
 
-  const genCat=makeDCCat(`<svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px;vertical-align:-1px;margin-right:4px"><path d="M2 2h12a1 1 0 011 1v8a1 1 0 01-1 1H5l-3 2V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/><circle cx="5.5" cy="7" r=".8" fill="currentColor"/><circle cx="8" cy="7" r=".8" fill="currentColor"/><circle cx="10.5" cy="7" r=".8" fill="currentColor"/></svg>Chat Général`);channels.appendChild(genCat);
+  const genCat=makeDCCat(`<svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px;vertical-align:-1px;margin-right:4px"><path d="M2 2h12a1 1 0 011 1v8a1 1 0 01-1 1H5l-3 2V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/><circle cx="5.5" cy="7" r=".8" fill="currentColor"/><circle cx="8" cy="7" r=".8" fill="currentColor"/><circle cx="10.5" cy="7" r=".8" fill="currentColor"/></svg>'+t('rooms_cat_chat')+'`);channels.appendChild(genCat);
   const genCh=makeDCChannel(`<svg viewBox="0 0 20 20" fill="none"><path d="M10 2C5.6 2 2 5.1 2 9c0 2 .9 3.8 2.3 5.1L3.5 17l3.2-1.3C7.7 16.5 8.8 17 10 17c4.4 0 8-3.1 8-7s-3.6-8-8-8z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><circle cx="7" cy="9" r="1" fill="currentColor"/><circle cx="10" cy="9" r="1" fill="currentColor"/><circle cx="13" cy="9" r="1" fill="currentColor"/></svg>`,'général',false,()=>openRoomChat('general','Général',null));
   channels.appendChild(genCh);
 
-  const voiceCat=makeDCCat(`<svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px;vertical-align:-1px;margin-right:4px"><rect x="5" y="1" width="6" height="9" rx="3" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M3 8a5 5 0 0010 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="5.5" y1="15" x2="10.5" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Salles Vocales`);channels.appendChild(voiceCat);
+  const voiceCat=makeDCCat(`<svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px;vertical-align:-1px;margin-right:4px"><rect x="5" y="1" width="6" height="9" rx="3" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M3 8a5 5 0 0010 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="5.5" y1="15" x2="10.5" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>'+t('rooms_cat_voice')+'`);channels.appendChild(voiceCat);
   for(let y=1;y<=6;y++){
-    const ch=makeDCChannel(SVG_ICONS.micOn,'Salle '+YL[y],false,()=>joinPermanentRoom(y));
+    const ch=makeDCChannel(SVG_ICONS.micOn,t('nav_rooms')+' '+YL(y),false,()=>joinPermanentRoom(y));
     ch.id='dc-room-'+y;channels.appendChild(ch);
   }
 }
@@ -1702,13 +2058,13 @@ function openRoomChat(channelId,title,year){
   content.innerHTML=`
     <div class="dc-channel-header" style="flex-shrink:0;gap:.5rem">
       <svg viewBox="0 0 20 20" fill="none" style="width:15px;height:15px;flex-shrink:0"><path d="M10 2C5.6 2 2 5.1 2 9c0 2 .9 3.8 2.3 5.1L3.5 17l3.2-1.3C7.7 16.5 8.8 17 10 17c4.4 0 8-3.1 8-7s-3.6-8-8-8z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><circle cx="7" cy="9" r="1" fill="currentColor"/><circle cx="10" cy="9" r="1" fill="currentColor"/><circle cx="13" cy="9" r="1" fill="currentColor"/></svg>
-      <span class="dc-channel-header-name">Général</span>
-      <span class="dc-channel-header-desc">Discussion libre</span>
+      <span class="dc-channel-header-name">${t('rooms_general')}</span>
+      <span class="dc-channel-header-desc">${t('rooms_free_chat')}</span>
       ${backBtn}
     </div>
     <div class="chat-messages" id="chatMessages" style="flex:1;overflow-y:auto;padding:.8rem"></div>
     <div class="chat-input-row" style="flex-shrink:0">
-      <input class="chat-input" type="text" id="chatInput" placeholder="Écrire un message..." onkeydown="if(event.key==='Enter')sendChat()">
+      <input class="chat-input" type="text" id="chatInput" placeholder="${t('rooms_write')}" onkeydown="if(event.key==='Enter')sendChat()">
       <button class="btn-send" onclick="sendChat()">➤</button>
     </div>`;
   if(chatListener){chatListener();chatListener=null;}
@@ -1750,10 +2106,10 @@ async function joinPermanentRoom(year){
     await agoraClient.publish([localAudioTrack]);
     agoraClient.on('user-published',async(u,mt)=>{if(mt==='audio'){await agoraClient.subscribe(u,mt);u.audioTrack.play();}});
   }catch(e){toast('Micro: '+e.message);}
-  await db.collection('rooms').doc(roomId).set({year,name:YL[year],active:true},{merge:true});
+  await db.collection('rooms').doc(roomId).set({year,name:YL(year),active:true},{merge:true});
   await db.collection('rooms').doc(roomId).update({[`members.${CU.uid}`]:{name:UD.name||'Anonyme',photoURL:UD.photoURL||null,uid:CU.uid,joinedAt:Date.now()}});
   renderVoiceRoomView(roomId,year);
-  toast('🎙️ Connecté — '+YL[year]);
+  toast('🎙️ '+t('rooms_live')+' — '+YL(year));
 }
 
 function renderVoiceRoomView(roomId,year){
@@ -1761,22 +2117,22 @@ function renderVoiceRoomView(roomId,year){
   content.style.cssText='flex:1;display:flex;flex-direction:column;overflow:hidden';
   content.innerHTML=`
     <div class="dc-channel-header" style="flex-shrink:0;gap:.5rem">
-      <span class="room-live">EN DIRECT</span>
-      <span class="dc-channel-header-name">Salle ${YL[year]}</span>
+      <span class="room-live">${t('rooms_live')}</span>
+      <span class="dc-channel-header-name">${t('nav_rooms')} ${YL(year)}</span>
       <div style="margin-left:auto;display:flex;gap:.4rem">
         <button class="btn-mic on" id="micBtn" onclick="toggleMic()">🎙️ ON</button>
-        <button class="btn-leave" onclick="leaveRoom(false)">🚪 Quitter</button>
+        <button class="btn-leave" onclick="leaveRoom(false)">${t('rooms_leave')}</button>
       </div>
     </div>
     <div style="flex:1;display:grid;grid-template-columns:${window.innerWidth<=480?'1fr':'170px 1fr'};overflow:hidden">
       <div class="members-panel" style="${window.innerWidth<=480?'display:none':''}">
-        <div class="members-title">👥 Dans la salle</div>
+        <div class="members-title">${t('rooms_in_room')}</div>
         <div id="voiceMembers"></div>
       </div>
       <div class="chat-panel" style="display:flex;flex-direction:column;overflow:hidden;min-height:0">
         <div class="chat-messages" id="chatMessages" style="flex:1;overflow-y:auto;padding:.8rem"></div>
         <div class="chat-input-row" style="flex-shrink:0">
-          <input class="chat-input" type="text" id="chatInput" placeholder="Message dans la salle..." onkeydown="if(event.key==='Enter')sendChat()">
+          <input class="chat-input" type="text" id="chatInput" placeholder="${t('rooms_write')}" onkeydown="if(event.key==='Enter')sendChat()">
           <button class="btn-send" onclick="sendChat()">➤</button>
         </div>
       </div>
@@ -1827,8 +2183,8 @@ window.leaveRoom=async(silent=false)=>{
   localAudioTrack=null;agoraClient=null;
   document.querySelectorAll('.dc-channel').forEach(c=>c.classList.remove('active'));
   const content=document.getElementById('discordContent');
-  if(content&&!silent)content.innerHTML=`<div class="dc-empty"><div class="dc-empty-icon"><svg viewBox="0 0 52 52" fill="none"><rect x="19" y="7" width="14" height="22" rx="7" stroke="var(--muted)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"/></svg></div><div class="dc-empty-text">Salle quittée</div></div>`;
-  if(!silent)toast('Salle quittée');
+  if(content&&!silent)content.innerHTML=`<div class="dc-empty"><div class="dc-empty-icon"><svg viewBox="0 0 52 52" fill="none"><rect x="19" y="7" width="14" height="22" rx="7" stroke="var(--muted)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"/></svg></div><div class="dc-empty-text">${t('rooms_left')}</div></div>`;
+  if(!silent)toast(t('rooms_left'));
 };
 
 window.toggleMic=async()=>{
@@ -1916,7 +2272,7 @@ window.submitAvis=async()=>{
   try{
     const existing=await db.collection('avis').where('uid','==',CU.uid).limit(1).get();
     if(!existing.empty){toast('Tu as déjà laissé un avis 😊');return;}
-    await db.collection('avis').add({uid:CU.uid,name:UD.name||'Anonyme',photoURL:UD.photoURL||null,yearLabel:YL[UD.year]||'',text,stars:selectedStars,ts:Date.now()});
+    await db.collection('avis').add({uid:CU.uid,name:UD.name||'Anonyme',photoURL:UD.photoURL||null,yearLabel:YL(UD.year)||'',text,stars:selectedStars,ts:Date.now()});
     input.value='';setStars(5);toast('Avis publié ✓ Merci ! 🎉');
   }catch(e){toast('Erreur: '+e.message);}
 };
@@ -2422,7 +2778,7 @@ function renderExamSession(){
   document.getElementById('examResults').classList.remove('active');
   document.getElementById('examSessionTitle').textContent=exam.module+' — '+exam.promo;
   const qCount=items.filter(i=>i.type==='question').length;
-  document.getElementById('examSessionSub').textContent=YL[exam.year]+(exam.unite?' · '+exam.unite:'')+' · '+qCount+' questions';
+  document.getElementById('examSessionSub').textContent=YL(exam.year)+(exam.unite?' · '+exam.unite:'')+' · '+qCount+' questions';
   const body=document.getElementById('examSessionBody');
   body.innerHTML='';
   let qNum=0;
@@ -2450,7 +2806,7 @@ function renderExamSession(){
 
   // Images section
   if(images.length){
-    const sep=document.createElement('div');sep.style.cssText='margin:1.5rem 0 .5rem;font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em';sep.textContent="📷 Documents fournis avec l'examen";body.appendChild(sep);
+    const sep=document.createElement('div');sep.style.cssText='margin:1.5rem 0 .5rem;font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em';sep.textContent=t('exam_docs');body.appendChild(sep);
     images.forEach(img=>{
       const block=document.createElement('div');block.className='exam-img-block';
       block.innerHTML=`<img src="${img.url}" alt="${img.label}" loading="lazy"><div class="exam-img-label">${img.label}</div>`;
@@ -2460,7 +2816,7 @@ function renderExamSession(){
 
   // Submit
   const sub=document.createElement('div');sub.className='exam-submit-area';
-  sub.innerHTML=`<button class="btn-exam-submit" onclick="submitExam()">Soumettre l'examen ✓</button><button class="btn-exam-back" onclick="closeExamSession()">← Annuler</button>`;
+  sub.innerHTML=`<button class="btn-exam-submit" onclick="submitExam()">${t('exam_submit')}</button><button class="btn-exam-back" onclick="closeExamSession()">${t('exam_cancel')}</button>`;
   body.appendChild(sub);
 }
 
@@ -2482,7 +2838,7 @@ window.toggleExamChoice=function(qId,letter,correctStr){
 };
 
 window.submitExam=function(){
-  if(!confirm("Soumettre l'examen ?"))return;
+  if(!confirm(t('exam_confirm_submit')))return;
   _examSession.submitted=true;
   const {items,answers,exam}=_examSession;
   const questions=items.filter(i=>i.type==='question');
@@ -2519,7 +2875,7 @@ function showExamResults(){
   document.getElementById('scoreCircle').style.borderColor=pct>=50?'#10b981':'var(--red)';
   document.getElementById('scoreCircle').style.color=pct>=50?'#10b981':'var(--red)';
   document.getElementById('scoreCircle').style.background=pct>=50?'rgba(16,185,129,.1)':'rgba(239,68,68,.08)';
-  document.getElementById('scoreLabel').textContent=correct+'/'+total+' questions correctes';
+  document.getElementById('scoreLabel').textContent=correct+'/'+total+' '+t('exam_correct_label');
   document.getElementById('scoreSub').textContent=exam.module+' — '+exam.promo;
 
   const corrDiv=document.getElementById('examCorrection');corrDiv.innerHTML='';
@@ -2585,13 +2941,13 @@ function renderAdminLessons(){
   const list=document.getElementById('adminLessonList');if(!list)return;list.innerHTML='';
   const sorted=[...allLessons].sort((a,b)=>a.year-b.year||a.module.localeCompare(b.module));
   if(!sorted.length){list.innerHTML='<div class="lb-loading">Aucun cours encore</div>';return;}
-  sorted.forEach(l=>{const d=document.createElement('div');d.className='admin-list-item';d.innerHTML=`<div class="ali-info"><div class="ali-name">${l.name}</div><div class="ali-sub">${YL[l.year]} · ${l.module}</div></div><button class="btn-del" onclick="delDoc('lessons','${l.id}')">🗑</button>`;list.appendChild(d);});
+  sorted.forEach(l=>{const d=document.createElement('div');d.className='admin-list-item';d.innerHTML=`<div class="ali-info"><div class="ali-name">${l.name}</div><div class="ali-sub">${YL(l.year)} · ${l.module}</div></div><button class="btn-del" onclick="delDoc('lessons','${l.id}')">🗑</button>`;list.appendChild(d);});
 }
 function renderAdminQCM(){
   const list=document.getElementById('adminQCMList');if(!list)return;list.innerHTML='';
   const sorted=[...allQCM].sort((a,b)=>a.year-b.year);
   if(!sorted.length){list.innerHTML='<div class="lb-loading">Aucun QCM encore</div>';return;}
-  sorted.forEach(q=>{const d=document.createElement('div');d.className='admin-list-item';d.innerHTML=`<div class="ali-info"><div class="ali-name">${q.question.substring(0,55)}...</div><div class="ali-sub">${YL[q.year]} · ${q.module}</div></div><button class="btn-del" onclick="delDoc('qcm','${q.id}')">🗑</button>`;list.appendChild(d);});
+  sorted.forEach(q=>{const d=document.createElement('div');d.className='admin-list-item';d.innerHTML=`<div class="ali-info"><div class="ali-name">${q.question.substring(0,55)}...</div><div class="ali-sub">${YL(q.year)} · ${q.module}</div></div><button class="btn-del" onclick="delDoc('qcm','${q.id}')">🗑</button>`;list.appendChild(d);});
 }
 function renderAdminExams(){
   const list=document.getElementById('adminExamList');if(!list)return;list.innerHTML='';
@@ -2600,7 +2956,7 @@ function renderAdminExams(){
   sorted.forEach(e=>{
     const d=document.createElement('div');d.className='admin-list-item';
     const qc=e.questionCount||0,ic=e.imageCount||0;
-    d.innerHTML=`<div class="ali-info"><div class="ali-name">${e.promo} · ${e.module}</div><div class="ali-sub">${YL[e.year]}${e.unite?' · '+e.unite:''} · ${qc}Q ${ic?ic+'IMG':''}</div></div><button class="btn-del" onclick="delExamFull('${e.id}')">🗑</button>`;
+    d.innerHTML=`<div class="ali-info"><div class="ali-name">${e.promo} · ${e.module}</div><div class="ali-sub">${YL(e.year)}${e.unite?' · '+e.unite:''} · ${qc}Q ${ic?ic+'IMG':''}</div></div><button class="btn-del" onclick="delExamFull('${e.id}')">🗑</button>`;
     list.appendChild(d);
   });
 }
@@ -2619,14 +2975,14 @@ function renderAdminDrive(){
   const container=document.getElementById('adminDriveList');if(!container)return;container.innerHTML='';
   for(let y=1;y<=6;y++){
     const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem;flex-wrap:wrap';
-    row.innerHTML=`<span style="font-size:.78rem;font-weight:600;min-width:85px;color:var(--text2)">${YL[y]}</span><input class="admin-input" style="flex:1;min-width:180px" id="drive${y}" type="url" placeholder="Lien Drive..." value="${driveLinks[y]&&driveLinks[y]!=='#'?driveLinks[y]:''}"><button class="btn-save" onclick="saveDrive(${y})">💾</button>`;
+    row.innerHTML=`<span style="font-size:.78rem;font-weight:600;min-width:85px;color:var(--text2)">${YL(y)}</span><input class="admin-input" style="flex:1;min-width:180px" id="drive${y}" type="url" placeholder="Lien Drive..." value="${driveLinks[y]&&driveLinks[y]!=='#'?driveLinks[y]:''}"><button class="btn-save" onclick="saveDrive(${y})">💾</button>`;
     container.appendChild(row);
   }
 }
 window.delDoc=async(col,id)=>{if(!isAdmin||!confirm('Supprimer ?'))return;await db.collection(col).doc(id).delete();toast('Supprimé ✓');};
 window.saveDrive=async(y)=>{
   if(!isAdmin)return;const val=document.getElementById('drive'+y).value.trim();driveLinks[y]=val||'#';
-  try{await db.collection('config').doc('driveLinks').set({...driveLinks});toast('Drive '+YL[y]+' sauvegardé ✓');if(CY===y)renderDrive(y);}
+  try{await db.collection('config').doc('driveLinks').set({...driveLinks});toast('Drive '+YL(y)+' sauvegardé ✓');if(CY===y)renderDrive(y);}
   catch(e){toast('Erreur: '+e.message);}
 };
 
@@ -2856,39 +3212,73 @@ window.sendAiMsg=async function(){
   document.getElementById('aiInput').focus();
 };
 const LEGAL_CONTENT={
-  ml:{title:'Mentions légales',body:`
-    <h3>Éditeur du site</h3>
-    <p>Le site MEDX est édité par <strong>Ahmed Khadar</strong>, étudiant en médecine.<br>Contact : <a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>
-    <h3>Hébergement</h3>
-    <p>Le site est hébergé par <strong>GitHub Pages</strong> (GitHub, Inc. — 88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis).</p>
-    <h3>Propriété intellectuelle</h3>
-    <p>Le code source et le design de MEDX sont la propriété d'Ahmed Khadar. Les contenus pédagogiques sont mis à disposition à titre éducatif pour les étudiants en médecine algériens. Tout usage commercial est interdit sans autorisation.</p>
-    <h3>Responsabilité</h3>
-    <p>MEDX est une plateforme éducative complémentaire. Elle ne remplace pas les cours officiels ni les avis médicaux.</p>`},
-  pc:{title:'Politique de confidentialité',body:`
-    <h3>Données collectées</h3>
-    <p>MEDX collecte : nom d'affichage, email, année d'études, photo de profil (optionnelle), XP, progression, scores QCM.</p>
-    <h3>Finalité</h3>
-    <p>Ces données sont utilisées uniquement pour faire fonctionner la plateforme. Elles ne sont ni vendues ni partagées avec des tiers.</p>
-    <h3>Hébergement des données</h3>
-    <p>Les données sont stockées sur <strong>Firebase (Google LLC)</strong>, conforme au RGPD.</p>
-    <h3>Vos droits</h3>
-    <p>Vous pouvez accéder, modifier ou supprimer vos données depuis le menu latéral.<br>Contact : <a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>
-    <h3>Cookies</h3>
-    <p>Firebase utilise des cookies techniques nécessaires à l'authentification. Aucun cookie publicitaire n'est utilisé.</p>`},
-  cgu:{title:"Conditions Générales d'Utilisation",body:`
-    <h3>Accès à la plateforme</h3>
-    <p>MEDX est destiné exclusivement aux étudiants en médecine algériens. L'accès est gratuit et réservé à un usage personnel et éducatif.</p>
-    <h3>Comportement dans le Chat et les Salles</h3>
-    <p>Il est interdit de publier des contenus offensants, de faire du spam ou de partager des informations personnelles d'autres utilisateurs. Tout manquement peut entraîner la suspension du compte.</p>
-    <h3>Contenu</h3>
-    <p>Les contenus pédagogiques sont fournis à titre éducatif. MEDX ne garantit pas leur exhaustivité ou leur exactitude.</p>
-    <h3>Contact</h3>
-    <p><a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>`}
+  fr:{
+    ml:{title:'Mentions légales',body:`
+      <h3>Éditeur du site</h3>
+      <p>Le site MEDX est édité par <strong>Ahmed Khadar</strong>, étudiant en médecine.<br>Contact : <a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>
+      <h3>Hébergement</h3>
+      <p>Le site est hébergé par <strong>Vercel</strong> (Vercel Inc. — San Francisco, CA, États-Unis).</p>
+      <h3>Propriété intellectuelle</h3>
+      <p>Le code source et le design de MEDX sont la propriété d'Ahmed Khadar. Les contenus pédagogiques sont mis à disposition à titre éducatif pour les étudiants en médecine algériens. Tout usage commercial est interdit sans autorisation.</p>
+      <h3>Responsabilité</h3>
+      <p>MEDX est une plateforme éducative complémentaire. Elle ne remplace pas les cours officiels ni les avis médicaux.</p>`},
+    pc:{title:'Politique de confidentialité',body:`
+      <h3>Données collectées</h3>
+      <p>MEDX collecte : nom d'affichage, email, année d'études, photo de profil (optionnelle), XP, progression, scores QCM.</p>
+      <h3>Finalité</h3>
+      <p>Ces données sont utilisées uniquement pour faire fonctionner la plateforme. Elles ne sont ni vendues ni partagées avec des tiers.</p>
+      <h3>Hébergement des données</h3>
+      <p>Les données sont stockées sur <strong>Firebase (Google LLC)</strong>, conforme au RGPD.</p>
+      <h3>Vos droits</h3>
+      <p>Vous pouvez accéder, modifier ou supprimer vos données depuis le menu latéral.<br>Contact : <a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>
+      <h3>Cookies</h3>
+      <p>Firebase utilise des cookies techniques nécessaires à l'authentification. Aucun cookie publicitaire n'est utilisé.</p>`},
+    cgu:{title:"Conditions Générales d'Utilisation",body:`
+      <h3>Accès à la plateforme</h3>
+      <p>MEDX est destiné exclusivement aux étudiants en médecine algériens. L'accès est gratuit et réservé à un usage personnel et éducatif.</p>
+      <h3>Comportement dans le Chat et les Salles</h3>
+      <p>Il est interdit de publier des contenus offensants, de faire du spam ou de partager des informations personnelles d'autres utilisateurs. Tout manquement peut entraîner la suspension du compte.</p>
+      <h3>Contenu</h3>
+      <p>Les contenus pédagogiques sont fournis à titre éducatif. MEDX ne garantit pas leur exhaustivité ou leur exactitude.</p>
+      <h3>Contact</h3>
+      <p><a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>`}
+  },
+  en:{
+    ml:{title:'Legal Notice',body:`
+      <h3>Publisher</h3>
+      <p>MEDX is published by <strong>Ahmed Khadar</strong>, medical student.<br>Contact: <a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>
+      <h3>Hosting</h3>
+      <p>This site is hosted by <strong>Vercel</strong> (Vercel Inc. — San Francisco, CA, USA).</p>
+      <h3>Intellectual Property</h3>
+      <p>The source code and design of MEDX are the property of Ahmed Khadar. Educational content is provided for the educational use of Algerian medical students. Any commercial use is prohibited without authorization.</p>
+      <h3>Liability</h3>
+      <p>MEDX is a supplementary educational platform. It does not replace official courses or medical advice.</p>`},
+    pc:{title:'Privacy Policy',body:`
+      <h3>Data Collected</h3>
+      <p>MEDX collects: display name, email, year of study, profile photo (optional), XP, progress, QCM scores.</p>
+      <h3>Purpose</h3>
+      <p>This data is used solely to operate the platform. It is neither sold nor shared with third parties.</p>
+      <h3>Data Hosting</h3>
+      <p>Data is stored on <strong>Firebase (Google LLC)</strong>, GDPR compliant.</p>
+      <h3>Your Rights</h3>
+      <p>You can access, modify or delete your data from the sidebar menu.<br>Contact: <a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>
+      <h3>Cookies</h3>
+      <p>Firebase uses technical cookies required for authentication. No advertising cookies are used.</p>`},
+    cgu:{title:'Terms of Use',body:`
+      <h3>Platform Access</h3>
+      <p>MEDX is intended exclusively for Algerian medical students. Access is free and reserved for personal and educational use.</p>
+      <h3>Chat and Room Conduct</h3>
+      <p>It is prohibited to post offensive content, spam, or share other users' personal information. Violations may result in account suspension.</p>
+      <h3>Content</h3>
+      <p>Educational content is provided for educational purposes. MEDX does not guarantee its completeness or accuracy.</p>
+      <h3>Contact</h3>
+      <p><a href="mailto:khadar77ahmed@gmail.com">khadar77ahmed@gmail.com</a></p>`}
+  }
 };
 
 window.openLegal=function(type){
-  const data=LEGAL_CONTENT[type];if(!data)return;
+  const lang=LEGAL_CONTENT[LANG]||LEGAL_CONTENT.fr;
+  const data=lang[type];if(!data)return;
   document.getElementById('legalTitle').textContent=data.title;
   document.getElementById('legalBody').innerHTML=data.body;
   document.getElementById('legalOverlay').classList.remove('hidden');
@@ -2906,7 +3296,7 @@ window.toggleDeleteConfirm=function(){
 };
 window.confirmDeleteAccount=async function(){
   const val=document.getElementById('deleteConfirmInput').value.trim();
-  if(val!=='SUPPRIMER'){toast('Tape exactement SUPPRIMER');return;}
+  if(val!=='SUPPRIMER'){toast(t('toast_delete_type'));return;}
   if(!CU)return;
   try{
     await db.collection('users').doc(CU.uid).delete();
@@ -2931,6 +3321,9 @@ function checkCookieBanner(){
   }
 }
 setTimeout(checkCookieBanner,3000);
+// Apply language on page load
+document.addEventListener('DOMContentLoaded',()=>applyLang());
+
 </script>
 
 <!-- Legal Modals -->
@@ -2946,11 +3339,11 @@ setTimeout(checkCookieBanner,3000);
 
 <!-- Cookies Banner -->
 <div id="cookieBanner" class="cookie-hidden" style="position:fixed;bottom:0;left:0;right:0;z-index:600;background:var(--surface2);border-top:1px solid var(--border2);padding:.8rem 1.2rem;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
-  <div style="font-size:.78rem;color:var(--muted);flex:1">
+  <div style="font-size:.78rem;color:var(--muted);flex:1" id="cookieBannerText">
     MEDX utilise Firebase (Google) pour l'authentification et le stockage des données. En continuant, vous acceptez notre 
     <button onclick="openLegal('pc')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:.78rem;text-decoration:underline">politique de confidentialité</button>.
   </div>
-  <button onclick="acceptCookies()" style="background:var(--accent);color:#fff;border:none;border-radius:var(--rs);padding:6px 16px;font-size:.78rem;font-weight:700;cursor:pointer;flex-shrink:0">Accepter</button>
+  <button onclick="acceptCookies()" style="background:var(--accent);color:#fff;border:none;border-radius:var(--rs);padding:6px 16px;font-size:.78rem;font-weight:700;cursor:pointer;flex-shrink:0" id="cookieAcceptBtn">Accepter</button>
 </div>
 
 </body>
