@@ -293,20 +293,19 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 }
 .rooms-sidebar-toggle:hover{background:rgba(255,255,255,.12);color:#fff}
 .rooms-sidebar-toggle svg{width:14px;height:14px}
-/* When sidebar is hidden, show floating toggle button */
+/* ── OPEN SIDEBAR BTN — inside channel header ── */
 .rooms-open-btn{
-  display:none; /* shown via JS when sidebar hidden */
-  position:absolute;top:.55rem;left:.55rem;z-index:10;
-  width:32px;height:32px;border-radius:9px;
-  background:rgba(22,27,39,.92);
-  border:1px solid rgba(255,255,255,.12);
-  color:rgba(255,255,255,.7);cursor:pointer;
+  display:none; /* shown via JS */
+  width:30px;height:30px;border-radius:8px;
+  background:rgba(255,255,255,.07);
+  border:none;
+  color:rgba(255,255,255,.6);cursor:pointer;
   align-items:center;justify-content:center;
-  box-shadow:0 2px 10px rgba(0,0,0,.4);
-  transition:all .15s;
+  transition:background .15s,color .15s;
+  flex-shrink:0;
 }
-.rooms-open-btn svg{width:14px;height:14px}
-.rooms-open-btn:hover{background:rgba(30,41,59,.95);color:#fff;border-color:rgba(255,255,255,.2)}
+.rooms-open-btn svg{width:15px;height:15px}
+.rooms-open-btn:hover{background:rgba(255,255,255,.12);color:#fff}
 .discord-server-name{
   font-family:var(--ff);font-size:.85rem;font-weight:800;
   color:#fff;display:flex;align-items:center;gap:6px;
@@ -1716,10 +1715,6 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
               <div class="discord-channels" id="discordChannels"></div>
             </div>
             <div class="discord-main" id="discordMain" style="position:relative;flex:1;display:flex;flex-direction:column;overflow:hidden">
-              <!-- Floating open sidebar btn — stays here, OUTSIDE discordContent -->
-              <button class="rooms-open-btn" id="roomsOpenBtn" onclick="toggleRoomsSidebar()" title="Show channels">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-              </button>
               <div id="discordContent" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
               <div class="dc-empty">
                 <div class="dc-empty-icon">
@@ -2837,7 +2832,7 @@ function renderMsnMessages(snap,channelId){
   if(wasAtBottom&&prevCount>0&&msgs.length>prevCount){
     msgs.slice(prevCount).forEach(m=>{
       appendMsnMessage(m,channelId,box,true);
-      if(m.reactions) renderReactions(m.id, m.reactions);
+      if(m.reactions) renderReactions(m.id, m.reactions, channelId);
     });
     box.scrollTo({top:box.scrollHeight,behavior:'smooth'});return;
   }
@@ -2853,11 +2848,8 @@ function renderMsnMessages(snap,channelId){
       box.appendChild(sep);_lastMsgUid=null;
     }
     appendMsnMessage(m,channelId,box,false);
-    // Render reactions immediately from doc data
-    if(m.reactions) renderReactions(m.id, m.reactions);
-    // Store channelId for reaction clicks
-    const rrow=document.getElementById('reactions_'+m.id);
-    if(rrow) rrow.dataset.channel=channelId;
+    if(m.reactions) renderReactions(m.id, m.reactions, channelId);
+    else { const rrow=document.getElementById('reactions_'+m.id); if(rrow) rrow.dataset.channel=channelId; }
   });
   if(wasAtBottom||msgs.length===0)box.scrollTop=box.scrollHeight;
 }
@@ -3007,9 +2999,17 @@ function openRoomChat(channelId,title){
     ? `<div class="dc-channel-header-sub">${t('rooms_free_chat')}</div>`
     : `<div class="dc-channel-header-sub" id="chatMemberCount"></div>`;
 
+  // Show sidebar toggle btn inside header (only when sidebar hidden)
+  const sidebarBtnHtml = !_sidebarShown
+    ? `<button class="rooms-open-btn" id="roomsOpenBtn" onclick="toggleRoomsSidebar()" title="Show channels" style="display:flex">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>`
+    : `<button class="rooms-open-btn" id="roomsOpenBtn" onclick="toggleRoomsSidebar()" style="display:none"></button>`;
+
   content.innerHTML=`
     ${voiceBar}
     <div class="dc-channel-header">
+      ${sidebarBtnHtml}
       <div class="dc-channel-header-icon" style="${isGeneral?'background:linear-gradient(135deg,#5865f2,#7289da)':''}">
         ${isGeneral?'<svg viewBox="0 0 20 20" fill="none" style="width:14px;height:14px"><path d="M10 2C5.6 2 2 5.1 2 9c0 2 .9 3.8 2.3 5.1L3.5 17l3.2-1.3C7.7 16.5 8.8 17 10 17c4.4 0 8-3.1 8-7s-3.6-8-8-8z" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="7" cy="9" r="1" fill="#fff"/><circle cx="10" cy="9" r="1" fill="#fff"/><circle cx="13" cy="9" r="1" fill="#fff"/></svg>':chanLetter}
       </div>
@@ -3045,19 +3045,18 @@ let _sidebarShown = true;
 
 window.toggleRoomsSidebar = function(){
   const sb = document.getElementById('discordSidebar');
-  const btn = document.getElementById('roomsOpenBtn');
   _sidebarShown = !_sidebarShown;
 
   if(_sidebarShown){
-    // Show sidebar
-    sb.style.cssText = '';
-    sb.classList.remove('sidebar-gone');
-    if(btn){ btn.style.display='none'; }
+    if(sb) sb.style.cssText = '';
+    // Hide the btn
+    const btn = document.getElementById('roomsOpenBtn');
+    if(btn) btn.style.display='none';
   } else {
-    // Hide sidebar
-    sb.style.cssText = 'width:0;min-width:0;overflow:hidden;border:none;padding:0;flex-shrink:0';
-    sb.classList.add('sidebar-gone');
-    if(btn){ btn.style.display='flex'; }
+    if(sb) sb.style.cssText = 'width:0;min-width:0;overflow:hidden;border:none;padding:0;flex-shrink:0';
+    // Show the btn
+    const btn = document.getElementById('roomsOpenBtn');
+    if(btn) btn.style.display='flex';
   }
 };
 
@@ -3124,7 +3123,7 @@ function showMsgCtx(e, msgData, channelId, bubbleEl){
   const reactRow = document.createElement('div');
   reactRow.className = 'ctx-react-row';
 
-  function renderReactions(page){
+  function renderEmojiPage(page){
     reactRow.innerHTML = '';
     REACTION_PAGES[page].forEach(emoji => {
       const btn = document.createElement('span');
@@ -3137,7 +3136,7 @@ function showMsgCtx(e, msgData, channelId, bubbleEl){
       reactRow.appendChild(btn);
     });
   }
-  renderReactions(0);
+  renderEmojiPage(0);
 
   // Page dots
   const dots = document.createElement('div');
@@ -3145,7 +3144,7 @@ function showMsgCtx(e, msgData, channelId, bubbleEl){
   REACTION_PAGES.forEach((_,i) => {
     const d = document.createElement('span');
     d.className = 'ctx-dot' + (i===0?' active':'');
-    d.onclick = () => {_reactionPage=i;renderReactions(i);updateDots(i);};
+    d.onclick = () => {_reactionPage=i;renderEmojiPage(i);updateDots(i);};
     dots.appendChild(d);
   });
 
@@ -3162,7 +3161,7 @@ function showMsgCtx(e, msgData, channelId, bubbleEl){
       _reactionPage = dx < 0
         ? Math.min(_reactionPage+1, REACTION_PAGES.length-1)
         : Math.max(_reactionPage-1, 0);
-      renderReactions(_reactionPage);
+      renderEmojiPage(_reactionPage);
       updateDots(_reactionPage);
     }
   }, {passive:true});
@@ -3227,35 +3226,33 @@ function showMsgCtx(e, msgData, channelId, bubbleEl){
 }
 
 function addReaction(msgId, channelId, emoji){
-  if(!CU || !msgId || !channelId) return;
-  const ref = db.collection('channels').doc(channelId).collection('messages').doc(msgId);
-  // Use Firestore field path: reactions.{uid} = emoji (or delete it)
+  if(!CU || !msgId) return;
+  const ch = channelId || currentChatChannel;
+  if(!ch) return;
+  const ref = db.collection('channels').doc(ch).collection('messages').doc(msgId);
   ref.get().then(snap=>{
     if(!snap.exists) return;
-    const data = snap.data();
-    const reactions = data.reactions || {};
+    const reactions = snap.data().reactions || {};
+    const update = {};
     if(reactions[CU.uid] === emoji){
-      // Toggle off
-      const update = {};
-      update[`reactions.${CU.uid}`] = firebase.firestore.FieldValue.delete();
-      ref.update(update).catch(()=>{});
+      update[`reactions.${CU.uid}`] = FV.delete();
     } else {
-      // Set reaction
-      const update = {};
       update[`reactions.${CU.uid}`] = emoji;
-      ref.update(update).catch(()=>{});
     }
-  }).catch(()=>{});
+    ref.update(update).catch(e=>console.error('Reaction err:',e));
+  }).catch(e=>console.error('Reaction get err:',e));
 }
 
-// Render reactions from message data (called after each message render)
-function renderReactions(msgId, reactions){
+// Render reactions pills under a message
+function renderReactions(msgId, reactions, channelId){
   const row = document.getElementById('reactions_'+msgId);
   if(!row) return;
+  if(channelId) row.dataset.channel = channelId;
+  const ch = row.dataset.channel || currentChatChannel;
   if(!reactions || Object.keys(reactions).length === 0){ row.innerHTML=''; return; }
-  // Group by emoji
   const groups = {};
   Object.entries(reactions).forEach(([uid, emoji])=>{
+    if(typeof emoji !== 'string') return;
     if(!groups[emoji]) groups[emoji]={count:0, mine:false};
     groups[emoji].count++;
     if(uid === CU?.uid) groups[emoji].mine = true;
@@ -3265,16 +3262,13 @@ function renderReactions(msgId, reactions){
     const pill = document.createElement('span');
     pill.className = 'msn-reaction-pill' + (mine?' mine':'');
     pill.innerHTML = `<span class="react-emoji">${emoji}</span><span class="react-count">${count}</span>`;
-    // Store channelId on row for click handler
-    pill.onclick = ()=> addReaction(msgId, row.dataset.channel, emoji);
+    pill.onclick = ()=> addReaction(msgId, ch, emoji);
     row.appendChild(pill);
   });
 }
 
-// Keep listenReactions as no-op (we now use message doc's own reactions field)
 const _reactionListeners = {};
 function listenReactions(msgId, channelId){
-  // reactions are now part of the message doc itself, updated in renderMsnMessages
   const row = document.getElementById('reactions_'+msgId);
   if(row) row.dataset.channel = channelId;
 }
