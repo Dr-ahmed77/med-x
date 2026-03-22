@@ -295,19 +295,18 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 .rooms-sidebar-toggle svg{width:14px;height:14px}
 /* When sidebar is hidden, show floating toggle button */
 .rooms-open-btn{
-  display:none;position:absolute;top:.6rem;left:.6rem;z-index:5;
+  display:none; /* shown via JS when sidebar hidden */
+  position:absolute;top:.55rem;left:.55rem;z-index:10;
   width:32px;height:32px;border-radius:9px;
-  background:rgba(30,39,56,.95);border:1px solid rgba(255,255,255,.1);
-  color:rgba(255,255,255,.6);cursor:pointer;
+  background:rgba(22,27,39,.92);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.7);cursor:pointer;
   align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.3);
+  box-shadow:0 2px 10px rgba(0,0,0,.4);
   transition:all .15s;
 }
 .rooms-open-btn svg{width:14px;height:14px}
-.rooms-open-btn:hover{background:rgba(30,39,56,1);color:#fff}
-.discord-layout:has(.rooms-collapsed) .rooms-open-btn,
-.discord-layout.sidebar-hidden .rooms-open-btn{display:flex}
-.discord-layout.sidebar-hidden .discord-sidebar{width:0;overflow:hidden;border-right:none;}
+.rooms-open-btn:hover{background:rgba(30,41,59,.95);color:#fff;border-color:rgba(255,255,255,.2)}
 .discord-server-name{
   font-family:var(--ff);font-size:.85rem;font-weight:800;
   color:#fff;display:flex;align-items:center;gap:6px;
@@ -810,41 +809,55 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
 }
 /* Reactions wrap */
 .ctx-react-wrap{
-  padding:.5rem .3rem .2rem;
+  padding:.55rem .4rem .25rem;
   border-bottom:1px solid rgba(255,255,255,.06);
 }
 .ctx-react-row{
   display:flex;align-items:center;
-  justify-content:space-around;
-  padding:.1rem .2rem .3rem;
-  overflow:hidden;
+  justify-content:space-between;
+  padding:.05rem .1rem .2rem;
   touch-action:pan-x;
+  overflow:hidden;
 }
 .ctx-emoji{
-  font-size:1.5rem;
-  padding:.25rem .2rem;
+  font-size:1.55rem;
+  padding:.22rem;
   border-radius:10px;
   cursor:pointer;
-  transition:transform .2s cubic-bezier(.34,1.56,.64,1),background .12s;
+  transition:transform .2s cubic-bezier(.34,1.7,.64,1),background .12s,filter .1s;
   user-select:none;-webkit-user-select:none;
   display:inline-flex;align-items:center;justify-content:center;
-  min-width:36px;text-align:center;
+  min-width:34px;text-align:center;
+  animation:emoji-appear .2s cubic-bezier(.34,1.4,.64,1) both;
+}
+.ctx-emoji:nth-child(1){animation-delay:.02s}
+.ctx-emoji:nth-child(2){animation-delay:.04s}
+.ctx-emoji:nth-child(3){animation-delay:.06s}
+.ctx-emoji:nth-child(4){animation-delay:.08s}
+.ctx-emoji:nth-child(5){animation-delay:.1s}
+.ctx-emoji:nth-child(6){animation-delay:.12s}
+.ctx-emoji:nth-child(7){animation-delay:.14s}
+.ctx-emoji:nth-child(8){animation-delay:.16s}
+@keyframes emoji-appear{
+  from{opacity:0;transform:scale(.4) translateY(8px)}
+  to{opacity:1;transform:none}
 }
 .ctx-emoji:hover,.ctx-emoji:active{
-  transform:scale(1.45) translateY(-3px);
-  background:rgba(255,255,255,.08);
+  transform:scale(1.5) translateY(-4px);
+  background:rgba(255,255,255,.1);
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.3));
 }
 /* Page dots */
 .ctx-react-dots{
   display:flex;align-items:center;justify-content:center;
-  gap:5px;padding-bottom:.35rem;
+  gap:5px;padding:.2rem 0 .1rem;
 }
 .ctx-dot{
   width:5px;height:5px;border-radius:50%;
-  background:rgba(255,255,255,.2);cursor:pointer;
+  background:rgba(255,255,255,.18);cursor:pointer;
   transition:background .15s,transform .15s;
 }
-.ctx-dot.active{background:var(--blue);transform:scale(1.3)}
+.ctx-dot.active{background:var(--blue);transform:scale(1.25)}
 
 /* Menu items */
 .msg-ctx-sep{height:1px;background:rgba(255,255,255,.06);margin:2px 0}
@@ -1612,14 +1625,14 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <div class="view-header">
             <div class="view-title" id="coursTitle">
                 <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="tc" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="10" y="7" width="27" height="36" rx="3" fill="url(#tc)" opacity=".12"/><rect x="10" y="7" width="27" height="36" rx="3" stroke="url(#tc)" stroke-width="2.2" fill="none"/><path d="M10 7C10 7 14 9 14 43" stroke="url(#tc)" stroke-width="2.2" stroke-linecap="round"/><rect x="6" y="9" width="4" height="32" rx="2" fill="url(#tc)" opacity=".4"/><line x1="18" y1="17" x2="33" y2="17" stroke="url(#tc)" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="23" x2="33" y2="23" stroke="url(#tc)" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="29" x2="27" y2="29" stroke="url(#tc)" stroke-width="2" stroke-linecap="round"/></svg>
-                Cours
+                <span data-i18n="nav_cours">Cours</span>
             </div>
           </div>
           <div id="coursContainer"></div>
           <div class="panel hidden" id="lessonsPanel">
             <div class="panel-header">
               <div class="panel-title" id="lessonsPanelTitle">📖 Cours</div>
-              <button class="btn-ghost" onclick="closePanel()" data-i18n-onclick="cours_back">← Retour</button>
+              <button class="btn-ghost" onclick="closePanel()" data-i18n="cours_back">← Retour</button>
             </div>
             <div class="panel-body" id="lessonsList"></div>
           </div>
@@ -1629,12 +1642,12 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <div class="view-header">
             <div class="view-title" id="qcmTitle">
                 <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="tq" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="8" y="8" width="36" height="36" rx="8" fill="url(#tq)" opacity=".12"/><rect x="8" y="8" width="36" height="36" rx="8" stroke="url(#tq)" stroke-width="2.2" fill="none"/><rect x="14" y="16" width="6" height="6" rx="1.5" stroke="url(#tq)" stroke-width="1.8" fill="none"/><path d="M15.5 19l1.5 1.5 2.5-3" stroke="url(#tq)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="24" y1="19" x2="36" y2="19" stroke="url(#tq)" stroke-width="2" stroke-linecap="round"/><rect x="14" y="26" width="6" height="6" rx="1.5" stroke="url(#tq)" stroke-width="1.8" fill="none"/><line x1="24" y1="29" x2="36" y2="29" stroke="url(#tq)" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="19" r="2.5" fill="url(#tq)"/></svg>
-                QCM
+                <span data-i18n="title_qcm">QCM</span>
             </div>
           </div>
           <div id="qcmContainer"></div>
           <div id="qcmRetryBar" style="display:none;justify-content:center;padding:1.5rem 0;gap:1rem">
-            <button class="btn-exam-submit" onclick="retryQCM()">${t('qcm_restart').replace('🔄 ','')}</button>
+            <button class="btn-exam-submit" onclick="retryQCM()" data-i18n="qcm_restart">🔄 Recommencer le QCM</button>
           </div>
         </div>
 
@@ -1644,7 +1657,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
             <div class="view-header">
               <div class="view-title" id="examensTitle">
                   <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="te" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="11" y="6" width="24" height="30" rx="3" fill="url(#te)" opacity=".12"/><rect x="11" y="6" width="24" height="30" rx="3" stroke="url(#te)" stroke-width="2.2" fill="none"/><line x1="16" y1="14" x2="30" y2="14" stroke="url(#te)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="20" x2="30" y2="20" stroke="url(#te)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="26" x2="24" y2="26" stroke="url(#te)" stroke-width="2" stroke-linecap="round"/><path d="M30 34l8-8 4 4-8 8-4-4z" stroke="url(#te)" stroke-width="2" stroke-linejoin="round" fill="none"/><path d="M30 34l-2 6 6-2" stroke="url(#te)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="34" y1="28" x2="38" y2="32" stroke="url(#te)" stroke-width="1.5" stroke-linecap="round"/></svg>
-                  Examens Passés
+                  <span data-i18n="title_examens">Examens Passés</span>
               </div>
             </div>
             <div id="examsContainer" class="eb-list"></div>
@@ -1656,7 +1669,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
                 <div class="exam-session-title" id="examSessionTitle">—</div>
                 <div class="exam-session-progress" id="examSessionSub">—</div>
               </div>
-              <button class="btn-ghost" onclick="closeExamSession()">← Retour</button>
+              <button class="btn-ghost" onclick="closeExamSession()" data-i18n="exam_back">← Retour</button>
             </div>
             <div id="examSessionBody"></div>
           </div>
@@ -1702,18 +1715,20 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
               </div>
               <div class="discord-channels" id="discordChannels"></div>
             </div>
-            <div class="discord-main" id="discordContent">
-              <!-- Floating open sidebar btn (visible when sidebar hidden) -->
+            <div class="discord-main" id="discordMain" style="position:relative;flex:1;display:flex;flex-direction:column;overflow:hidden">
+              <!-- Floating open sidebar btn — stays here, OUTSIDE discordContent -->
               <button class="rooms-open-btn" id="roomsOpenBtn" onclick="toggleRoomsSidebar()" title="Show channels">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
               </button>
+              <div id="discordContent" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
               <div class="dc-empty">
                 <div class="dc-empty-icon">
                     <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="e3m" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="19" y="7" width="14" height="22" rx="7" fill="url(#e3m)" opacity=".15"/><rect x="19" y="7" width="14" height="22" rx="7" stroke="url(#e3m)" stroke-width="2.2" fill="none"/><path d="M14 28a12 12 0 0024 0" stroke="url(#e3m)" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="26" y1="40" x2="26" y2="46" stroke="url(#e3m)" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="46" x2="32" y2="46" stroke="url(#e3m)" stroke-width="2.2" stroke-linecap="round"/></svg>
                 </div>
                 <div class="dc-empty-text" data-i18n="rooms_select">Sélectionne une salle</div>
               </div>
-            </div>
+              </div><!-- end discordContent -->
+            </div><!-- end discordMain -->
           </div>
         </div>
 
@@ -1721,7 +1736,7 @@ button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:in
           <div class="view-header">
             <div class="view-title">
                 <svg viewBox="0 0 52 52" fill="none"><defs><linearGradient id="tk" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fcd34d"/></linearGradient></defs><path d="M16 8h20v16a10 10 0 01-20 0V8z" fill="url(#tk)" opacity=".18"/><path d="M16 8h20v16a10 10 0 01-20 0V8z" stroke="url(#tk)" stroke-width="2.2" fill="none"/><path d="M16 12H10a4 4 0 004 4h2" stroke="url(#tk)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M36 12h6a4 4 0 01-4 4h-2" stroke="url(#tk)" stroke-width="2" stroke-linecap="round" fill="none"/><line x1="26" y1="34" x2="26" y2="40" stroke="url(#tk)" stroke-width="2.2" stroke-linecap="round"/><rect x="18" y="40" width="16" height="4" rx="2" fill="url(#tk)" opacity=".4"/><rect x="18" y="40" width="16" height="4" rx="2" stroke="url(#tk)" stroke-width="2" fill="none"/><path d="M26 14l1.5 4h4l-3.2 2.4 1.2 4L26 22l-3.5 2.4 1.2-4L20.5 18h4z" fill="url(#tk)"/></svg>
-                <span data-i18n="view_classement">Classement MEDX</span>
+                <span data-i18n="title_classement">Classement</span>
             </div>
           </div>
           <div class="lb-tabs">
@@ -2257,6 +2272,17 @@ function applyLang(){
   // Topbar page title
   const currentView=document.querySelector('.view.active')?.id?.replace('view-','');
   if(currentView){const titleEl=document.getElementById('topbarTitle');if(titleEl) titleEl.textContent=t('title_'+currentView)||currentView;}
+  // View section titles (cours, examens, etc.)
+  const coursT=document.querySelector('#coursTitle span[data-i18n]');
+  if(coursT) coursT.textContent=t('nav_cours');
+  const examT=document.querySelector('#examensTitle span[data-i18n]');
+  if(examT) examT.textContent=t('title_examens');
+  const qcmT=document.querySelector('#qcmTitle span[data-i18n]');
+  if(qcmT) qcmT.textContent=t('title_qcm')||'QCM';
+  // Back buttons
+  document.querySelectorAll('[data-i18n="cours_back"]').forEach(el=>el.textContent=t('cours_back'));
+  document.querySelectorAll('[data-i18n="exam_back"]').forEach(el=>el.textContent=t('exam_back'));
+  document.querySelectorAll('[data-i18n="qcm_restart"]').forEach(el=>el.textContent=t('qcm_restart'));
   // Sidebar year label
   if(UD){
     const yrEl=document.getElementById('sidebarYear');
@@ -2809,7 +2835,10 @@ function renderMsnMessages(snap,channelId){
   const msgs=[];snap.forEach(d=>msgs.push({id:d.id,...d.data()}));
   _msgCount=msgs.length;
   if(wasAtBottom&&prevCount>0&&msgs.length>prevCount){
-    msgs.slice(prevCount).forEach(m=>appendMsnMessage(m,channelId,box,true));
+    msgs.slice(prevCount).forEach(m=>{
+      appendMsnMessage(m,channelId,box,true);
+      if(m.reactions) renderReactions(m.id, m.reactions);
+    });
     box.scrollTo({top:box.scrollHeight,behavior:'smooth'});return;
   }
   box.innerHTML='';_lastMsgUid=null;_lastMsgTime=0;
@@ -2824,6 +2853,11 @@ function renderMsnMessages(snap,channelId){
       box.appendChild(sep);_lastMsgUid=null;
     }
     appendMsnMessage(m,channelId,box,false);
+    // Render reactions immediately from doc data
+    if(m.reactions) renderReactions(m.id, m.reactions);
+    // Store channelId for reaction clicks
+    const rrow=document.getElementById('reactions_'+m.id);
+    if(rrow) rrow.dataset.channel=channelId;
   });
   if(wasAtBottom||msgs.length===0)box.scrollTop=box.scrollHeight;
 }
@@ -2888,34 +2922,42 @@ function appendMsnMessage(m,channelId,box,animate){
   const tEl=document.createElement('span');tEl.className='msn-bubble-time';tEl.textContent=fmtTime(m.ts);bubble.appendChild(tEl);
 
   // Long press (mobile) + right click (desktop) → context menu
-  let pressTimer=null;
-  const trigCtx=(e)=>{
+  let pressTimer=null, _touchMoved=false;
+  const trigCtx=(ev)=>{
     clearTimeout(pressTimer);
     bubble.classList.remove('msn-pressed');
-    showMsgCtx(e,{...m,id:m.id},channelId,bubble);
+    window.getSelection()?.removeAllRanges();
+    showMsgCtx(ev,{...m,id:m.id},channelId,bubble);
   };
   bubble.addEventListener('touchstart',(e)=>{
-    // Prevent text selection immediately
-    e.preventDefault();
+    _touchMoved=false;
     bubble.classList.add('msn-pressed');
-    pressTimer=setTimeout(()=>trigCtx(e.touches[0]),430);
-  },{passive:false});
-  bubble.addEventListener('touchend',(e)=>{
+    const t0=e.touches[0];
+    pressTimer=setTimeout(()=>{
+      if(!_touchMoved) trigCtx(t0);
+    },450);
+  },{passive:true});
+  bubble.addEventListener('touchend',()=>{
     bubble.classList.remove('msn-pressed');
     clearTimeout(pressTimer);
   },{passive:true});
-  bubble.addEventListener('touchmove',()=>{bubble.classList.remove('msn-pressed');clearTimeout(pressTimer);},{passive:true});
+  bubble.addEventListener('touchmove',()=>{
+    _touchMoved=true;
+    bubble.classList.remove('msn-pressed');
+    clearTimeout(pressTimer);
+  },{passive:true});
   bubble.addEventListener('contextmenu',(e)=>{e.preventDefault();e.stopPropagation();trigCtx(e);});
-  // Also prevent selectstart
-  bubble.addEventListener('selectstart',(e)=>{e.preventDefault();});
+  bubble.addEventListener('selectstart',(e)=>{if(pressTimer)e.preventDefault();});
 
   wrap.appendChild(bubble);
 
-  // Reactions display row (will be populated by Firestore listener)
+  // Reactions display row — listens in real-time
   const reactionsRow=document.createElement('div');
   reactionsRow.className='msn-reactions';
   reactionsRow.id='reactions_'+m.id;
   wrap.appendChild(reactionsRow);
+  // Start listening for reactions
+  setTimeout(()=>listenReactions(m.id, channelId), 100);
 
   group.appendChild(wrap);
   _lastMsgUid=m.uid;_lastMsgTime=m.ts;
@@ -2927,7 +2969,8 @@ function openRoomChat(channelId,title){
   document.querySelectorAll('.dc-channel').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.dc-channel').forEach(c=>{if(c.dataset.channel===channelId)c.classList.add('active');});
   const content=document.getElementById('discordContent');
-  content.style.cssText='flex:1;display:flex;flex-direction:column;overflow:hidden;background:#0d1117';
+  content.style.cssText='flex:1;display:flex;flex-direction:column;overflow:hidden;';
+  content.style.background='#0d1117';
 
   // Voice bar — only on desktop (hidden via CSS on mobile)
   let voiceBar='';
@@ -2999,33 +3042,39 @@ function openRoomChat(channelId,title){
 // ── MESSAGE CONTEXT MENU ──
 // ── ROOMS SIDEBAR TOGGLE ──
 let _sidebarShown = true;
+
 window.toggleRoomsSidebar = function(){
   const sb = document.getElementById('discordSidebar');
-  const layout = document.getElementById('discordLayout');
   const btn = document.getElementById('roomsOpenBtn');
   _sidebarShown = !_sidebarShown;
+
   if(_sidebarShown){
-    sb.style.cssText = 'width:240px;overflow:hidden';
-    layout.classList.remove('sidebar-hidden');
-    if(btn) btn.style.display='none';
+    // Show sidebar
+    sb.style.cssText = '';
+    sb.classList.remove('sidebar-gone');
+    if(btn){ btn.style.display='none'; }
   } else {
-    sb.style.cssText = 'width:0;overflow:hidden;border-right:none;flex-shrink:0';
-    layout.classList.add('sidebar-hidden');
-    if(btn) btn.style.display='flex';
+    // Hide sidebar
+    sb.style.cssText = 'width:0;min-width:0;overflow:hidden;border:none;padding:0;flex-shrink:0';
+    sb.classList.add('sidebar-gone');
+    if(btn){ btn.style.display='flex'; }
   }
 };
-// Auto-hide sidebar on mobile when entering rooms
+
 function initRoomsSidebar(){
-  if(window.innerWidth <= 600){
-    const sb = document.getElementById('discordSidebar');
-    const layout = document.getElementById('discordLayout');
-    const btn = document.getElementById('roomsOpenBtn');
+  // On mobile: start hidden. On desktop: start visible
+  const isMobile = window.innerWidth <= 600;
+  const sb = document.getElementById('discordSidebar');
+  const btn = document.getElementById('roomsOpenBtn');
+
+  if(isMobile){
     _sidebarShown = false;
-    if(sb) sb.style.cssText = 'width:0;overflow:hidden;border-right:none;flex-shrink:0';
-    if(layout) layout.classList.add('sidebar-hidden');
+    if(sb) sb.style.cssText = 'width:0;min-width:0;overflow:hidden;border:none;padding:0;flex-shrink:0';
     if(btn) btn.style.display='flex';
   } else {
     _sidebarShown = true;
+    if(sb) sb.style.cssText = '';
+    if(btn) btn.style.display='none';
   }
 }
 
@@ -3178,13 +3227,56 @@ function showMsgCtx(e, msgData, channelId, bubbleEl){
 }
 
 function addReaction(msgId, channelId, emoji){
-  if(!CU) return;
-  // Store reaction in Firestore subcollection
-  db.collection('channels').doc(channelId).collection('messages').doc(msgId)
-    .collection('reactions').doc(CU.uid+'_'+emoji).set({
-      uid:CU.uid, name:UD?.name||'?', emoji, ts:Date.now()
-    }).catch(()=>{});
-  toast(emoji);
+  if(!CU || !msgId || !channelId) return;
+  const ref = db.collection('channels').doc(channelId).collection('messages').doc(msgId);
+  // Use Firestore field path: reactions.{uid} = emoji (or delete it)
+  ref.get().then(snap=>{
+    if(!snap.exists) return;
+    const data = snap.data();
+    const reactions = data.reactions || {};
+    if(reactions[CU.uid] === emoji){
+      // Toggle off
+      const update = {};
+      update[`reactions.${CU.uid}`] = firebase.firestore.FieldValue.delete();
+      ref.update(update).catch(()=>{});
+    } else {
+      // Set reaction
+      const update = {};
+      update[`reactions.${CU.uid}`] = emoji;
+      ref.update(update).catch(()=>{});
+    }
+  }).catch(()=>{});
+}
+
+// Render reactions from message data (called after each message render)
+function renderReactions(msgId, reactions){
+  const row = document.getElementById('reactions_'+msgId);
+  if(!row) return;
+  if(!reactions || Object.keys(reactions).length === 0){ row.innerHTML=''; return; }
+  // Group by emoji
+  const groups = {};
+  Object.entries(reactions).forEach(([uid, emoji])=>{
+    if(!groups[emoji]) groups[emoji]={count:0, mine:false};
+    groups[emoji].count++;
+    if(uid === CU?.uid) groups[emoji].mine = true;
+  });
+  row.innerHTML = '';
+  Object.entries(groups).forEach(([emoji, {count, mine}])=>{
+    const pill = document.createElement('span');
+    pill.className = 'msn-reaction-pill' + (mine?' mine':'');
+    pill.innerHTML = `<span class="react-emoji">${emoji}</span><span class="react-count">${count}</span>`;
+    // Store channelId on row for click handler
+    pill.onclick = ()=> addReaction(msgId, row.dataset.channel, emoji);
+    row.appendChild(pill);
+  });
+}
+
+// Keep listenReactions as no-op (we now use message doc's own reactions field)
+const _reactionListeners = {};
+function listenReactions(msgId, channelId){
+  // reactions are now part of the message doc itself, updated in renderMsnMessages
+  const row = document.getElementById('reactions_'+msgId);
+  if(row) row.dataset.channel = channelId;
 }
 
 function makeCtxMenuItem(icon, label, fn){
