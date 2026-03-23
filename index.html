@@ -4410,11 +4410,8 @@ window.sendAiMsg=async function(){
       console.error('API error status:',res.status,data);
       // Check specific errors
       if(data.error==='API key not configured'){
-        const keyMsg=LANG==='en'
-          ?'⚠️ GROQ_KEY not configured in Vercel. Go to Vercel Dashboard → Settings → Environment Variables → add GROQ_KEY.'
-          :'⚠️ GROQ_KEY non configurée dans Vercel. Allez dans Vercel Dashboard → Settings → Environment Variables → ajoutez GROQ_KEY.';
         if(typing)typing.remove();
-        aiAddMsg('bot',keyMsg);
+        aiAddMsg('bot',LANG==='en'?'⚠️ Dr. MEDX is currently unavailable.':'⚠️ Dr. MEDX est actuellement indisponible.');
         _aiLoading=false;
         document.getElementById('aiSendBtn').disabled=false;
         return;
@@ -4434,18 +4431,12 @@ window.sendAiMsg=async function(){
       if(_aiHistory.length>20)_aiHistory=_aiHistory.slice(-20);
     } else {
       console.error('Groq error:',JSON.stringify(data));
-      const errMsg=LANG==='en'
-        ?'⚠️ Dr. MEDX is temporarily unavailable. Check that the Vercel function is deployed with GROQ_KEY.'
-        :'⚠️ Dr. MEDX est temporairement indisponible. Vérifiez que la fonction Vercel est déployée avec GROQ_KEY.';
-      aiAddMsg('bot',errMsg);
+      aiAddMsg('bot',LANG==='en'?'⚠️ Dr. MEDX is currently unavailable.':'⚠️ Dr. MEDX est actuellement indisponible.');
     }
   }catch(e){
     if(typing)typing.remove();
     console.error('AI fetch error:',e);
-    const netMsg=LANG==='en'
-      ?'⚠️ Connection error. Make sure you are on the deployed Vercel URL (not localhost).'
-      :'⚠️ Erreur de connexion. Assurez-vous d\'être sur l\'URL Vercel déployée (pas localhost).';
-    aiAddMsg('bot',netMsg);
+    aiAddMsg('bot',LANG==='en'?'⚠️ Dr. MEDX is currently unavailable.':'⚠️ Dr. MEDX est actuellement indisponible.');
   }
   _aiLoading=false;
   document.getElementById('aiSendBtn').disabled=false;
