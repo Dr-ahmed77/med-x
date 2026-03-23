@@ -4294,7 +4294,11 @@ window.uploadAvatar=async(input)=>{
 })();
 
 /* ---- Dr. MEDX AI (Gemini) ---- */
-const GROQ_KEY_CLIENT = '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'; // ضع مفتاحك هنا
+// ══════════════════════════════════════════
+// Dr. MEDX — Groq API
+// ضع مفتاحك هنا 👇
+const GROQ_API_KEY = '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';
+// ══════════════════════════════════════════
 let _aiHistory=[];
 let _aiLoading=false;
 
@@ -4391,9 +4395,12 @@ window.sendAiMsg=async function(){
     }
     _aiHistory.push({role:'user',parts:[{text:text||'[fichier]'}]});
 
-    const res=await fetch('/api/chat',{
+    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+GROQ_API_KEY
+      },
       body:JSON.stringify({
         model,
         messages:[
@@ -4407,15 +4414,7 @@ window.sendAiMsg=async function(){
     });
     const data=await res.json();
     if(!res.ok){
-      console.error('API error status:',res.status,data);
-      // Check specific errors
-      if(data.error==='API key not configured'){
-        if(typing)typing.remove();
-        aiAddMsg('bot',LANG==='en'?'⚠️ Dr. MEDX is currently unavailable.':'⚠️ Dr. MEDX est actuellement indisponible.');
-        _aiLoading=false;
-        document.getElementById('aiSendBtn').disabled=false;
-        return;
-      }
+      console.error('Groq error:',res.status,data);
       throw new Error('API '+res.status);
     }
     if(typing)typing.remove();
