@@ -2317,11 +2317,11 @@ const FV=firebase.firestore.FieldValue;
 
 function setErr(m){const el=document.getElementById('authErr');if(el)el.textContent=m;}
 function frErr(c){return(t('err_login')||{})[c]||'Error: '+c;}
-async function doLogin(){
+window.doLogin=async function(){
   const email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPass').value;
   setErr('');try{await auth.signInWithEmailAndPassword(email,pass);}catch(e){setErr(frErr(e.code));}
-}
-async function doRegister(){
+};
+window.doRegister=async function(){
   const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim();
   const year=parseInt(document.getElementById('regYear').value),pass=document.getElementById('regPass').value;
   setErr('');if(!name||!email||!pass){setErr(t('toast_fill_all'));return;}
@@ -2329,8 +2329,8 @@ async function doRegister(){
     const cred=await auth.createUserWithEmailAndPassword(email,pass);
     await db.collection('users').doc(cred.user.uid).set({name,email,year,xp:0,lastLogin:'',createdAt:new Date().toISOString()});
   }catch(e){setErr(frErr(e.code));}
-}
-function doLogout(){auth.signOut();}
+};
+window.doLogout=function(){auth.signOut();};
 window.openRename=()=>{
   const input=document.getElementById('renameInput');
   if(input&&UD)input.value=UD.name||'';
@@ -4399,7 +4399,7 @@ window.sendAiMsg=async function(){
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'Authorization':'+OPENROUTER_KEY,
+        'Authorization':'Bearer '+OPENROUTER_KEY,
         'X-Title':'MEDX'
       },
       body:JSON.stringify({
