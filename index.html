@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat System</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <title>MEDX Platform</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBx-pCf2oXTcQyYeA25M9PXaIXRUJp3A3A",
-            authDomain: "YOUR_AUTH_DOMAIN.firebaseapp.com",
-            databaseURL: "https://YOUR_DATABASE_NAME.firebaseio.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-
-        function sendMessage() {
-            const userInput = document.getElementById('userInput').value;
-            // Call your AI chat system here
-            document.getElementById('chatOutput').innerHTML += `<div>User: ${userInput}</div>`;
-            document.getElementById('userInput').value = '';
+        async function callGoogleAI(queries) {
+            const response = await fetch('YOUR_GOOGLE_GENERATIVE_AI_API_URL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+                },
+                body: JSON.stringify({ queries })
+            });
+            return response.json();
         }
+
+        $(document).ready(function() {
+            $('#send-button').click(async function() {
+                const userQuery = $('#user-input').val();
+                const aiResponse = await callGoogleAI(userQuery);
+                $('#chat-area').append(`<div>You: ${userQuery}</div>`);
+                $('#chat-area').append(`<div>AI: ${aiResponse}</div>`);
+            });
+        });
     </script>
 </head>
 <body>
-    <h1>AI Chat System</h1>
-    <input type="text" id="userInput" placeholder="Type your message...">
-    <button onclick="sendMessage()">Send</button>
-    <div id="chatOutput"></div>
+    <div id="chat-container">
+        <h1>MEDX AI Chatbot</h1>
+        <div id="chat-area" style="border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll;"></div>
+        <input type="text" id="user-input" placeholder="Type your message here..." />
+        <button id="send-button">Send</button>
+    </div>
 </body>
 </html>
