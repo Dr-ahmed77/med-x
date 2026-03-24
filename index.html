@@ -1,39 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEDX Platform</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://generative-ai-library-url.js"></script>
     <script>
-        async function callGoogleAI(queries) {
-            const response = await fetch('YOUR_GOOGLE_GENERATIVE_AI_API_URL', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
-                },
-                body: JSON.stringify({ queries })
-            });
-            return response.json();
+        const apiKey = 'AIzaSyBx-pCf2oXTcQyYeA25M9PXaIXRUJp3A3A';
+        const model = 'gemini-1.5-flash';
+        
+        async function sendGeminiMsg(message) {
+            // Function to send message to Gemini
         }
-
-        $(document).ready(function() {
-            $('#send-button').click(async function() {
-                const userQuery = $('#user-input').val();
-                const aiResponse = await callGoogleAI(userQuery);
-                $('#chat-area').append(`<div>You: ${userQuery}</div>`);
-                $('#chat-area').append(`<div>AI: ${aiResponse}</div>`);
-            });
-        });
+        
+        // Additional JavaScript functions
     </script>
 </head>
 <body>
-    <div id="chat-container">
-        <h1>MEDX AI Chatbot</h1>
-        <div id="chat-area" style="border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll;"></div>
-        <input type="text" id="user-input" placeholder="Type your message here..." />
-        <button id="send-button">Send</button>
-    </div>
+    <header>
+        <div class="topbar">Top Bar Content</div>
+    </header>
+    <aside class="sidebar">Sidebar Content</aside>
+    <main>
+        <section class="home">Home Content</section>
+        <section class="cours">Cours Content</section>
+        <section class="qcm">QCM Content</section>
+        <section class="examens">Examens Content</section>
+        <section class="drive">Drive Content</section>
+        <section class="rooms">Rooms Content</section>
+        <section class="classement">Classement Content</section>
+        <section class="avis">Avis Content</section>
+        <section class="gemini-ai">Dr. MEDX with Gemini AI</section>
+    </main>
+    <footer>
+        <div class="leaderboard">Leaderboard Content</div>
+        <div class="reviews">Reviews Content</div>
+        <div class="messaging">Discord-Telegram Messaging System</div>
+    </footer>
 </body>
 </html>
